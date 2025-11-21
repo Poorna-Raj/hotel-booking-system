@@ -56,6 +56,16 @@ public class RoomService {
         return mapToDtoFromModel(repository.save(room));
     }
 
+    public Boolean deleteRoom(long userId,long roomId){
+        validateUserIsAdmin(userId);
+
+        Room room = repository.findById(roomId)
+                .orElseThrow(() -> new ContentNotFound("Invalid room for given ID."));
+
+        repository.delete(room);
+        return true;
+    }
+
     public void validateUserIsAdmin(long id){
         if(!userClientService.validateUserIsAdmin(id)){
             throw new BadRequest("Permission Denied!");
