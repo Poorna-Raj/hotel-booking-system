@@ -2,6 +2,8 @@ package com.hbs.room_service.service;
 
 import com.hbs.room_service.data.dto.RoomRequestDto;
 import com.hbs.room_service.data.dto.RoomResponseDto;
+import com.hbs.room_service.data.dto.RoomUpdateRequestDto;
+import com.hbs.room_service.data.model.BedType;
 import com.hbs.room_service.data.model.Room;
 import com.hbs.room_service.data.model.RoomStatus;
 import com.hbs.room_service.data.model.RoomType;
@@ -21,7 +23,7 @@ public class RoomService {
     @Autowired
     private UserClientService userClientService;
 
-    public RoomResponseDto addNewRoom(RoomRequestDto dto){
+    public RoomResponseDto addRoom(RoomRequestDto dto){
         Room room = new Room();
         room.setRoomStatus(RoomStatus.valueOf("AVAILABLE"));
         room.setRoomType(RoomType.valueOf(dto.getRoomType()));
@@ -31,13 +33,33 @@ public class RoomService {
         room.setCreatedAt(LocalDateTime.now());
         room.setUpdatedAt(LocalDateTime.now());
 
-        if(userClientService.validateUserIsAdmin(dto.getCreatedBy())){
-            room.setCreatedBy(dto.getCreatedBy());
-        } else {
-            throw new BadRequest("Permission Denied!");
-        }
+        validateUserIsAdmin(dto.getCreatedBy());
+        room.setCreatedBy(dto.getCreatedBy());
 
         return mapToDtoFromModel(repository.save(room));
+    }
+
+    public RoomResponseDto updateRoom(long userId, long roomId, RoomUpdateRequestDto dto){
+        validateUserIsAdmin(userId);
+
+        Room room = repository.findById(roomId)
+                .orElseThrow(()-> new ContentNotFound("Invalid room for given ID."));
+
+        room.setRoomType(RoomType.valueOf(dto.getRoomType()));
+        room.setRoomStatus(RoomStatus.valueOf(dto.getRoomStatus()));
+        room.setBedType(BedType.valueOf(dto.getBedType()));
+        room.setName(dto.getName());
+        room.setUpdatedAt(LocalDateTime.now());
+        room.setBasePrice(dto.getBasePrice());
+        room.setBedCount(dto.getBedCount());
+
+        return mapToDtoFromModel(repository.save(room));
+    }
+
+    public void validateUserIsAdmin(long id){
+        if(!userClientService.validateUserIsAdmin(id)){
+            throw new BadRequest("Permission Denied!");
+        }
     }
 
     private RoomResponseDto mapToDtoFromModel(Room save) {
