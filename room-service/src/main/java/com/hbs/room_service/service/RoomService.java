@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class RoomService {
@@ -64,6 +65,19 @@ public class RoomService {
 
         repository.delete(room);
         return true;
+    }
+
+    public RoomResponseDto getRoomById(long roomId){
+        Room room = repository.findById(roomId)
+                .orElseThrow(() -> new ContentNotFound("Invalid room for given ID."));
+        return mapToDtoFromModel(room);
+    }
+
+    public List<RoomResponseDto> getAllRoom(){
+        return repository.findAll()
+                .stream()
+                .map(this::mapToDtoFromModel)
+                .toList();
     }
 
     public void validateUserIsAdmin(long id){
