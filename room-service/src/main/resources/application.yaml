@@ -18,7 +18,7 @@ server:
 resilience4j:
   circuitbreaker:
     instances:
-      questionService:
+      userService:
         slidingWindowSize: 10
         failureRateThreshold: 50
         waitDurationInOpenState: 5s
