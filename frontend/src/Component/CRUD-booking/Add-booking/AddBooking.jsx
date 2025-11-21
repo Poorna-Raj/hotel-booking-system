@@ -75,7 +75,7 @@ function AddBooking() {
               value={formData.guestName}
               onChange={handleChange}
               className="form-input"
-              placeholder="John Doe"
+              placeholder="Arosh Smith"
             />
             {errors.guestName && <p className="form-error">{errors.guestName}</p>}
           </div>
@@ -89,7 +89,7 @@ function AddBooking() {
                 value={formData.email}
                 onChange={handleChange}
                 className="form-input"
-                placeholder="john@example.com"
+                placeholder="smith32gampaha@.com"
               />
               {errors.email && <p className="form-error">{errors.email}</p>}
             </div>
@@ -101,7 +101,7 @@ function AddBooking() {
                 value={formData.phone}
                 onChange={handleChange}
                 className="form-input"
-                placeholder="+1 234 567 890"
+                placeholder="+94 712345678"
               />
             </div>
           </div>
