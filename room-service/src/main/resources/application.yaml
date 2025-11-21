@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: room-service
+  datasource:
+    url: ${DB_URL}
+    password: ${DB_PASSWORD}
+    username: ${DB_USERNAME}
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+
+server:
+  port: 8081
+  servlet:
+    context-path: /room-service
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      questionService:
+        slidingWindowSize: 10
+        failureRateThreshold: 50
+        waitDurationInOpenState: 5s
