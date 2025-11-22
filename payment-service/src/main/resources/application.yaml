@@ -1,3 +1,16 @@
 spring:
   application:
     name: payment-service
+  datasource:
+    url: ${DB_URL}
+    password: ${DB_PASSWORD}
+    username: ${DB_USERNAME}
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+
+server:
+  port: 8083
+  servlet:
+    context-path: /payment-service
