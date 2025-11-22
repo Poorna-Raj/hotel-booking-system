@@ -26,8 +26,15 @@ public class RoomService {
 
     public RoomResponseDto addRoom(RoomRequestDto dto){
         Room room = new Room();
+
         room.setRoomStatus(RoomStatus.valueOf("AVAILABLE"));
-        room.setRoomType(RoomType.valueOf(dto.getRoomType()));
+        if(validateRoomTypes(dto.getRoomType())) {
+            room.setRoomType(RoomType.valueOf(dto.getRoomType()));
+        }
+        if(validateBedTypes(dto.getBedType())){
+            room.setBedType(BedType.valueOf(dto.getBedType()));
+        }
+
         room.setBasePrice(dto.getBasePrice());
         room.setName(dto.getName());
         room.setBedCount(dto.getBedCount());
@@ -46,9 +53,15 @@ public class RoomService {
         Room room = repository.findById(roomId)
                 .orElseThrow(()-> new ContentNotFound("Invalid room for given ID."));
 
-        room.setRoomType(RoomType.valueOf(dto.getRoomType()));
-        room.setRoomStatus(RoomStatus.valueOf(dto.getRoomStatus()));
-        room.setBedType(BedType.valueOf(dto.getBedType()));
+        if(validateRoomTypes(dto.getRoomType())) {
+            room.setRoomType(RoomType.valueOf(dto.getRoomType()));
+        }
+        if(validateRoomStatus(dto.getRoomStatus())) {
+            room.setRoomStatus(RoomStatus.valueOf(dto.getRoomStatus()));
+        }
+        if(validateBedTypes(dto.getBedType())) {
+            room.setBedType(BedType.valueOf(dto.getBedType()));
+        }
         room.setName(dto.getName());
         room.setUpdatedAt(LocalDateTime.now());
         room.setBasePrice(dto.getBasePrice());
@@ -83,6 +96,33 @@ public class RoomService {
     public void validateUserIsAdmin(long id){
         if(!userClientService.validateUserIsAdmin(id)){
             throw new BadRequest("Permission Denied!");
+        }
+    }
+
+    public boolean validateRoomTypes(String roomType){
+        try{
+            RoomType.valueOf(roomType.toUpperCase());
+            return true;
+        } catch (IllegalArgumentException e) {
+            throw new BadRequest("Invalid room type!");
+        }
+    }
+
+    public boolean validateRoomStatus(String roomStatus){
+        try{
+            RoomStatus.valueOf(roomStatus.toUpperCase());
+            return true;
+        } catch (IllegalArgumentException e) {
+            throw new BadRequest("Invalid room status!");
+        }
+    }
+
+    public boolean validateBedTypes(String bedType){
+        try{
+            BedType.valueOf(bedType.toUpperCase());
+            return true;
+        } catch (IllegalArgumentException e) {
+            throw new BadRequest("Invalid bed type!");
         }
     }
 
