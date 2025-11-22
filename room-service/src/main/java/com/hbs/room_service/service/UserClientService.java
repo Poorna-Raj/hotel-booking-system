@@ -25,7 +25,7 @@ public class UserClientService {
         }
     }
 
-    public Boolean validateUserIsAdminFeedback(long id,Exception ex){
+    public Boolean validateUserIsAdminFeedback(long id,Throwable ex){
         throw new ServiceUnavailable("User service unavailable!");
     }
 }
