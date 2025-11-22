@@ -35,4 +35,11 @@ public class UserService {
 
         return dto;
     }
+
+    public Boolean validateUserIsAdmin(long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ContentNotFound("User not found for ID: " + id));
+
+        return user instanceof Admin;
+    }
 }
