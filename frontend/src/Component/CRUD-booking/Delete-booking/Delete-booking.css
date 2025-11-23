@@ -1,0 +1,74 @@
+/* Modal background overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* semi-transparent background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Modal box container */
+.modal-container {
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 2rem;
+  width: 400px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Title style */
+.modal-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+/* Description style */
+.modal-description {
+  font-size: 1rem;
+  color: #4b5563;
+  margin-bottom: 2rem;
+}
+
+/* Button container (for Delete and Cancel buttons) */
+.modal-actions {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+/* Button styling */
+.btn-delete,
+.btn-cancel {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.btn-delete {
+  background-color: #e11d48;
+  color: white;
+  transition: background-color 0.2s;
+}
+
+.btn-delete:hover {
+  background-color: #9f1239;
+}
+
+.btn-cancel {
+  background-color: #d1d5db;
+  color: #1f2937;
+  transition: background-color 0.2s;
+}
+
+.btn-cancel:hover {
+  background-color: #9ca3af;
+}
