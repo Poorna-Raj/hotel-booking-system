@@ -1,0 +1,119 @@
+package com.hbs.payment_service.service;
+
+import com.hbs.payment_service.data.dto.PaymentRequestDto;
+import com.hbs.payment_service.data.dto.PaymentResponseDto;
+import com.hbs.payment_service.data.model.Payment;
+import com.hbs.payment_service.data.model.PaymentStatus;
+import com.hbs.payment_service.data.model.PaymentType;
+import com.hbs.payment_service.data.repository.PaymentRepository;
+import com.hbs.payment_service.exception.BadRequest;
+import com.hbs.payment_service.exception.ContentNotFound;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+@Service
+public class PaymentService {
+    @Autowired
+    private PaymentRepository repository;
+
+    public PaymentResponseDto addPayment(PaymentRequestDto dto){
+        Payment payment = new Payment();
+        if(validatePaymentStatus(dto.getPaymentStatus())) {
+            payment.setPaymentStatus(PaymentStatus.valueOf(dto.getPaymentStatus()));
+        }
+        if(validatePaymentType(dto.getPaymentType())){
+            payment.setPaymentType(PaymentType.valueOf(dto.getPaymentType()));
+        }
+        if(dto.getAmount() > 0){
+            payment.setAmount(dto.getAmount());
+        } else{
+            throw new BadRequest("Invalid Amount!");
+        }
+        // TODO: Validate the booking ID
+        payment.setBookingId(dto.getBookingId());
+        payment.setCreatedAt(LocalDateTime.now());
+        payment.setPayedAt(LocalDateTime.now());
+        payment.setTransactionId(dto.getTransactionId());
+        payment.setUpdatedAt(LocalDateTime.now());
+        // TODO: validate the user ID
+        payment.setUserId(dto.getUserId());
+
+        return mapToDtoFromModel(repository.save(payment));
+    }
+
+    public PaymentResponseDto updatePayment(long id, PaymentRequestDto dto){
+        Payment payment = repository.findById(id)
+                .orElseThrow(() -> new ContentNotFound("Invalid Payment for given ID."));
+        // TODO: validate the user ID
+        payment.setUserId(dto.getUserId());
+        // TODO: validate the booking ID
+        payment.setBookingId(dto.getBookingId());
+
+        if(dto.getAmount() > 0){
+            payment.setAmount(dto.getAmount());
+        } else{
+            throw new BadRequest("Invalid Amount!");
+        }
+
+        if(validatePaymentStatus(dto.getPaymentStatus())) {
+            payment.setPaymentStatus(PaymentStatus.valueOf(dto.getPaymentStatus()));
+        }
+        if(validatePaymentType(dto.getPaymentType())){
+            payment.setPaymentType(PaymentType.valueOf(dto.getPaymentType()));
+        }
+
+        payment.setTransactionId(dto.getTransactionId());
+
+        return mapToDtoFromModel(repository.save(payment));
+    }
+
+    public PaymentResponseDto getPayment(long id){
+        return mapToDtoFromModel(repository.findById(id)
+                .orElseThrow(() -> new ContentNotFound("Invalid payment for given ID"))
+        );
+    }
+
+    public List<PaymentResponseDto> getAllPayments(){
+        return repository.findAll()
+                .stream()
+                .map(this::mapToDtoFromModel)
+                .toList();
+    }
+
+    private PaymentResponseDto mapToDtoFromModel(Payment save) {
+        PaymentResponseDto dto = new PaymentResponseDto();
+        dto.setAmount(save.getAmount());
+        dto.setPaymentStatus(save.getPaymentStatus().toString());
+        dto.setPaymentType(save.getPaymentType().toString());
+        dto.setId(save.getId());
+        dto.setCreatedAt(save.getCreatedAt());
+        dto.setBookingId(save.getBookingId());
+        dto.setPayedAt(save.getPayedAt());
+        dto.setUserId(save.getUserId());
+        dto.setTransactionId(save.getTransactionId());
+        dto.setUpdatedAt(save.getUpdatedAt());
+
+        return dto;
+    }
+
+    public boolean validatePaymentStatus(String status){
+        try{
+            PaymentStatus.valueOf(status);
+            return true;
+        } catch (IllegalArgumentException e) {
+            throw new BadRequest("Invalid Payment Status");
+        }
+    }
+
+    public boolean validatePaymentType(String type){
+        try{
+            PaymentType.valueOf(type);
+            return true;
+        } catch (IllegalArgumentException e) {
+            throw new BadRequest("Invalid Payment Type");
+        }
+    }
+}
