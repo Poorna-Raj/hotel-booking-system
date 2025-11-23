@@ -83,6 +83,13 @@ public class PaymentService {
                 .toList();
     }
 
+    public boolean deletePayment(long id){
+        Payment payment = repository.findById(id)
+                .orElseThrow(() -> new ContentNotFound("Invalid Payment for given ID."));
+        repository.delete(payment);
+        return true;
+    }
+
     private PaymentResponseDto mapToDtoFromModel(Payment save) {
         PaymentResponseDto dto = new PaymentResponseDto();
         dto.setAmount(save.getAmount());
