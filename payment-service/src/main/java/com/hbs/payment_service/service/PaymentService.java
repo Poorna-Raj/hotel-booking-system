@@ -22,6 +22,9 @@ public class PaymentService {
     @Autowired
     private PaymentUserClientService userClientService;
 
+    @Autowired
+    private PaymentBookingClientService bookingClientService;
+
     public PaymentResponseDto addPayment(PaymentRequestDto dto){
         Payment payment = new Payment();
         if(validatePaymentStatus(dto.getPaymentStatus())) {
@@ -35,8 +38,12 @@ public class PaymentService {
         } else{
             throw new BadRequest("Invalid Amount!");
         }
-        // TODO: Validate the booking ID
+
+        if(!bookingClientService.validateBookingExist(dto.getBookingId())){
+            throw new BadRequest("Invalid booking for the given ID.");
+        }
         payment.setBookingId(dto.getBookingId());
+
         payment.setCreatedAt(LocalDateTime.now());
         payment.setPayedAt(LocalDateTime.now());
         payment.setTransactionId(dto.getTransactionId());
@@ -59,7 +66,9 @@ public class PaymentService {
         }
         payment.setUserId(dto.getUserId());
 
-        // TODO: validate the booking ID
+        if(!bookingClientService.validateBookingExist(dto.getBookingId())){
+            throw new BadRequest("Invalid booking for the given ID.");
+        }
         payment.setBookingId(dto.getBookingId());
 
         if(dto.getAmount() > 0){
