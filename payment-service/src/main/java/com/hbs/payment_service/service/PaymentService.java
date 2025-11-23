@@ -19,6 +19,9 @@ public class PaymentService {
     @Autowired
     private PaymentRepository repository;
 
+    @Autowired
+    private PaymentUserClientService userClientService;
+
     public PaymentResponseDto addPayment(PaymentRequestDto dto){
         Payment payment = new Payment();
         if(validatePaymentStatus(dto.getPaymentStatus())) {
@@ -38,7 +41,10 @@ public class PaymentService {
         payment.setPayedAt(LocalDateTime.now());
         payment.setTransactionId(dto.getTransactionId());
         payment.setUpdatedAt(LocalDateTime.now());
-        // TODO: validate the user ID
+
+        if(!userClientService.validateUser(dto.getUserId())) {
+            throw new BadRequest("Invalid user!");
+        }
         payment.setUserId(dto.getUserId());
 
         return mapToDtoFromModel(repository.save(payment));
@@ -47,8 +53,12 @@ public class PaymentService {
     public PaymentResponseDto updatePayment(long id, PaymentRequestDto dto){
         Payment payment = repository.findById(id)
                 .orElseThrow(() -> new ContentNotFound("Invalid Payment for given ID."));
-        // TODO: validate the user ID
+
+        if(!userClientService.validateUser(dto.getUserId())) {
+            throw new BadRequest("Invalid user!");
+        }
         payment.setUserId(dto.getUserId());
+
         // TODO: validate the booking ID
         payment.setBookingId(dto.getBookingId());
 
