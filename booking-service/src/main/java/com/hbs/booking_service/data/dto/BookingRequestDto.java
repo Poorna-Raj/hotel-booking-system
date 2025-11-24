@@ -14,4 +14,5 @@ public class BookingRequestDto {
     private String bookingStatus;
     private String customerName;
     private String customerNic;
+    private double advancePayment;
 }
