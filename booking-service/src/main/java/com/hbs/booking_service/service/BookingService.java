@@ -113,6 +113,13 @@ public class BookingService {
                 .toList();
     }
 
+    public Boolean isBookingValidForPayments(long bookingId){
+        Booking booking = repository.findById(bookingId)
+                .orElseThrow(() -> new BadRequest("Invalid Booking ID!"));
+
+        return booking.getBookingStatus() == BookingStatus.BOOKED;
+    }
+
     private void sendAdvancePayment(Booking savedBooking, BookingRequestDto dto) {
         PaymentRequestDto requestDto = new PaymentRequestDto();
         requestDto.setBookingId(savedBooking.getId());
