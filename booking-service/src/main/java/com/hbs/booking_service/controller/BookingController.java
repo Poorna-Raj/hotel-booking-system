@@ -48,4 +48,9 @@ public class BookingController {
     public ResponseEntity<List<BookingResponseDto>> getAllBookings(){
         return new ResponseEntity<>(service.getAllBookings(),HttpStatus.OK);
     }
+
+    @GetMapping("/{id}/is-valid")
+    public Boolean isBookingValidForPayments(@PathVariable long id){
+        return service.isBookingValidForPayments(id);
+    }
 }
