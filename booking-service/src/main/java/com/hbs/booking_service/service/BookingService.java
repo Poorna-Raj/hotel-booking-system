@@ -52,7 +52,7 @@ public class BookingService {
 
             Booking savedBooking = repository.save(booking);
 
-            sendNewPayment(savedBooking,dto);
+            sendAdvancePayment(savedBooking,dto);
 
             return mapToDtoFromModel(savedBooking);
         } else{
@@ -60,7 +60,7 @@ public class BookingService {
         }
     }
 
-    private void sendNewPayment(Booking savedBooking, BookingRequestDto dto) {
+    private void sendAdvancePayment(Booking savedBooking, BookingRequestDto dto) {
         PaymentRequestDto requestDto = new PaymentRequestDto();
         requestDto.setBookingId(savedBooking.getId());
         requestDto.setPaymentStatus("SUCCESS");
@@ -70,6 +70,7 @@ public class BookingService {
         if(dto.getPaymentType().equals("CARD")){
             requestDto.setTransactionId(dto.getTransactionId());
         }
+        requestDto.setPaymentReason("ADVANCE");
 
         paymentServiceClient.addPayment(requestDto);
     }
