@@ -17,4 +17,6 @@ public class BookingRequestDto {
     private String customerName;
     private String customerNic;
     private double advancePayment;
+    private String paymentType;
+    private String transactionId;
 }
