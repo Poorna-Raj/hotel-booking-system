@@ -42,7 +42,12 @@ public class BookingService {
 
             booking.setCustomerName(dto.getCustomerName());
             booking.setCustomerNic(dto.getCustomerNic());
+
+            if(!roomServiceClient.isRoomAvailable(dto.getRoomId())){
+                throw new BadRequest("Room is not available!");
+            }
             booking.setRoomId(dto.getRoomId());
+
             booking.setUpdatedAt(LocalDateTime.now());
             booking.setTotalAmount(getTotalAmount(dto.getCheckIn(),dto.getCheckOut(),dto.getRoomId()));
             booking.setCreatedAt(LocalDateTime.now());
