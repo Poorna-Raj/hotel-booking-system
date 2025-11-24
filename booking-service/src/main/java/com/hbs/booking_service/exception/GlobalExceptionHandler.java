@@ -29,6 +29,14 @@ public class GlobalExceptionHandler {
         );
     }
 
+    @ExceptionHandler(BookingValidationError.class)
+    public ResponseEntity<ApiError> handleBookingValidation(BookingValidationError ex, HttpServletRequest req){
+        return new ResponseEntity<>(
+                buildError(HttpStatus.CONFLICT, ex.getMessage(), req),
+                HttpStatus.CONFLICT
+        );
+    }
+
     @ExceptionHandler(BadRequest.class)
     public ResponseEntity<ApiError> handleBadRequest(BadRequest ex, HttpServletRequest req) {
         return new ResponseEntity<>(
