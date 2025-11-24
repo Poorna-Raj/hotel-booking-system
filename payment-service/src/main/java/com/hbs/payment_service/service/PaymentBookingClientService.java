@@ -17,7 +17,7 @@ public class PaymentBookingClientService {
 
     @CircuitBreaker(name = bookingService, fallbackMethod = "validateBookingExistFeedback")
     public Boolean validateBookingExist(long id){
-        String url = "http://localhost:8080/booking-service/bookings/" + id + "/is-valid";
+        String url = "http://localhost:8082/booking-service/bookings/" + id + "/is-valid";
         try {
             return restTemplate.getForObject(url, Boolean.class);
         } catch(HttpClientErrorException.NotFound ex){
