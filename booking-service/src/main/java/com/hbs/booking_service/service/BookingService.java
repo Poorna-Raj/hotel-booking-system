@@ -2,6 +2,7 @@ package com.hbs.booking_service.service;
 
 import com.hbs.booking_service.data.dto.BookingRequestDto;
 import com.hbs.booking_service.data.dto.BookingResponseDto;
+import com.hbs.booking_service.data.dto.BookingUpdateRequestDto;
 import com.hbs.booking_service.data.dto.PaymentRequestDto;
 import com.hbs.booking_service.data.model.Booking;
 import com.hbs.booking_service.data.model.BookingPaymentStatus;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 
 public class BookingService {
     @Autowired
@@ -63,6 +65,52 @@ public class BookingService {
         } else{
             throw new BadRequest("Invalid Booking!");
         }
+    }
+
+    public BookingResponseDto updateBooking(long bookingId, BookingUpdateRequestDto dto){
+        if(validator.isBookingValid(dto.getCheckIn(),dto.getCheckOut(), dto.getRoomId(), bookingId)){
+            Booking oldBooking = repository.findById(bookingId)
+                    .orElseThrow(() -> new BadRequest("Invalid Booking ID!"));
+
+            if(!roomServiceClient.isRoomAvailable(dto.getRoomId())){
+                throw new BadRequest("Room is not available!");
+            }
+            oldBooking.setRoomId(dto.getRoomId());
+
+            oldBooking.setCheckIn(dto.getCheckIn());
+            oldBooking.setCheckOut(dto.getCheckOut());
+
+            if(validator.isBookingStatusValid(dto.getBookingStatus())){
+                oldBooking.setBookingStatus(BookingStatus.valueOf(dto.getBookingStatus()));
+            }
+
+            oldBooking.setCustomerName(dto.getCustomerName());
+            oldBooking.setCustomerNic(dto.getCustomerNic());
+
+            return mapToDtoFromModel(repository.save(oldBooking));
+        } else{
+            throw new BadRequest("Invalid Booking!");
+        }
+    }
+
+    public boolean deleteBooking(long bookingId){
+        Booking booking = repository.findById(bookingId)
+                .orElseThrow(() -> new BadRequest("Invalid Booking ID!"));
+
+        repository.delete(booking);
+        return true;
+    }
+
+    public BookingResponseDto getBookingById(long bookingId){
+        return mapToDtoFromModel(repository.findById(bookingId)
+                .orElseThrow(() -> new BadRequest("Invalid Booking ID!")));
+    }
+
+    public List<BookingResponseDto> getAllBookings(){
+        return repository.findAll()
+                .stream()
+                .map(this::mapToDtoFromModel)
+                .toList();
     }
 
     private void sendAdvancePayment(Booking savedBooking, BookingRequestDto dto) {
