@@ -27,6 +27,6 @@ public class RoomServiceClient {
     }
 
     public Double getPriceFallback(long roomId,Throwable ex){
-        throw new ServiceUnavailable("User service unavailable!");
+        throw new ServiceUnavailable("Room service unavailable!");
     }
 }
