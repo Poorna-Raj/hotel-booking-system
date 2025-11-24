@@ -1,155 +1,189 @@
-/* Container for the whole Booking List */
+/* Booking List Container */
 .booking-list-container {
-  padding: 2rem;
-  background-color: #f9fafb;
-  min-height: 100vh;
+  position: relative;
+  padding: 20px;
+}
+
+/* Modal Background Overlay */
+.modal-overlay {
+  position: fixed; /* Fix the overlay to cover the whole screen */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   align-items: center;
+  z-index: 1000; /* Ensure the overlay is above other content */
 }
 
-/* Table Styling */
+/* Modal Box */
+.modal-box {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 600px;
+  width: 100%;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Close Button */
+.modal-close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  color: #888;
+  transition: color 0.2s ease;
+}
+
+.modal-close-btn:hover {
+  color: #000;
+}
+
+/* Specific Styles for Each Modal */
+.add-booking-modal .modal-box {
+  background-color: #f8f8f8;
+}
+
+.update-booking-modal .modal-box {
+  background-color: #e0f7fa;
+}
+
+.view-booking-modal .modal-box {
+  background-color: #f1f8e9;
+}
+
+.delete-booking-modal .modal-box {
+  background-color: #ffebee;
+}
+
+/* Overlay for Booking List (Ensure it's beneath the modal) */
+.booking-list-container .add-booking-btn {
+  margin: 10px 0;
+}
+
+/* Table Styles */
 .booking-table {
-  width: 80%;
-  margin-top: 2rem;
+  width: 100%;
   border-collapse: collapse;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  background-color: #fff;
+  margin-top: 20px;
 }
 
-.booking-table th,
-.booking-table td {
-  padding: 1rem;
+.booking-table th, .booking-table td {
+  padding: 12px;
   text-align: left;
-  border-bottom: 1px solid #ddd;
+  border: 1px solid #ddd;
 }
 
 .booking-table th {
-  background-color: #4CAF50;
-  color: white;
+  background-color: #f4f4f4;
 }
 
-.booking-table tr:hover {
-  background-color: #f1f1f1;
+.booking-table tr:nth-child(even) {
+  background-color: #f9f9f9;
 }
 
 .booking-table button {
-  padding: 5px 10px;
-  margin: 0 5px;
+  margin-right: 5px;
+  padding: 6px 12px;
   background-color: #4CAF50;
   color: white;
   border: none;
-  border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.2s;
 }
 
 .booking-table button:hover {
   background-color: #45a049;
 }
 
-/* Add New Booking Button */
 .add-booking-btn {
-  background-color: #2563eb;
+  padding: 10px 15px;
+  background-color: #008CBA;
   color: white;
-  padding: 10px 20px;
   border: none;
-  border-radius: 5px;
   cursor: pointer;
-  font-size: 1rem;
-  transition: background-color 0.3s;
+  border-radius: 5px;
+  font-size: 16px;
+  margin-top: 20px;
 }
 
 .add-booking-btn:hover {
-  background-color: #1d4ed8;
+  background-color: #007bb5;
 }
 
-/* Modal Styling (For Add, Edit, View, and Delete Modals) */
-.modal {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: #ffffff;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
-  max-width: 600px;
+/* Add some space around the main content */
+.booking-list-container {
+  padding-bottom: 50px;
+}
+
+/* Form Styles inside Modal (For Add, Edit, View Modals) */
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.form-input,
+.form-textarea,
+.form-select {
   width: 100%;
-  box-sizing: border-box;
-}
-
-.modal h3 {
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
-  color: #333;
-}
-
-.modal button {
-  background-color: #2563eb;
-  color: white;
-  padding: 10px 20px;
-  border: none;
+  padding: 10px;
+  border: 1px solid #ccc;
   border-radius: 5px;
-  cursor: pointer;
-  margin-right: 10px;
-  font-size: 1rem;
 }
 
-.modal button:hover {
-  background-color: #1d4ed8;
+.form-input:focus,
+.form-textarea:focus,
+.form-select:focus {
+  border-color: #008CBA;
+  outline: none;
 }
 
-.modal button.cancel {
-  background-color: #ef4444;
+.form-error {
+  color: red;
+  font-size: 14px;
+  margin-top: 5px;
 }
 
-.modal button.cancel:hover {
-  background-color: #dc2626;
+/* Success Message */
+.success-message {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  margin-top: 10px;
+  text-align: center;
+  font-size: 16px;
 }
 
-/* Close Button in Modals */
-.close-modal-btn {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: transparent;
-  border: none;
-  font-size: 1.5rem;
-  cursor: pointer;
+/* For "Delete Confirmation" modal */
+.delete-booking-modal .modal-box {
+  background-color: #f9f9f9;
 }
 
-/* Overlay */
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 999;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.delete-booking-modal .form-group {
+  margin-bottom: 20px;
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-  .booking-table {
-    width: 100%;
-  }
+.delete-booking-modal .form-label {
+  font-weight: bold;
+  color: #f44336; /* Red color for delete */
+}
 
-  .add-booking-btn {
-    width: 100%;
-  }
-
-  .booking-table th,
-  .booking-table td {
-    padding: 0.5rem;
-  }
-
-  .modal {
-    width: 90%;
-  }
+.delete-booking-modal .form-textarea {
+  font-style: italic;
+  background-color: #ffcccc;
+  border: 1px solid #f44336;
 }

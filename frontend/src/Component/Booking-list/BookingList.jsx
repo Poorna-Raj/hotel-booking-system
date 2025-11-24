@@ -21,23 +21,35 @@ function BookingList() {
   // Handle Add Booking
   const handleAddBooking = () => {
     setShowAddBookingModal(true);
+    setShowUpdateBookingModal(false);
+    setShowViewBookingModal(false);
+    setShowDeleteBookingModal(false);
   };
 
-  // Handle Edit Booking (opens modal for selected booking)
+  // Handle Edit Booking
   const handleEditBooking = (booking) => {
     setSelectedBooking(booking);
+    setShowAddBookingModal(false);
     setShowUpdateBookingModal(true);
+    setShowViewBookingModal(false);
+    setShowDeleteBookingModal(false);
   };
 
-  // Handle View Booking (opens modal for selected booking)
+  // Handle View Booking
   const handleViewBooking = (booking) => {
     setSelectedBooking(booking);
+    setShowAddBookingModal(false);
+    setShowUpdateBookingModal(false);
     setShowViewBookingModal(true);
+    setShowDeleteBookingModal(false);
   };
 
-  // Handle Delete Booking (opens delete confirmation modal)
+  // Handle Delete Booking
   const handleDeleteBooking = (booking) => {
     setSelectedBooking(booking);
+    setShowAddBookingModal(false);
+    setShowUpdateBookingModal(false);
+    setShowViewBookingModal(false);
     setShowDeleteBookingModal(true);
   };
 
@@ -81,21 +93,35 @@ function BookingList() {
       </table>
 
       {/* Add Booking Modal */}
-      {showAddBookingModal && <AddBooking setShowAddBookingModal={setShowAddBookingModal} setBookings={setBookings} />}
+      {showAddBookingModal && (
+        <div className="modal-overlay">
+          <AddBooking setShowAddBookingModal={setShowAddBookingModal} setBookings={setBookings} />
+        </div>
+      )}
 
       {/* Update Booking Modal */}
-      {showUpdateBookingModal && <UpdateBooking booking={selectedBooking} setShowUpdateBookingModal={setShowUpdateBookingModal} setBookings={setBookings} />}
+      {showUpdateBookingModal && (
+        <div className="modal-overlay">
+          <UpdateBooking booking={selectedBooking} setShowUpdateBookingModal={setShowUpdateBookingModal} setBookings={setBookings} />
+        </div>
+      )}
 
       {/* View Booking Modal */}
-      {showViewBookingModal && <ViewBooking booking={selectedBooking} setShowViewBookingModal={setShowViewBookingModal} />}
+      {showViewBookingModal && (
+        <div className="modal-overlay">
+          <ViewBooking booking={selectedBooking} setShowViewBookingModal={setShowViewBookingModal} />
+        </div>
+      )}
 
-      {/* Delete Booking Confirmation Modal */}
+      {/* Delete Booking Modal */}
       {showDeleteBookingModal && (
-        <DeleteBookingModal
-          booking={selectedBooking}
-          handleConfirmDelete={handleConfirmDelete}
-          setShowDeleteBookingModal={setShowDeleteBookingModal}
-        />
+        <div className="modal-overlay">
+          <DeleteBookingModal
+            booking={selectedBooking}
+            handleConfirmDelete={handleConfirmDelete}
+            setShowDeleteBookingModal={setShowDeleteBookingModal}
+          />
+        </div>
       )}
     </div>
   );
