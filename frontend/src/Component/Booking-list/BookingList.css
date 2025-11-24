@@ -1,0 +1,155 @@
+/* Container for the whole Booking List */
+.booking-list-container {
+  padding: 2rem;
+  background-color: #f9fafb;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Table Styling */
+.booking-table {
+  width: 80%;
+  margin-top: 2rem;
+  border-collapse: collapse;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+}
+
+.booking-table th,
+.booking-table td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.booking-table th {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.booking-table tr:hover {
+  background-color: #f1f1f1;
+}
+
+.booking-table button {
+  padding: 5px 10px;
+  margin: 0 5px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.booking-table button:hover {
+  background-color: #45a049;
+}
+
+/* Add New Booking Button */
+.add-booking-btn {
+  background-color: #2563eb;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+}
+
+.add-booking-btn:hover {
+  background-color: #1d4ed8;
+}
+
+/* Modal Styling (For Add, Edit, View, and Delete Modals) */
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  max-width: 600px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.modal h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.modal button {
+  background-color: #2563eb;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 10px;
+  font-size: 1rem;
+}
+
+.modal button:hover {
+  background-color: #1d4ed8;
+}
+
+.modal button.cancel {
+  background-color: #ef4444;
+}
+
+.modal button.cancel:hover {
+  background-color: #dc2626;
+}
+
+/* Close Button in Modals */
+.close-modal-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+/* Overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .booking-table {
+    width: 100%;
+  }
+
+  .add-booking-btn {
+    width: 100%;
+  }
+
+  .booking-table th,
+  .booking-table td {
+    padding: 0.5rem;
+  }
+
+  .modal {
+    width: 90%;
+  }
+}
