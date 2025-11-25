@@ -12,4 +12,5 @@ public class PaymentRequestDto {
     private String paymentType;
     private String paymentStatus;
     private String transactionId;
+    private String paymentReason;
 }

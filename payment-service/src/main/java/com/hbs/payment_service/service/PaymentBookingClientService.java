@@ -1,5 +1,6 @@
 package com.hbs.payment_service.service;
 
+import com.hbs.payment_service.data.dto.BookingStatusUpdateRequestDto;
 import com.hbs.payment_service.exception.ContentNotFound;
 import com.hbs.payment_service.exception.ServiceUnavailable;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
@@ -26,6 +27,20 @@ public class PaymentBookingClientService {
     }
 
     public Boolean validateBookingExistFeedback(long id, Throwable ex){
-        throw new ServiceUnavailable("User service unavailable!");
+        throw new ServiceUnavailable("Booking service unavailable!");
+    }
+
+    @CircuitBreaker(name = bookingService, fallbackMethod = "updatePaymentStatusFallback")
+    public void updatePaymentStatus(BookingStatusUpdateRequestDto dto, long id) {
+        String url = "http://localhost:8082/booking-service/bookings/"+ id +"/payment-status";
+        try{
+            restTemplate.put(url,dto);
+        } catch(HttpClientErrorException.NotFound ex){
+            throw new ContentNotFound(ex.getMessage());
+        }
+    }
+
+    public void updatePaymentStatusFallback(BookingStatusUpdateRequestDto dto, long id, Throwable ex){
+        throw new ServiceUnavailable("Booking service unavailable!");
     }
 }

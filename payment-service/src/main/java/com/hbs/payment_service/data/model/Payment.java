@@ -37,4 +37,8 @@ public class Payment {
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private PaymentReason paymentReason;
 }
