@@ -13,7 +13,10 @@ public class BookingValidator {
     @Autowired
     private BookingRepository repository;
 
-    public boolean isBookingValid(LocalDateTime checkingTime, LocalDateTime checkoutTime, long roomId){
+    @Autowired
+    private RoomServiceClient roomServiceClient;
+
+    public boolean isBookingValid(LocalDateTime checkingTime, LocalDateTime checkoutTime, long roomId, int occupancy){
         if(isCheckingValid(checkingTime)){
             throw new BookingValidationError("Invalid checking time");
         }
@@ -26,10 +29,14 @@ public class BookingValidator {
             throw new BookingValidationError("Invalid Booking");
         }
 
+        if(isRoomValidOccupancy(roomId,occupancy)){
+            throw new BookingValidationError("Invalid room for the occupancy.");
+        }
+
         return true;
     }
 
-    public boolean isBookingValid(LocalDateTime checkingTime,LocalDateTime checkoutTime,long roomId,long bookingId){
+    public boolean isBookingValid(LocalDateTime checkingTime,LocalDateTime checkoutTime,long roomId,long bookingId, int occupancy){
         if(isCheckingValid(checkingTime)){
             throw new BookingValidationError("Invalid checking time");
         }
@@ -40,6 +47,10 @@ public class BookingValidator {
 
         if(isBookingOverlapped(checkingTime,checkoutTime,roomId,bookingId)){
             throw new BookingValidationError("Invalid Booking");
+        }
+
+        if(isRoomValidOccupancy(roomId,occupancy)){
+            throw new BookingValidationError("Invalid room for the occupancy.");
         }
 
         return true;
@@ -68,6 +79,10 @@ public class BookingValidator {
 
     private boolean isBookingOverlapped(LocalDateTime checking, LocalDateTime checkout, long roomId, long bookingId){
         return repository.existsOverlappingBookingExceptBookingId(roomId,checking.minusHours(1),checkout,bookingId);
+    }
+
+    private boolean isRoomValidOccupancy(long roomId,int occupancy){
+        return occupancy >= roomServiceClient.getRoomCapacityById(roomId);
     }
 }
 

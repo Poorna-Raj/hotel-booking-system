@@ -44,4 +44,19 @@ public class RoomServiceClient {
     public Boolean isRoomAvailableFallback(long roomId, Throwable ex){
         throw new ServiceUnavailable("Room service unavailable!");
     }
+
+    @CircuitBreaker(name = roomService, fallbackMethod = "getRoomCapacityByIdFallback")
+    public Integer getRoomCapacityById(long roomId){
+        String url = "http://localhost:8080/room-service/rooms/" + roomId + "/capacity";
+
+        try{
+            return restTemplate.getForObject(url,Integer.class);
+        } catch (HttpClientErrorException.NotFound ex){
+            throw new ContentNotFound(ex.getMessage());
+        }
+    }
+
+    public Integer getRoomCapacityByIdFallback(long roomId, Throwable ex){
+        throw new ServiceUnavailable("Room service unavailable!");
+    }
 }

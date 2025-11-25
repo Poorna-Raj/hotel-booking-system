@@ -47,4 +47,7 @@ public class Booking {
     @Column(name = "payment_status", nullable = false)
     @Enumerated(EnumType.STRING)
     private BookingPaymentStatus paymentStatus;
+
+    @Column(name = "occupancy", nullable = false)
+    private int occupancy;
 }

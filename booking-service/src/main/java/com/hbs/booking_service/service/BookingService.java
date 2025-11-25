@@ -32,10 +32,11 @@ public class BookingService {
     private PaymentServiceClient paymentServiceClient;
 
     public BookingResponseDto addBooking(BookingRequestDto dto){
-        if(validator.isBookingValid(dto.getCheckIn(),dto.getCheckOut(), dto.getRoomId())){
+        if(validator.isBookingValid(dto.getCheckIn(),dto.getCheckOut(), dto.getRoomId(),dto.getOccupancy())){
             Booking booking = new Booking();
 
             booking.setBookingStatus(BookingStatus.BOOKED);
+            booking.setOccupancy(dto.getOccupancy());
 
             if(!userServiceClient.validateUser(dto.getCreatedBy())) {
                 throw new BadRequest("Invalid User for the given ID!");
@@ -68,7 +69,7 @@ public class BookingService {
     }
 
     public BookingResponseDto updateBooking(long bookingId, BookingUpdateRequestDto dto){
-        if(validator.isBookingValid(dto.getCheckIn(),dto.getCheckOut(), dto.getRoomId(), bookingId)){
+        if(validator.isBookingValid(dto.getCheckIn(),dto.getCheckOut(), dto.getRoomId(), bookingId,dto.getOccupancy())){
             Booking oldBooking = repository.findById(bookingId)
                     .orElseThrow(() -> new BadRequest("Invalid Booking ID!"));
 
@@ -77,6 +78,7 @@ public class BookingService {
             }
             oldBooking.setRoomId(dto.getRoomId());
 
+            oldBooking.setOccupancy(dto.getOccupancy());
             oldBooking.setCheckIn(dto.getCheckIn());
             oldBooking.setCheckOut(dto.getCheckOut());
 
@@ -160,6 +162,7 @@ public class BookingService {
         dto.setCreatedBy(booking.getCreatedBy());
         dto.setCreatedAt(booking.getCreatedAt());
         dto.setCustomerName(booking.getCustomerName());
+        dto.setOccupancy(booking.getOccupancy());
 
         return dto;
     }

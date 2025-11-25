@@ -19,4 +19,5 @@ public class BookingResponseDto {
     private String customerNic;
     private double totalAmount;
     private String paymentStatus;
+    private int occupancy;
 }
