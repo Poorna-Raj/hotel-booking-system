@@ -167,6 +167,23 @@ public class BookingService {
         return booking.getTotalAmount() - totalPaidAmount;
     }
 
+    public void setCheckoutById(CheckoutPaymentRequestDto requestDto, long bookingId){
+        double balanceAmount = getBookingBalance(bookingId);
+
+        PaymentRequestDto dto = new PaymentRequestDto();
+        dto.setBookingId(bookingId);
+        dto.setAmount(balanceAmount);
+        dto.setPaymentStatus("SUCCESS");
+        dto.setUserId(requestDto.getUserId());
+        dto.setPaymentType(requestDto.getPaymentType());
+        dto.setPaymentReason("BALANCE");
+        if(requestDto.getPaymentType().equals("CARD")) {
+            dto.setTransactionId(requestDto.getTransactionId());
+        }
+
+        paymentServiceClient.addPayment(dto);
+    }
+
     public BookingResponseDto mapToDtoFromModel(Booking booking){
         BookingResponseDto dto = new BookingResponseDto();
         dto.setId(booking.getId());
