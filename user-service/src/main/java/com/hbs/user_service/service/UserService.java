@@ -15,6 +15,11 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    /**
+     * Login method for authentication
+     * @param dto contains details required for login
+     * @return an {@link UserResponseDto} containing user data
+     */
     public UserResponseDto login(UserRequestDto dto){
         User user = userRepository.findByUsername(dto.getUsername())
                 .orElseThrow(() -> new ContentNotFound("Invalid User!"));
@@ -26,12 +31,22 @@ public class UserService {
         return mapToDtoFromUser(user);
     }
 
+    /**
+     * Helper method to check if user exist based on the ID
+     * @param userId User's ID
+     * @return {@code boolean} value based on the result
+     */
     public Boolean isUserExist(long userId){
         userRepository.findById(userId)
                 .orElseThrow(() -> new ContentNotFound("Invalid User!"));
         return true;
     }
 
+    /**
+     * Helper method to check if user's an ADMIN based on the ID
+     * @param id User's ID
+     * @return {@code boolean} value based on the result
+     */
     public Boolean validateUserIsAdmin(long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new ContentNotFound("User not found for ID: " + id));
@@ -39,6 +54,11 @@ public class UserService {
         return user instanceof Admin;
     }
 
+    /**
+     * Helper method for the conversions between the response DTO and Model class
+     * @param user
+     * @return an {@link UserResponseDto} containing user data
+     */
     public UserResponseDto mapToDtoFromUser(User user){
         UserResponseDto dto = new UserResponseDto();
         dto.setId(user.getId());

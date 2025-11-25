@@ -126,6 +126,31 @@ public class PaymentService {
         );
     }
 
+    public Double getBookingBalance(long bookingId){
+        List<Payment> payments = repository.findByBookingId(bookingId);
+        double extraAmount = 0;
+        double paidAmount = 0;
+
+        for(Payment payment: payments){
+            switch (payment.getPaymentReason()){
+                case ADVANCE -> paidAmount += payment.getAmount();
+                case EXTRA -> {
+                    if(payment.getPaymentStatus().equals(PaymentStatus.PENDING)){
+                        extraAmount += payment.getAmount();
+                    }
+                }
+                case BALANCE -> {
+                    if(payment.getPaymentStatus().equals(PaymentStatus.SUCCESS)){
+                        paidAmount += payment.getAmount();
+                    }
+                }
+                default -> throw new BadRequest("Invalid Payment Reason!");
+            }
+        }
+
+        return paidAmount - extraAmount;
+    }
+
     public List<PaymentResponseDto> getAllPayments(){
         return repository.findAll()
                 .stream()

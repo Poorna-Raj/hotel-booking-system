@@ -132,7 +132,7 @@ public class BookingService {
         return booking.getBookingStatus() == BookingStatus.BOOKED;
     }
 
-    private void sendAdvancePayment(Booking savedBooking, BookingRequestDto dto) {
+    public void sendAdvancePayment(Booking savedBooking, BookingRequestDto dto) {
         PaymentRequestDto requestDto = new PaymentRequestDto();
         requestDto.setBookingId(savedBooking.getId());
         requestDto.setPaymentStatus("SUCCESS");
@@ -147,7 +147,7 @@ public class BookingService {
         paymentServiceClient.addPayment(requestDto);
     }
 
-    private double getTotalAmount(LocalDateTime checkIn, LocalDateTime checkOut, long roomId) {
+    public double getTotalAmount(LocalDateTime checkIn, LocalDateTime checkOut, long roomId) {
         double pricePerDay = roomServiceClient.getPrice(roomId);
 
         long nights = ChronoUnit.DAYS.between(checkIn.toLocalDate(), checkOut.toLocalDate());
@@ -157,6 +157,31 @@ public class BookingService {
         }
 
         return nights * pricePerDay;
+    }
+
+    public double getBookingBalance(long bookingId){
+        Booking booking = repository.findById(bookingId)
+                .orElseThrow(() -> new BadRequest("Invalid user for given ID"));
+
+        double totalPaidAmount = paymentServiceClient.getTotalAmountToBePaid(bookingId);
+        return booking.getTotalAmount() - totalPaidAmount;
+    }
+
+    public void setCheckoutById(CheckoutPaymentRequestDto requestDto, long bookingId){
+        double balanceAmount = getBookingBalance(bookingId);
+
+        PaymentRequestDto dto = new PaymentRequestDto();
+        dto.setBookingId(bookingId);
+        dto.setAmount(balanceAmount);
+        dto.setPaymentStatus("SUCCESS");
+        dto.setUserId(requestDto.getUserId());
+        dto.setPaymentType(requestDto.getPaymentType());
+        dto.setPaymentReason("BALANCE");
+        if(requestDto.getPaymentType().equals("CARD")) {
+            dto.setTransactionId(requestDto.getTransactionId());
+        }
+
+        paymentServiceClient.addPayment(dto);
     }
 
     public BookingResponseDto mapToDtoFromModel(Booking booking){

@@ -16,6 +16,11 @@ public class ReceptionistService {
     @Autowired
     private ReceptionistRepository receptionistRepository;
 
+    /**
+     * Create a new receptionist and save to the database
+     * @param dto contains the receptionist data
+     * @return an {@link ReceptionistResponseDto} containing receptionist data
+     */
     public ReceptionistResponseDto addReceptionist(ReceptionistRegisterDto dto){
         Receptionist receptionist = new Receptionist();
         receptionist.setUsername(dto.getUsername());
@@ -26,6 +31,12 @@ public class ReceptionistService {
         return mapToDtoFromReceptionist(receptionistRepository.save(receptionist));
     }
 
+    /**
+     * Update an existing receptionist based on the ID
+     * @param id Receptionist ID
+     * @param dto contains new data for the receptionist
+     * @return an {@link ReceptionistResponseDto} containing receptionist data
+     */
     public ReceptionistResponseDto updateReceptionist(long id, ReceptionistRegisterDto dto){
         Receptionist receptionist = receptionistRepository.findById(id)
                 .orElseThrow(()-> new ContentNotFound("Invalid User!"));
@@ -37,6 +48,11 @@ public class ReceptionistService {
         return mapToDtoFromReceptionist(receptionistRepository.save(receptionist));
     }
 
+    /**
+     * Fetch the receptionist based on the ID
+     * @param id Receptionist's ID
+     * @return an {@link ReceptionistResponseDto} containing receptionist data
+     */
     public ReceptionistResponseDto getReceptionistById(long id){
         Receptionist receptionist = receptionistRepository.findById(id)
                 .orElseThrow(() -> new ContentNotFound("Receptionist not found!"));
@@ -44,6 +60,10 @@ public class ReceptionistService {
         return mapToDtoFromReceptionist(receptionist);
     }
 
+    /**
+     * Fetch all the saved receptionists
+     * @return a list of {@link ReceptionistResponseDto} containing receptionist data
+     */
     public List<ReceptionistResponseDto> getAllReceptionists(){
         return receptionistRepository.findAll()
                 .stream()
@@ -51,6 +71,11 @@ public class ReceptionistService {
                 .toList();
     }
 
+    /**
+     * Delete an existing receptionists based on the ID
+     * @param id receptionist's id
+     * @return {@code boolean} value based on the result
+     */
     public boolean deleteReceptionistById(long id){
         Receptionist receptionist = receptionistRepository.findById(id)
                 .orElseThrow(() -> new ContentNotFound("Receptionist not found!"));
@@ -58,6 +83,11 @@ public class ReceptionistService {
         return true;
     }
 
+    /**
+     * Helper method for the conversion between response DTO and model class
+     * @param receptionist contains details of the receptionist's
+     * @return an {@link ReceptionistResponseDto} containing receptionist data
+     */
     public ReceptionistResponseDto mapToDtoFromReceptionist(Receptionist receptionist){
         ReceptionistResponseDto dto = new ReceptionistResponseDto();
         dto.setId(receptionist.getId());

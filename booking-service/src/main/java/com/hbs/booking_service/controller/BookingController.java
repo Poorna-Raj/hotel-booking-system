@@ -1,9 +1,6 @@
 package com.hbs.booking_service.controller;
 
-import com.hbs.booking_service.data.dto.BookingRequestDto;
-import com.hbs.booking_service.data.dto.BookingResponseDto;
-import com.hbs.booking_service.data.dto.BookingStatusUpdateDto;
-import com.hbs.booking_service.data.dto.BookingUpdateRequestDto;
+import com.hbs.booking_service.data.dto.*;
 import com.hbs.booking_service.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -65,5 +62,16 @@ public class BookingController {
         } else{
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @GetMapping("/{id}/balance")
+    public ResponseEntity<Double> getBalanceById(@PathVariable long id){
+        return new ResponseEntity<>(service.getBookingBalance(id),HttpStatus.OK);
+    }
+
+    @PostMapping("/{id}/checkout")
+    public ResponseEntity<HttpStatus> setCheckoutByBookingId(@PathVariable long id, @RequestBody CheckoutPaymentRequestDto dto){
+        service.setCheckoutById(dto,id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
