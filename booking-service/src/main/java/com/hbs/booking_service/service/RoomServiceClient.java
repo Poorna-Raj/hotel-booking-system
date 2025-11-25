@@ -17,7 +17,7 @@ public class RoomServiceClient {
 
     @CircuitBreaker(name = roomService, fallbackMethod = "getPriceFallback")
     public Double getPrice(long roomId){
-        String url = "http://localhost:8080/room-service/rooms/" + roomId + "/price";
+        String url = "http://localhost:8081/room-service/rooms/" + roomId + "/price";
 
         try{
             return restTemplate.getForObject(url,Double.class);
@@ -32,7 +32,7 @@ public class RoomServiceClient {
 
     @CircuitBreaker(name = roomService, fallbackMethod = "isRoomAvailableFallback")
     public Boolean isRoomAvailable(long roomId){
-        String url = "http://localhost:8080/room-service/rooms/" + roomId + "/is-available";
+        String url = "http://localhost:8081/room-service/rooms/" + roomId + "/is-available";
 
         try{
             return restTemplate.getForObject(url,Boolean.class);
@@ -47,7 +47,7 @@ public class RoomServiceClient {
 
     @CircuitBreaker(name = roomService, fallbackMethod = "getRoomCapacityByIdFallback")
     public Integer getRoomCapacityById(long roomId){
-        String url = "http://localhost:8080/room-service/rooms/" + roomId + "/capacity";
+        String url = "http://localhost:8081/room-service/rooms/" + roomId + "/capacity";
 
         try{
             return restTemplate.getForObject(url,Integer.class);
