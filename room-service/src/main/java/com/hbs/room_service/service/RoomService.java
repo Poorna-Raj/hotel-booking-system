@@ -126,6 +126,13 @@ public class RoomService {
         }
     }
 
+    public Double getRoomPriceById(long roomId){
+        Room room = repository.findById(roomId)
+                .orElseThrow(() -> new ContentNotFound("Invalid room for given ID."));
+
+        return room.getBasePrice();
+    }
+
     private RoomResponseDto mapToDtoFromModel(Room save) {
         RoomResponseDto dto = new RoomResponseDto();
         dto.setBasePrice(save.getBasePrice());
