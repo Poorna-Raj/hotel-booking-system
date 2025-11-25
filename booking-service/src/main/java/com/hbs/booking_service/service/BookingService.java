@@ -173,6 +173,7 @@ public class BookingService {
         dto.setCreatedAt(booking.getCreatedAt());
         dto.setCustomerName(booking.getCustomerName());
         dto.setOccupancy(booking.getOccupancy());
+        dto.setPaymentStatus(booking.getPaymentStatus().toString());
 
         return dto;
     }
