@@ -6,10 +6,7 @@ import com.hbs.user_service.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/users")
@@ -20,5 +17,10 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<UserResponseDto> login(@RequestBody UserRequestDto dto){
         return new ResponseEntity<>(service.login(dto), HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}/is-valid")
+    public Boolean isUserValid(@PathVariable long id){
+        return service.isUserExist(id);
     }
 }

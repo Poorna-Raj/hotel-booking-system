@@ -26,6 +26,12 @@ public class UserService {
         return mapToDtoFromUser(user);
     }
 
+    public Boolean isUserExist(long userId){
+        userRepository.findById(userId)
+                .orElseThrow(() -> new ContentNotFound("Invalid User!"));
+        return true;
+    }
+
     public UserResponseDto mapToDtoFromUser(User user){
         UserResponseDto dto = new UserResponseDto();
         dto.setId(user.getId());
