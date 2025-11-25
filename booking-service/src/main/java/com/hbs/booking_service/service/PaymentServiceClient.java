@@ -18,7 +18,7 @@ public class PaymentServiceClient {
 
     @CircuitBreaker(name = paymentService, fallbackMethod = "addPaymentFallback")
     public void addPayment(PaymentRequestDto dto){
-        String url = "http://localhost:8080/payment-service/payments";
+        String url = "http://localhost:8083/payment-service/payments";
         try{
             restTemplate.postForObject(url,dto,Void.class);
         } catch (HttpClientErrorException.NotFound ex){
