@@ -23,4 +23,9 @@ public class UserController {
     public Boolean isUserValid(@PathVariable long id){
         return service.isUserExist(id);
     }
+
+    @GetMapping("/{id}/is-admin")
+    public ResponseEntity<Boolean> validateUserIsAdmin(@PathVariable long id) {
+        return new ResponseEntity<>(service.validateUserIsAdmin(id), HttpStatus.OK);
+    }
 }
