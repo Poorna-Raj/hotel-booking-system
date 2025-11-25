@@ -1,5 +1,6 @@
 package com.hbs.payment_service.service;
 
+import com.hbs.payment_service.data.dto.BookingStatusUpdateRequestDto;
 import com.hbs.payment_service.data.dto.PaymentRequestDto;
 import com.hbs.payment_service.data.dto.PaymentResponseDto;
 import com.hbs.payment_service.data.model.Payment;
@@ -58,7 +59,26 @@ public class PaymentService {
         }
         payment.setUserId(dto.getUserId());
 
-        return mapToDtoFromModel(repository.save(payment));
+        Payment savedPayment = repository.save(payment);
+
+        processPaymentAndUpdateBookingService(savedPayment);
+
+        return mapToDtoFromModel(savedPayment);
+    }
+
+    private void processPaymentAndUpdateBookingService(Payment savedPayment) {
+        String newStatus;
+        switch (savedPayment.getPaymentReason()){
+            case ADVANCE -> newStatus = "PENDING_BALANCE";
+            case BALANCE -> newStatus = "COMPLETED";
+            default -> throw new BadRequest("Invalid Payment Reason");
+        }
+
+        BookingStatusUpdateRequestDto dto = new BookingStatusUpdateRequestDto(
+                newStatus
+        );
+
+        bookingClientService.updatePaymentStatus(dto,savedPayment.getBookingId());
     }
 
     public PaymentResponseDto updatePayment(long id, PaymentRequestDto dto){
@@ -129,6 +149,7 @@ public class PaymentService {
         dto.setUserId(save.getUserId());
         dto.setTransactionId(save.getTransactionId());
         dto.setUpdatedAt(save.getUpdatedAt());
+        dto.setPaymentReason(save.getPaymentReason().toString());
 
         return dto;
     }
