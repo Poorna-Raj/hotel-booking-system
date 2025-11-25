@@ -47,4 +47,9 @@ public class PaymentController {
     public ResponseEntity<List<PaymentResponseDto>> getAllPayments(){
         return new ResponseEntity<>(service.getAllPayments(),HttpStatus.OK);
     }
+
+    @GetMapping("/{id}/balance")
+    public Double getBalancePaymentAmount(@PathVariable long id){
+        return service.getBookingBalance(id);
+    }
 }
