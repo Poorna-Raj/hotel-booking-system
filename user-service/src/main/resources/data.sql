@@ -1,7 +1,7 @@
 INSERT INTO tbl_user (username, password, email, user_type, address, department) VALUES
-('john_doe', 'password123', 'john.doe@hotel.com', 'RECEPTIONIST', '123 Main Street, New York, NY', NULL),
-('jane_smith', 'securepass', 'jane.smith@hotel.com', 'RECEPTIONIST', '456 Oak Avenue, Los Angeles, CA', NULL),
-('mike_wilson', 'mikepass', 'mike.wilson@hotel.com', 'ADMIN', NULL, 'IT Department'),
-('sarah_brown', 'sarah123', 'sarah.brown@hotel.com', 'RECEPTIONIST', '789 Pine Road, Chicago, IL', NULL),
-('alex_jones', 'alexpass', 'alex.jones@hotel.com', 'ADMIN', NULL, 'HR Department'),
-('emily_davis', 'emilypass', 'emily.davis@hotel.com', 'RECEPTIONIST', '321 Elm Street, Miami, FL', NULL);
+('suresh', 'suresh123', 'suresh@hotel.com', 'RECEPTIONIST', '123 Main Street, New York, NY', NULL),
+('dinesh', 'dinesh123', 'dinesh@hotel.com', 'RECEPTIONIST', '456 Oak Avenue, Los Angeles, CA', NULL),
+('kevin', 'kevin123', 'kevin@hotel.com', 'ADMIN', NULL, 'IT Department'),
+('tanya', 'tanya123', 'tanya@hotel.com', 'RECEPTIONIST', '789 Pine Road, Chicago, IL', NULL),
+('sachin', 'sachin123', 'sachin@hotel.com', 'ADMIN', NULL, 'HR Department'),
+('navin', 'navin123', 'navin@hotel.com', 'RECEPTIONIST', '321 Elm Street, Miami, FL', NULL);
