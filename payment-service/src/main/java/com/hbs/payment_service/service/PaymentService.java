@@ -71,6 +71,9 @@ public class PaymentService {
         switch (savedPayment.getPaymentReason()){
             case ADVANCE -> newStatus = "PENDING_BALANCE";
             case BALANCE -> newStatus = "COMPLETED";
+            case EXTRA -> {
+                return;
+            }
             default -> throw new BadRequest("Invalid Payment Reason");
         }
 

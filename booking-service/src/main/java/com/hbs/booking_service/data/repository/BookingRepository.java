@@ -11,8 +11,8 @@ public interface BookingRepository extends JpaRepository<Booking,Long> {
     @Query("""
     SELECT COUNT(b) > 0 FROM Booking b
     WHERE b.roomId = :roomId
-      AND b.checkoutTime > :oldCheckoutThreshold
-      AND b.checkinTime < :newCheckout
+      AND b.checkOut > :oldCheckoutThreshold
+      AND b.checkIn < :newCheckout
 """)
     boolean existsOverlappingBooking(
             @Param("roomId") Long roomId,
@@ -24,8 +24,8 @@ public interface BookingRepository extends JpaRepository<Booking,Long> {
     SELECT COUNT(b) > 0 FROM Booking b
     WHERE b.roomId = :roomId
       AND b.id <> :bookingId
-      AND b.checkoutTime > :newCheckinMinus1Hour
-      AND b.checkinTime < :newCheckout
+      AND b.checkOut > :newCheckinMinus1Hour
+      AND b.checkIn < :newCheckout
 """)
     boolean existsOverlappingBookingExceptBookingId(
             @Param("roomId") Long roomId,
