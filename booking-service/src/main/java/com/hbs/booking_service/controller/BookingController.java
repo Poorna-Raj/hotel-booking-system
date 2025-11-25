@@ -66,4 +66,9 @@ public class BookingController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+
+    @GetMapping("/{id}/balance")
+    public ResponseEntity<Double> getBalanceById(@PathVariable long id){
+        return new ResponseEntity<>(service.getBookingBalance(id),HttpStatus.OK);
+    }
 }

@@ -159,6 +159,14 @@ public class BookingService {
         return nights * pricePerDay;
     }
 
+    public double getBookingBalance(long bookingId){
+        Booking booking = repository.findById(bookingId)
+                .orElseThrow(() -> new BadRequest("Invalid user for given ID"));
+
+        double totalPaidAmount = paymentServiceClient.getTotalAmountToBePaid(bookingId);
+        return booking.getTotalAmount() - totalPaidAmount;
+    }
+
     public BookingResponseDto mapToDtoFromModel(Booking booking){
         BookingResponseDto dto = new BookingResponseDto();
         dto.setId(booking.getId());
