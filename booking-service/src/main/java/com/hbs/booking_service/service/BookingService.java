@@ -1,9 +1,6 @@
 package com.hbs.booking_service.service;
 
-import com.hbs.booking_service.data.dto.BookingRequestDto;
-import com.hbs.booking_service.data.dto.BookingResponseDto;
-import com.hbs.booking_service.data.dto.BookingUpdateRequestDto;
-import com.hbs.booking_service.data.dto.PaymentRequestDto;
+import com.hbs.booking_service.data.dto.*;
 import com.hbs.booking_service.data.model.Booking;
 import com.hbs.booking_service.data.model.BookingPaymentStatus;
 import com.hbs.booking_service.data.model.BookingStatus;
@@ -113,6 +110,17 @@ public class BookingService {
                 .stream()
                 .map(this::mapToDtoFromModel)
                 .toList();
+    }
+
+    public boolean updateBookingPaymentStatus(long bookingId, BookingStatusUpdateDto dto){
+        Booking booking = repository.findById(bookingId)
+                .orElseThrow(() -> new BadRequest("Invalid Booking ID!"));
+        if(validator.isBookingPaymentStatusValid(dto.getStatus())) {
+            booking.setPaymentStatus(BookingPaymentStatus.valueOf(dto.getStatus()));
+            repository.save(booking);
+            return true;
+        }
+        return false;
     }
 
     public Boolean isBookingValidForPayments(long bookingId){

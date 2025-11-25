@@ -1,5 +1,6 @@
 package com.hbs.booking_service.service;
 
+import com.hbs.booking_service.data.model.BookingPaymentStatus;
 import com.hbs.booking_service.data.model.BookingStatus;
 import com.hbs.booking_service.data.repository.BookingRepository;
 import com.hbs.booking_service.exception.BookingValidationError;
@@ -62,6 +63,15 @@ public class BookingValidator {
             return true;
         } catch (IllegalArgumentException ex){
             throw new BookingValidationError("Invalid Booking Status!");
+        }
+    }
+
+    public boolean isBookingPaymentStatusValid(String status){
+        try{
+            BookingPaymentStatus.valueOf(status);
+            return true;
+        } catch (IllegalArgumentException ex){
+            throw new BookingValidationError("Invalid Booking Payment Status!");
         }
     }
 

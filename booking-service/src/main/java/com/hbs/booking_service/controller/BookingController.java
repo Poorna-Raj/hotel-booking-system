@@ -2,6 +2,7 @@ package com.hbs.booking_service.controller;
 
 import com.hbs.booking_service.data.dto.BookingRequestDto;
 import com.hbs.booking_service.data.dto.BookingResponseDto;
+import com.hbs.booking_service.data.dto.BookingStatusUpdateDto;
 import com.hbs.booking_service.data.dto.BookingUpdateRequestDto;
 import com.hbs.booking_service.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,5 +53,17 @@ public class BookingController {
     @GetMapping("/{id}/is-valid")
     public Boolean isBookingValidForPayments(@PathVariable long id){
         return service.isBookingValidForPayments(id);
+    }
+
+    @PutMapping("/{id}/payment-status")
+    public ResponseEntity<HttpStatus> updateBookingPaymentStatusById(
+            @PathVariable long id,
+            @RequestBody BookingStatusUpdateDto dto
+    ){
+        if(service.updateBookingPaymentStatus(id,dto)){
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else{
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 }
