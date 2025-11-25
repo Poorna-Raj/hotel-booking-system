@@ -75,23 +75,23 @@ public class BookingValidator {
         }
     }
 
-    private boolean isCheckingValid(LocalDateTime checking) {
+    public boolean isCheckingValid(LocalDateTime checking) {
         return !LocalDateTime.now().isBefore(checking);
     }
 
-    private boolean isCheckoutValid(LocalDateTime checkout, LocalDateTime checking){
+    public boolean isCheckoutValid(LocalDateTime checkout, LocalDateTime checking){
         return !LocalDateTime.now().isBefore(checkout) || !checking.isBefore(checkout);
     }
 
-    private boolean isBookingOverlapped(LocalDateTime checking, LocalDateTime checkout, long roomId){
+    public boolean isBookingOverlapped(LocalDateTime checking, LocalDateTime checkout, long roomId){
         return repository.existsOverlappingBooking(roomId,checking.minusHours(1),checkout);
     }
 
-    private boolean isBookingOverlapped(LocalDateTime checking, LocalDateTime checkout, long roomId, long bookingId){
+    public boolean isBookingOverlapped(LocalDateTime checking, LocalDateTime checkout, long roomId, long bookingId){
         return repository.existsOverlappingBookingExceptBookingId(roomId,checking.minusHours(1),checkout,bookingId);
     }
 
-    private boolean isRoomValidOccupancy(long roomId,int occupancy){
+    public boolean isRoomValidOccupancy(long roomId,int occupancy){
         return occupancy >= roomServiceClient.getRoomCapacityById(roomId);
     }
 }

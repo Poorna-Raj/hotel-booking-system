@@ -132,7 +132,7 @@ public class BookingService {
         return booking.getBookingStatus() == BookingStatus.BOOKED;
     }
 
-    private void sendAdvancePayment(Booking savedBooking, BookingRequestDto dto) {
+    public void sendAdvancePayment(Booking savedBooking, BookingRequestDto dto) {
         PaymentRequestDto requestDto = new PaymentRequestDto();
         requestDto.setBookingId(savedBooking.getId());
         requestDto.setPaymentStatus("SUCCESS");
@@ -147,7 +147,7 @@ public class BookingService {
         paymentServiceClient.addPayment(requestDto);
     }
 
-    private double getTotalAmount(LocalDateTime checkIn, LocalDateTime checkOut, long roomId) {
+    public double getTotalAmount(LocalDateTime checkIn, LocalDateTime checkOut, long roomId) {
         double pricePerDay = roomServiceClient.getPrice(roomId);
 
         long nights = ChronoUnit.DAYS.between(checkIn.toLocalDate(), checkOut.toLocalDate());
