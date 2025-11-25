@@ -3,6 +3,7 @@ package com.hbs.payment_service.service;
 import com.hbs.payment_service.data.dto.PaymentRequestDto;
 import com.hbs.payment_service.data.dto.PaymentResponseDto;
 import com.hbs.payment_service.data.model.Payment;
+import com.hbs.payment_service.data.model.PaymentReason;
 import com.hbs.payment_service.data.model.PaymentStatus;
 import com.hbs.payment_service.data.model.PaymentType;
 import com.hbs.payment_service.data.repository.PaymentRepository;
@@ -32,6 +33,9 @@ public class PaymentService {
         }
         if(validatePaymentType(dto.getPaymentType())){
             payment.setPaymentType(PaymentType.valueOf(dto.getPaymentType()));
+        }
+        if(validatePaymentReason(dto.getPaymentReason())){
+            payment.setPaymentReason(PaymentReason.valueOf(dto.getPaymentReason()));
         }
         if(dto.getAmount() > 0){
             payment.setAmount(dto.getAmount());
@@ -75,6 +79,10 @@ public class PaymentService {
             payment.setAmount(dto.getAmount());
         } else{
             throw new BadRequest("Invalid Amount!");
+        }
+
+        if(validatePaymentReason(dto.getPaymentReason())){
+            payment.setPaymentReason(PaymentReason.valueOf(dto.getPaymentReason()));
         }
 
         if(validatePaymentStatus(dto.getPaymentStatus())) {
@@ -140,6 +148,15 @@ public class PaymentService {
             return true;
         } catch (IllegalArgumentException e) {
             throw new BadRequest("Invalid Payment Type");
+        }
+    }
+
+    public boolean validatePaymentReason(String reason){
+        try{
+            PaymentReason.valueOf(reason);
+            return true;
+        } catch (IllegalArgumentException e) {
+            throw new BadRequest("Invalid Payment Reason");
         }
     }
 }
