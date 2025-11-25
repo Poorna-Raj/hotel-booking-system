@@ -13,4 +13,5 @@ public class BookingUpdateRequestDto {
     private String bookingStatus;
     private String customerName;
     private String customerNic;
+    private int occupancy;
 }

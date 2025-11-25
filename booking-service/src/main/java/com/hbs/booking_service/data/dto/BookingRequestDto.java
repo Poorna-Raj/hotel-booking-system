@@ -19,4 +19,5 @@ public class BookingRequestDto {
     private double advancePayment;
     private String paymentType;
     private String transactionId;
+    private int occupancy;
 }
