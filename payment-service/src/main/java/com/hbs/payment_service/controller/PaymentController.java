@@ -11,17 +11,16 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/payments")
 public class PaymentController {
     @Autowired
     private PaymentService service;
 
-    @PostMapping
+    @PostMapping(path = "/payments")
     public ResponseEntity<PaymentResponseDto> addPayment(@RequestBody PaymentRequestDto dto){
         return new ResponseEntity<>(service.addPayment(dto), HttpStatus.CREATED);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping(path = "/payments/{id}")
     public ResponseEntity<PaymentResponseDto> updatePayment(
             @RequestBody PaymentRequestDto dto,
             @PathVariable long id
@@ -29,7 +28,7 @@ public class PaymentController {
         return new ResponseEntity<>(service.updatePayment(id,dto),HttpStatus.OK);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping(path = "/payments/{id}")
     public ResponseEntity<HttpStatus> deletePayment(@PathVariable long id){
         if(service.deletePayment(id)){
             return new ResponseEntity<>(HttpStatus.OK);
@@ -38,17 +37,17 @@ public class PaymentController {
         }
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(path = "/payments/{id}")
     public ResponseEntity<PaymentResponseDto> getPaymentById(@PathVariable long id){
         return new ResponseEntity<>(service.getPayment(id),HttpStatus.OK);
     }
 
-    @GetMapping
+    @GetMapping(path = "/payments")
     public ResponseEntity<List<PaymentResponseDto>> getAllPayments(){
         return new ResponseEntity<>(service.getAllPayments(),HttpStatus.OK);
     }
 
-    @GetMapping("/{id}/balance")
+    @GetMapping(path = "bookings/{id}/balance")
     public Double getBalancePaymentAmount(@PathVariable long id){
         return service.getBookingBalance(id);
     }

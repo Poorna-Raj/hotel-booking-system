@@ -32,7 +32,7 @@ public class PaymentServiceClient {
 
     @CircuitBreaker(name = paymentService, fallbackMethod = "getTotalAmountToBePaidFallback")
     public Double getTotalAmountToBePaid(long bookingId) {
-        String url = "http://localhost:8083/payment-service/payments/" + bookingId + "/balance";
+        String url = "http://localhost:8083/payment-service/bookings/" + bookingId + "/balance";
         try{
             return restTemplate.getForObject(url,Double.class);
         } catch (HttpClientErrorException.NotFound ex){
