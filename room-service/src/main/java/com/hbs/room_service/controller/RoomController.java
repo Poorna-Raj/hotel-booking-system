@@ -62,4 +62,9 @@ public class RoomController {
     public Boolean isRoomAvailableForBooking(@PathVariable long id){
         return service.isRoomValidForBooking(id);
     }
+
+    @GetMapping("/{id}/capacity")
+    public Integer getRoomCapacityById(@PathVariable long id){
+        return service.getRoomCapacityById(id);
+    }
 }

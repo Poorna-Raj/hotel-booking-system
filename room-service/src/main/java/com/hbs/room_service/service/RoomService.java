@@ -139,6 +139,12 @@ public class RoomService {
         return room.getRoomStatus()!=RoomStatus.UNAVAILABLE;
     }
 
+    public Integer getRoomCapacityById(long roomId){
+        Room room = repository.findById(roomId)
+                .orElseThrow(() -> new ContentNotFound("Invalid room for given ID."));
+        return room.getRoomType().getCapacity();
+    }
+
     private RoomResponseDto mapToDtoFromModel(Room save) {
         RoomResponseDto dto = new RoomResponseDto();
         dto.setBasePrice(save.getBasePrice());
