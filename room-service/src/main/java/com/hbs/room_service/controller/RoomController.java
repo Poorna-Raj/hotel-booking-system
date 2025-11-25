@@ -57,4 +57,9 @@ public class RoomController {
     public Double getRoomPriceById(@PathVariable long id){
         return service.getRoomPriceById(id);
     }
+
+    @GetMapping("/{id}/is-available")
+    public Boolean isRoomAvailableForBooking(@PathVariable long id){
+        return service.isRoomValidForBooking(id);
+    }
 }

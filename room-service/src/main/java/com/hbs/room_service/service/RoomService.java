@@ -133,6 +133,12 @@ public class RoomService {
         return room.getBasePrice();
     }
 
+    public Boolean isRoomValidForBooking(long roomId){
+        Room room = repository.findById(roomId)
+                .orElseThrow(() -> new ContentNotFound("Invalid room for given ID."));
+        return room.getRoomStatus()!=RoomStatus.UNAVAILABLE;
+    }
+
     private RoomResponseDto mapToDtoFromModel(Room save) {
         RoomResponseDto dto = new RoomResponseDto();
         dto.setBasePrice(save.getBasePrice());
