@@ -11,6 +11,7 @@ public class PaymentResponseDto {
     private long bookingId;
     private long userId;
     private double amount;
+    private String paymentReason;
     private String paymentType;
     private String paymentStatus;
     private String transactionId;
