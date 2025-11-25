@@ -129,22 +129,26 @@ public class PaymentService {
     public Double getBookingBalance(long bookingId){
         List<Payment> payments = repository.findByBookingId(bookingId);
         double extraAmount = 0;
-        double advance = 0;
+        double paidAmount = 0;
 
         for(Payment payment: payments){
             switch (payment.getPaymentReason()){
-                case ADVANCE -> advance += payment.getAmount();
+                case ADVANCE -> paidAmount += payment.getAmount();
                 case EXTRA -> {
                     if(payment.getPaymentStatus().equals(PaymentStatus.PENDING)){
                         extraAmount += payment.getAmount();
                     }
                 }
-                case BALANCE -> {}
+                case BALANCE -> {
+                    if(payment.getPaymentStatus().equals(PaymentStatus.SUCCESS)){
+                        paidAmount += payment.getAmount();
+                    }
+                }
                 default -> throw new BadRequest("Invalid Payment Reason!");
             }
         }
 
-        return advance - extraAmount;
+        return paidAmount - extraAmount;
     }
 
     public List<PaymentResponseDto> getAllPayments(){
