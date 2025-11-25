@@ -29,4 +29,18 @@ public class PaymentServiceClient {
     public void addPaymentFallback(PaymentRequestDto dto, Throwable ex){
         throw new ServiceUnavailable("Payment service unavailable!");
     }
+
+    @CircuitBreaker(name = paymentService, fallbackMethod = "getTotalAmountToBePaidFallback")
+    public Double getTotalAmountToBePaid(long bookingId) {
+        String url = "http://localhost:8083/payment-service/payments/" + bookingId + "/balance";
+        try{
+            return restTemplate.getForObject(url,Double.class);
+        } catch (HttpClientErrorException.NotFound ex){
+            throw new ContentNotFound(ex.getMessage());
+        }
+    }
+
+    public Double getTotalAmountToBePaidFallback(long bookingId, Throwable ex){
+        throw new ServiceUnavailable("Payment service unavailable!");
+    }
 }
