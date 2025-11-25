@@ -52,4 +52,9 @@ public class RoomController {
     public ResponseEntity<List<RoomResponseDto>> getAllRooms(){
         return new ResponseEntity<>(service.getAllRoom(),HttpStatus.OK);
     }
+
+    @GetMapping("/{id}/price")
+    public Double getRoomPriceById(@PathVariable long id){
+        return service.getRoomPriceById(id);
+    }
 }
