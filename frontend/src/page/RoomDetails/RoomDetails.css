@@ -1,7 +1,7 @@
 /* Room Details Container */
 .room-details-container {
   padding: 20px;
-  max-width: 1400px;
+  max-width: 100%;
   margin: 0 auto;
   background-color: #f5f5f5;
   min-height: 100vh;
