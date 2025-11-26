@@ -7,7 +7,6 @@ function UserManager() {
   return (
     <div className={styles.mainContainer}>
       <div className={styles.wrapper}>
-        {/* Toggle Switch */}
         <div className={styles.toggleContainer}>
           <div className={styles.toggleSwitch}>
             {/* Sliding Background */}
@@ -39,7 +38,6 @@ function UserManager() {
           </div>
         </div>
 
-        {/* Content Area with Animation */}
         <div className={styles.contentArea}>
           <div key={activeTab} className={styles.contentInner}>
             {activeTab === "receptionists" ? (
