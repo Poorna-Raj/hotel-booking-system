@@ -1,5 +1,3 @@
-/* Viewbooking.css */
-
 /* Modal overlay */
 .modal-overlay {
   position: fixed;
@@ -7,7 +5,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0); /* Fully transparent background */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -17,14 +15,17 @@
 /* Modal container */
 .booking-container {
   min-height: 100vh;
-  background-color: #f3f4f6;
+  background-color: rgba(255, 255, 255, 1); /* Solid background for the modal content */
   padding: 2rem 1rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
 
+/* Booking form wrapper */
 .booking-form-wrapper {
   max-width: 36rem;
   margin: 0 auto;
-  background-color: #ffffff;
+  background-color: #ffffff; /* White background for the form */
   border-radius: 0.75rem;
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
   padding: 1.5rem;

@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './Viewbooking.css';
 
-function ViewBooking({ setShowViewBookingModal }) {
+function ViewBooking({ setShowViewBookingModal, bookingDetails }) {
   const [formData, setFormData] = useState({
     guestName: '',
     email: '',
@@ -10,40 +10,57 @@ function ViewBooking({ setShowViewBookingModal }) {
     checkOut: '',
     roomType: '',
     guests: 1,
-    specialRequests: ''
+    specialRequests: '',
+    advancedPayment: 0,  // Advanced payment state
+    total: 0,            // Total price state
+    balance: 0           // Balance state
   });
-  const [submitted, setSubmitted] = useState(false);
-  const [errors, setErrors] = useState({});
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-    if (errors[name]) {
-      setErrors(prev => ({ ...prev, [name]: '' }));
+  // Initialize formData with booking details passed from props
+  useEffect(() => {
+    if (bookingDetails) {
+      setFormData({
+        guestName: bookingDetails.guestName || '',
+        email: bookingDetails.email || '',
+        phone: bookingDetails.phone || '',
+        checkIn: bookingDetails.checkIn || '',
+        checkOut: bookingDetails.checkOut || '',
+        roomType: bookingDetails.roomType || '',
+        guests: bookingDetails.guests || 1,
+        specialRequests: bookingDetails.specialRequests || '',
+        advancedPayment: bookingDetails.advancedPayment || 0,
+        total: bookingDetails.total || 0,
+        balance: bookingDetails.balance || 0
+      });
     }
+  }, [bookingDetails]);
+
+  const calculatePrice = () => {
+    const roomPrices = {
+      standard: 100, // Example price for standard room
+      deluxe: 150,   // Example price for deluxe room
+      suite: 200,    // Example price for suite
+      penthouse: 300 // Example price for penthouse
+    };
+
+    const basePrice = roomPrices[formData.roomType] || 0;
+    const totalPrice = basePrice * formData.guests;
+
+    const advancedPayment = formData.advancedPayment;
+    const balance = totalPrice - advancedPayment;
+
+    setFormData(prev => ({
+      ...prev,
+      total: totalPrice,
+      balance: balance
+    }));
   };
 
-  const validate = () => {
-    const newErrors = {};
-    if (!formData.guestName.trim()) newErrors.guestName = 'Guest name is required';
-    if (!formData.email.trim()) newErrors.email = 'Email is required';
-    if (!formData.checkIn) newErrors.checkIn = 'Check-in date is required';
-    if (!formData.checkOut) newErrors.checkOut = 'Check-out date is required';
-    if (!formData.roomType) newErrors.roomType = 'Room type is required';
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!validate()) return;
-
-    console.log('Booking details:', formData);
-    // Add your API call here to retrieve booking details
-
-    setSubmitted(true);
-    setTimeout(() => setSubmitted(false), 3000);
-  };
+  useEffect(() => {
+    if (formData.roomType && formData.guests) {
+      calculatePrice();
+    }
+  }, [formData.roomType, formData.guests]); // Recalculate when room type or guests change
 
   return (
     <div className="modal-overlay">
@@ -56,122 +73,130 @@ function ViewBooking({ setShowViewBookingModal }) {
           
           <h2 className="booking-title">View Booking</h2>
 
-          {submitted && (
-            <div className="success-message">
-              Booking details loaded successfully!
-            </div>
-          )}
+          {/* Display booking details */}
+          <div className="form-group">
+            <label className="form-label">Guest Name</label>
+            <input
+              type="text"
+              name="guestName"
+              value={formData.guestName}
+              className="form-input"
+              readOnly
+            />
+          </div>
 
-          <form onSubmit={handleSubmit}>
+          <div className="form-row">
             <div className="form-group">
-              <label className="form-label">Guest Name *</label>
+              <label className="form-label">Email</label>
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                className="form-input"
+                readOnly
+              />
+            </div>
+            <div className="form-group">
+              <label className="form-label">Phone</label>
+              <input
+                type="tel"
+                name="phone"
+                value={formData.phone}
+                className="form-input"
+                readOnly
+              />
+            </div>
+          </div>
+
+          <div className="form-row">
+            <div className="form-group">
+              <label className="form-label">Check-in Date</label>
+              <input
+                type="date"
+                name="checkIn"
+                value={formData.checkIn}
+                className="form-input"
+                readOnly
+              />
+            </div>
+            <div className="form-group">
+              <label className="form-label">Check-out Date</label>
+              <input
+                type="date"
+                name="checkOut"
+                value={formData.checkOut}
+                className="form-input"
+                readOnly
+              />
+            </div>
+          </div>
+
+          <div className="form-row">
+            <div className="form-group">
+              <label className="form-label">Room Type</label>
               <input
                 type="text"
-                name="guestName"
-                value={formData.guestName}
-                onChange={handleChange}
+                name="roomType"
+                value={formData.roomType}
                 className="form-input"
-                placeholder="Arosh Smith"
+                readOnly
               />
-              {errors.guestName && <p className="form-error">{errors.guestName}</p>}
             </div>
-
-            <div className="form-row">
-              <div className="form-group">
-                <label className="form-label">Email *</label>
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  className="form-input"
-                  placeholder="smith32gampaha@.com"
-                />
-                {errors.email && <p className="form-error">{errors.email}</p>}
-              </div>
-              <div className="form-group">
-                <label className="form-label">Phone</label>
-                <input
-                  type="tel"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleChange}
-                  className="form-input"
-                  placeholder="+94 712345678"
-                />
-              </div>
-            </div>
-
-            <div className="form-row">
-              <div className="form-group">
-                <label className="form-label">Check-in Date *</label>
-                <input
-                  type="date"
-                  name="checkIn"
-                  value={formData.checkIn}
-                  onChange={handleChange}
-                  className="form-input"
-                />
-                {errors.checkIn && <p className="form-error">{errors.checkIn}</p>}
-              </div>
-              <div className="form-group">
-                <label className="form-label">Check-out Date *</label>
-                <input
-                  type="date"
-                  name="checkOut"
-                  value={formData.checkOut}
-                  onChange={handleChange}
-                  className="form-input"
-                />
-                {errors.checkOut && <p className="form-error">{errors.checkOut}</p>}
-              </div>
-            </div>
-
-            <div className="form-row">
-              <div className="form-group">
-                <label className="form-label">Room Type *</label>
-                <select
-                  name="roomType"
-                  value={formData.roomType}
-                  onChange={handleChange}
-                  className="form-select"
-                >
-                  <option value="">Select Room</option>
-                  <option value="standard">Standard Room</option>
-                  <option value="deluxe">Deluxe Room</option>
-                  <option value="suite">Suite</option>
-                  <option value="penthouse">Penthouse</option>
-                </select>
-                {errors.roomType && <p className="form-error">{errors.roomType}</p>}
-              </div>
-              <div className="form-group">
-                <label className="form-label">Number of Guests *</label>
-                <input
-                  type="number"
-                  name="guests"
-                  value={formData.guests}
-                  onChange={handleChange}
-                  className="form-input"
-                  min="1"
-                  max="10"
-                />
-              </div>
-            </div>
-
             <div className="form-group">
-              <label className="form-label">Special Requests</label>
-              <textarea
-                name="specialRequests"
-                value={formData.specialRequests}
-                onChange={handleChange}
-                className="form-textarea"
-                rows="3"
-                placeholder="Any special requirements..."
+              <label className="form-label">Number of Guests</label>
+              <input
+                type="number"
+                name="guests"
+                value={formData.guests}
+                className="form-input"
+                readOnly
               />
             </div>
+          </div>
 
-            {/* No Submit button, just viewing the details */}
-          </form>
+          <div className="form-group">
+            <label className="form-label">Special Requests</label>
+            <textarea
+              name="specialRequests"
+              value={formData.specialRequests}
+              className="form-textarea"
+              rows="3"
+              readOnly
+            />
+          </div>
+
+          {/* Advanced Payment, Total, and Balance */}
+          <div className="form-row">
+            <div className="form-group">
+              <label className="form-label">Advanced Payment</label>
+              <input
+                type="text"
+                value={`$${formData.advancedPayment}`}
+                className="form-input"
+                readOnly
+              />
+            </div>
+            <div className="form-group">
+              <label className="form-label">Total</label>
+              <input
+                type="text"
+                value={`$${formData.total}`}
+                className="form-input"
+                readOnly
+              />
+            </div>
+            <div className="form-group">
+              <label className="form-label">Balance</label>
+              <input
+                type="text"
+                value={`$${formData.balance}`}
+                className="form-input"
+                readOnly
+              />
+            </div>
+          </div>
+
+          {/* No Submit button as this is just for viewing the details */}
         </div>
       </div>
     </div>

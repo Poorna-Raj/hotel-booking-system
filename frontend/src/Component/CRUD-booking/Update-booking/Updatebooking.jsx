@@ -10,7 +10,10 @@ function UpdateBooking({ setShowUpdateBookingModal }) {
     checkOut: '',
     roomType: '',
     guests: 1,
-    specialRequests: ''
+    specialRequests: '',
+    advancedPayment: 0, // New state for advanced payment
+    total: 0,           // New state for total price
+    balance: 0          // New state for balance
   });
   const [submitted, setSubmitted] = useState(false);
   const [errors, setErrors] = useState({});
@@ -21,6 +24,27 @@ function UpdateBooking({ setShowUpdateBookingModal }) {
     if (errors[name]) {
       setErrors(prev => ({ ...prev, [name]: '' }));
     }
+  };
+
+  const calculatePrice = () => {
+    const roomPrices = {
+      standard: 100, // Example price for standard room
+      deluxe: 150,   // Example price for deluxe room
+      suite: 200,    // Example price for suite
+      penthouse: 300 // Example price for penthouse
+    };
+
+    const basePrice = roomPrices[formData.roomType] || 0;
+    const totalPrice = basePrice * formData.guests;
+
+    const advancedPayment = formData.advancedPayment;
+    const balance = totalPrice - advancedPayment;
+
+    setFormData(prev => ({
+      ...prev,
+      total: totalPrice,
+      balance: balance
+    }));
   };
 
   const validate = () => {
@@ -51,7 +75,10 @@ function UpdateBooking({ setShowUpdateBookingModal }) {
       checkOut: '',
       roomType: '',
       guests: 1,
-      specialRequests: ''
+      specialRequests: '',
+      advancedPayment: 0,
+      total: 0,
+      balance: 0
     });
   };
 
@@ -59,7 +86,6 @@ function UpdateBooking({ setShowUpdateBookingModal }) {
     <div className="modal-overlay">
       <div className="booking-container">
         <div className="booking-form-wrapper">
-          {/* Close Button inside the header */}
           <button className="modal-close-btn" onClick={() => setShowUpdateBookingModal(false)}>
             X
           </button>
@@ -143,7 +169,10 @@ function UpdateBooking({ setShowUpdateBookingModal }) {
                 <select
                   name="roomType"
                   value={formData.roomType}
-                  onChange={handleChange}
+                  onChange={(e) => {
+                    handleChange(e);
+                    calculatePrice(); // Recalculate price when room type changes
+                  }}
                   className="form-select"
                 >
                   <option value="">Select Room</option>
@@ -160,7 +189,10 @@ function UpdateBooking({ setShowUpdateBookingModal }) {
                   type="number"
                   name="guests"
                   value={formData.guests}
-                  onChange={handleChange}
+                  onChange={(e) => {
+                    handleChange(e);
+                    calculatePrice(); // Recalculate price when guests number changes
+                  }}
                   className="form-input"
                   min="1"
                   max="10"
@@ -178,6 +210,45 @@ function UpdateBooking({ setShowUpdateBookingModal }) {
                 rows="3"
                 placeholder="Any special requirements..."
               />
+            </div>
+
+            {/* Advanced Payment */}
+            <div className="form-group">
+              <label className="form-label">Advanced Payment</label>
+              <input
+                type="number"
+                name="advancedPayment"
+                value={formData.advancedPayment}
+                onChange={(e) => {
+                  handleChange(e);
+                  calculatePrice(); // Recalculate balance when advanced payment changes
+                }}
+                className="form-input"
+                min="0"
+                max={formData.total} // Ensure advanced payment is not greater than the total
+              />
+            </div>
+
+            {/* Total and Balance */}
+            <div className="form-row">
+              <div className="form-group">
+                <label className="form-label">Total</label>
+                <input
+                  type="text"
+                  value={`$${formData.total}`}
+                  className="form-input"
+                  readOnly
+                />
+              </div>
+              <div className="form-group">
+                <label className="form-label">Balance</label>
+                <input
+                  type="text"
+                  value={`$${formData.balance}`}
+                  className="form-input"
+                  readOnly
+                />
+              </div>
             </div>
 
             <button type="submit" className="submit-btn">
