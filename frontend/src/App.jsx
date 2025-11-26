@@ -6,12 +6,14 @@ import UpdateBooking from "./Component/CRUD-booking/Update-booking/UpdateBooking
 import ViewBooking from "./Component/CRUD-booking/View-booking/ViewBooking";
 import DeleteBookingModal from "./Component/CRUD-booking/Delete-booking/Delete-booking";
 import Login from "./page/login/Login";
+import UserManager from "./page/user_management/UserManager";
 
 function App() {
   return (
     <>
       <Routes>
         <Route path="" element={<Login />} />
+        <Route path="/user-manager" element={<UserManager />} />
         <Route path="/BookingList" element={<BookingList />} />
         <Route path="/AddBooking" element={<AddBooking />} />
         <Route path="/Updatebooking" element={<UpdateBooking />} />
