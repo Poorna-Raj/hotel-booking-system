@@ -1,0 +1,112 @@
+:root {
+  --primary: #E74C3C;  
+  --secondary: #FDEDEC;     
+  --accent: #FF7F50;        
+  --text-dark: #2C2C2C;     
+  --text-light: #7F7F7F;    
+  --neutral: #E6E6E6;       
+}
+
+.mainContainer {
+  min-height: 100vh;
+  padding: 2rem;
+  background-color: var(--secondary);
+}
+
+.wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin-bottom: 2rem;
+}
+
+/* Toggle Switch Styles */
+.toggleContainer {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.toggleSwitch {
+  position: relative;
+  background-color: white;
+  border-radius: 50px;
+  padding: 6px;
+  display: inline-flex;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.slider {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  width: calc(50% - 1px);
+  height: calc(100% - 12px);
+  background-color: var(--primary);
+  border-radius: 50px;
+  transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1;
+}
+
+.slider.sliderRight {
+  left: calc(50% - 6px);
+}
+
+.toggleButton {
+  position: relative;
+  z-index: 2;
+  padding: 12px 32px;
+  border: none;
+  background-color: transparent;
+  color: var(--text-light);
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  border-radius: 50px;
+  min-width: 160px;
+}
+
+.toggleButton.active {
+  color: #fff;
+}
+
+/* Content Area Styles */
+.contentArea {
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  min-height: 400px;
+}
+
+.contentInner {
+  animation: fadeSlideIn 0.4s ease-out;
+}
+
+.contentTitle {
+  font-size: 1.5rem;
+  color: var(--text-dark);
+  margin-bottom: 1rem;
+}
+
+.contentText {
+  color: var(--text-light);
+}
+
+/* Animations */
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

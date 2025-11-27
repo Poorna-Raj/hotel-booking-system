@@ -8,12 +8,14 @@ import DeleteBookingModal from "./Component/CRUD-booking/Delete-booking/Delete-b
 import RoomList from "./page/RoomList/RoomList";
 import RoomDetails from "./page/RoomDetails/RoomDetails";
 import Login from "./page/login/Login";
+import UserManager from "./page/user_management/UserManager";
 
 function App() {
   return (
     <>
       <Routes>
         <Route path="" element={<Login />} />
+        <Route path="/user-manager" element={<UserManager />} />
         <Route path="/BookingList" element={<BookingList />} />
         <Route path="/AddBooking" element={<AddBooking />} />
         <Route path="/Updatebooking" element={<UpdateBooking />} />
