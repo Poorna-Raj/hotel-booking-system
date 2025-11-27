@@ -16,6 +16,10 @@ public class PaymentServiceClient {
 
     private static final String paymentService = "paymentService";
 
+    /**
+     * Add a payment from the payment service
+     * @param dto contains the details of the payment
+     */
     @CircuitBreaker(name = paymentService, fallbackMethod = "addPaymentFallback")
     public void addPayment(PaymentRequestDto dto){
         String url = "http://localhost:8083/payment-service/payments";
@@ -30,6 +34,11 @@ public class PaymentServiceClient {
         throw new ServiceUnavailable("Payment service unavailable!");
     }
 
+    /**
+     * Fetch the remaining amount of a booking from payment service
+     * @param bookingId ID of the booking
+     * @return {@code double} value based on the result
+     */
     @CircuitBreaker(name = paymentService, fallbackMethod = "getTotalAmountToBePaidFallback")
     public Double getTotalAmountToBePaid(long bookingId) {
         String url = "http://localhost:8083/payment-service/bookings/" + bookingId + "/balance";

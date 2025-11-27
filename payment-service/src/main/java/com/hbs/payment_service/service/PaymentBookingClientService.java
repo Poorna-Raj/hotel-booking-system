@@ -16,6 +16,11 @@ public class PaymentBookingClientService {
 
     private static final String bookingService = "bookingService";
 
+    /**
+     * Validate a booking to check if it exist
+     * @param id ID of the booking
+     * @return {@code boolean} value based on the result
+     */
     @CircuitBreaker(name = bookingService, fallbackMethod = "validateBookingExistFeedback")
     public Boolean validateBookingExist(long id){
         String url = "http://localhost:8082/booking-service/bookings/" + id + "/is-valid";
@@ -30,6 +35,11 @@ public class PaymentBookingClientService {
         throw new ServiceUnavailable("Booking service unavailable!");
     }
 
+    /**
+     * Helper method to update the booking status
+     * @param dto contains the details of the booking status
+     * @param id ID of the booking
+     */
     @CircuitBreaker(name = bookingService, fallbackMethod = "updatePaymentStatusFallback")
     public void updatePaymentStatus(BookingStatusUpdateRequestDto dto, long id) {
         String url = "http://localhost:8082/booking-service/bookings/"+ id +"/payment-status";

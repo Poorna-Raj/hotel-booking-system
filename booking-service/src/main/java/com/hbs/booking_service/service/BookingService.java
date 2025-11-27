@@ -30,6 +30,11 @@ public class BookingService {
     @Autowired
     private PaymentServiceClient paymentServiceClient;
 
+    /**
+     * Create the booking and save to the database
+     * @param dto contains the data of the Booking
+     * @return an {@link BookingResponseDto} containing booking details
+     */
     public BookingResponseDto addBooking(BookingRequestDto dto){
         if(validator.isBookingValid(dto.getCheckIn(),dto.getCheckOut(), dto.getRoomId(),dto.getOccupancy())){
             Booking booking = new Booking();
@@ -67,6 +72,12 @@ public class BookingService {
         }
     }
 
+    /**
+     * Update an existing booking
+     * @param bookingId Booking ID
+     * @param dto contains the new details of the booking
+     * @return an {@link BookingResponseDto} containing booking details
+     */
     public BookingResponseDto updateBooking(long bookingId, BookingUpdateRequestDto dto){
         if(validator.isBookingValid(dto.getCheckIn(),dto.getCheckOut(), dto.getRoomId(), bookingId,dto.getOccupancy())){
             Booking oldBooking = repository.findById(bookingId)
@@ -94,6 +105,11 @@ public class BookingService {
         }
     }
 
+    /**
+     * Delete an existing Booking
+     * @param bookingId ID of the booking
+     * @return {@code boolean} value based on the result
+     */
     public boolean deleteBooking(long bookingId){
         Booking booking = repository.findById(bookingId)
                 .orElseThrow(() -> new BadRequest("Invalid Booking ID!"));
@@ -102,11 +118,20 @@ public class BookingService {
         return true;
     }
 
+    /**
+     * Get booking by it's ID
+     * @param bookingId ID of the booking
+     * @return an {@link BookingResponseDto} containing booking details
+     */
     public BookingResponseDto getBookingById(long bookingId){
         return mapToDtoFromModel(repository.findById(bookingId)
                 .orElseThrow(() -> new BadRequest("Invalid Booking ID!")));
     }
 
+    /**
+     * Get all the saved bookings
+     * @return an list {@link BookingResponseDto} containing booking details
+     */
     public List<BookingResponseDto> getAllBookings(){
         return repository.findAll()
                 .stream()
@@ -114,6 +139,12 @@ public class BookingService {
                 .toList();
     }
 
+    /**
+     * Update the booking payment status based on the request
+     * @param bookingId ID of the Booking
+     * @param dto contains the details of the status
+     * @return {@code boolean} value based on the result
+     */
     public boolean updateBookingPaymentStatus(long bookingId, BookingStatusUpdateDto dto){
         Booking booking = repository.findById(bookingId)
                 .orElseThrow(() -> new BadRequest("Invalid Booking ID!"));
@@ -125,6 +156,11 @@ public class BookingService {
         return false;
     }
 
+    /**
+     * Validate the booking for payments
+     * @param bookingId ID of the booking
+     * @return {@code boolean} value based on the result
+     */
     public Boolean isBookingValidForPayments(long bookingId){
         Booking booking = repository.findById(bookingId)
                 .orElseThrow(() -> new BadRequest("Invalid Booking ID!"));
@@ -132,6 +168,11 @@ public class BookingService {
         return booking.getBookingStatus() == BookingStatus.BOOKED;
     }
 
+    /**
+     * Used to send the advance payment to the payment service
+     * @param savedBooking contains details of the booking
+     * @param dto contains the details of the payment request
+     */
     public void sendAdvancePayment(Booking savedBooking, BookingRequestDto dto) {
         PaymentRequestDto requestDto = new PaymentRequestDto();
         requestDto.setBookingId(savedBooking.getId());
@@ -147,6 +188,13 @@ public class BookingService {
         paymentServiceClient.addPayment(requestDto);
     }
 
+    /**
+     * Calculate the total amount based on the dates
+     * @param checkIn Checking date of the booking
+     * @param checkOut Checkout date of the booking
+     * @param roomId ID of the room
+     * @return {@code double} value based on the result
+     */
     public double getTotalAmount(LocalDateTime checkIn, LocalDateTime checkOut, long roomId) {
         double pricePerDay = roomServiceClient.getPrice(roomId);
 
@@ -159,6 +207,11 @@ public class BookingService {
         return nights * pricePerDay;
     }
 
+    /**
+     * Get the balance price for the booking
+     * @param bookingId ID of the booking
+     * @return {@code double} value based on the result
+     */
     public double getBookingBalance(long bookingId){
         Booking booking = repository.findById(bookingId)
                 .orElseThrow(() -> new BadRequest("Invalid user for given ID"));
@@ -167,6 +220,11 @@ public class BookingService {
         return booking.getTotalAmount() - totalPaidAmount;
     }
 
+    /**
+     * Helper method to perform the checkout
+     * @param requestDto contains payment details
+     * @param bookingId ID of the booking
+     */
     public void setCheckoutById(CheckoutPaymentRequestDto requestDto, long bookingId){
         double balanceAmount = getBookingBalance(bookingId);
 
@@ -184,6 +242,11 @@ public class BookingService {
         paymentServiceClient.addPayment(dto);
     }
 
+    /**
+     * Helper method to convert model class to DTO
+     * @param booking contains details of the booking
+     * @return an {@link BookingResponseDto} containing booking details
+     */
     public BookingResponseDto mapToDtoFromModel(Booking booking){
         BookingResponseDto dto = new BookingResponseDto();
         dto.setId(booking.getId());
