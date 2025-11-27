@@ -15,6 +15,11 @@ public class UserClientService {
 
     private static final String userService = "userService";
 
+    /**
+     * Call for the user service to validate whether the user is an admin
+     * @param id ID of the user
+     * @return {@code boolean} value based on the result
+     */
     @CircuitBreaker(name = userService, fallbackMethod = "validateUserIsAdminFeedback")
     public Boolean validateUserIsAdmin(long id){
         String url = "http://localhost:8080/user-service/users/" + id + "/is-admin";
