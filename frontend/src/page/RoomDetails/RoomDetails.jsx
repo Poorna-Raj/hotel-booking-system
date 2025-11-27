@@ -1,7 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './RoomDetails.css';
+import UpdateRoomForm from '../../Component/CRUD-room/Update-Room/UpdateRoom';
+import DeleteRoomModal from '../../Component/CRUD-room/Delete-Room/DeleteRoom';
 
 const RoomDetails = () => {
+  const [showUpdateForm, setShowUpdateForm] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+
   // Sample room data - you can pass this as props or fetch from API
   const room = {
     id: 1,
@@ -14,7 +19,6 @@ const RoomDetails = () => {
     floor: '1st Floor',
     capacity: '2 Adults',
     view: 'City View',
-    amenities: ['Wi-Fi', 'Air Conditioning', 'Mini Bar', 'TV', 'Room Service', 'Balcony'],
     image: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=800&h=500&fit=crop',
     additionalImages: [
       'https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=300&h=200&fit=crop',
@@ -24,18 +28,48 @@ const RoomDetails = () => {
   };
 
   const handleUpdate = () => {
-    // This will open the update form popup
-    console.log('Update room:', room.id);
+    setShowUpdateForm(true);
   };
 
   const handleDelete = () => {
-    // This will open the delete confirmation popup
-    console.log('Delete room:', room.id);
+    setShowDeleteModal(true);
   };
 
   const handleBack = () => {
     // Navigate back to room list
     console.log('Go back to room list');
+    // You can add navigation here: navigate('/rooms')
+  };
+
+  const handleCloseUpdateForm = () => {
+    setShowUpdateForm(false);
+  };
+
+  const handleUpdateSubmit = (formData) => {
+    // Handle update submission - add API call here
+    console.log('Updated room data:', formData);
+    
+    // After successful update
+    setShowUpdateForm(false);
+    alert('Room updated successfully!');
+    
+    // You might want to refresh the room data or navigate back
+  };
+
+  const handleCloseDeleteModal = () => {
+    setShowDeleteModal(false);
+  };
+
+  const handleDeleteConfirm = (roomId) => {
+    // Handle delete confirmation - add API call here
+    console.log('Deleting room:', roomId);
+    
+    // After successful deletion
+    setShowDeleteModal(false);
+    alert('Room deleted successfully!');
+    
+    // Navigate back to room list
+    // navigate('/rooms')
   };
 
   return (
@@ -127,10 +161,26 @@ const RoomDetails = () => {
               </div>
             </div>
           </div>
-
-
         </div>
       </div>
+
+      {/* Update Room Form Popup */}
+      {showUpdateForm && (
+        <UpdateRoomForm 
+          room={room}
+          onClose={handleCloseUpdateForm}
+          onSubmit={handleUpdateSubmit}
+        />
+      )}
+
+      {/* Delete Room Modal */}
+      {showDeleteModal && (
+        <DeleteRoomModal 
+          room={room}
+          onClose={handleCloseDeleteModal}
+          onConfirm={handleDeleteConfirm}
+        />
+      )}
     </div>
   );
 };
