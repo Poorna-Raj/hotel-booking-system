@@ -46,6 +46,11 @@ public class RoomService {
         room.setCreatedAt(LocalDateTime.now());
         room.setUpdatedAt(LocalDateTime.now());
 
+        room.setImageNo1(dto.getImageNo1());
+        room.setImageNo2(dto.getImageNo2());
+        room.setImageNo3(dto.getImageNo3());
+        room.setImageNo4(dto.getImageNo4());
+
         validateUserIsAdmin(dto.getCreatedBy());
         room.setCreatedBy(dto.getCreatedBy());
 
@@ -78,6 +83,11 @@ public class RoomService {
         room.setUpdatedAt(LocalDateTime.now());
         room.setBasePrice(dto.getBasePrice());
         room.setBedCount(dto.getBedCount());
+
+        room.setImageNo1(dto.getImageNo1());
+        room.setImageNo2(dto.getImageNo2());
+        room.setImageNo3(dto.getImageNo3());
+        room.setImageNo4(dto.getImageNo4());
 
         return mapToDtoFromModel(repository.save(room));
     }
@@ -223,7 +233,10 @@ public class RoomService {
         dto.setBedCount(save.getBedCount());
         dto.setCreatedBy(save.getCreatedBy());
         dto.setBedType(save.getBedType().toString());
-
+        dto.setImageNo1(save.getImageNo1());
+        dto.setImageNo2(save.getImageNo2());
+        dto.setImageNo3(save.getImageNo3());
+        dto.setImageNo4(save.getImageNo4());
         return dto;
     }
 }

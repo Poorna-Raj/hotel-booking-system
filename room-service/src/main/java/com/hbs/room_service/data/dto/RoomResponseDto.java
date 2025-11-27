@@ -17,4 +17,8 @@ public class RoomResponseDto {
     private Long createdBy;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private String imageNo1;
+    private String imageNo2;
+    private String imageNo3;
+    private String imageNo4;
 }
