@@ -1,8 +1,5 @@
 package com.hbs.room_service.data.model;
 
-import lombok.Getter;
-
-@Getter
 public enum RoomType {
     STANDARD(2),
     DELUXE(2),
@@ -13,5 +10,9 @@ public enum RoomType {
 
     RoomType(int capacity){
         this.capacity = capacity;
+    }
+
+    public int getCapacity() {
+        return capacity;
     }
 }

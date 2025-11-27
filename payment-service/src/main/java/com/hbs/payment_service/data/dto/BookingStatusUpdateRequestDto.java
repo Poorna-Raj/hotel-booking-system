@@ -1,12 +1,17 @@
 package com.hbs.payment_service.data.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-
-@Setter
-@Getter
-@AllArgsConstructor
 public class BookingStatusUpdateRequestDto {
     private String status;
+
+    public BookingStatusUpdateRequestDto(String status) {
+        this.status = status;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 }
