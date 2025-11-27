@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import './RoomList.css';
+import AddRoomForm from '../../Component/CRUD-room/Add-Room/AddRoom';
 
 const RoomList = () => {
   const [searchName, setSearchName] = useState('');
   const [roomStatus, setRoomStatus] = useState('--ALL--');
   const [orderBy, setOrderBy] = useState('--DEFAULT--');
+  const [showAddForm, setShowAddForm] = useState(false);
 
   // Sample room data
   const rooms = [
@@ -61,13 +63,41 @@ const RoomList = () => {
   };
 
   const handleViewDetails = (roomId) => {
-    // This will open the CRUD form popup
+    // This will navigate to room details page or open details popup
     console.log('View details for room:', roomId);
+    // You can add navigation here: navigate(`/rooms/${roomId}`)
   };
 
   const handleAddRoom = () => {
     // This will open the add room form popup
-    console.log('Add new room');
+    setShowAddForm(true);
+  };
+
+  const handleCloseForm = () => {
+    setShowAddForm(false);
+  };
+
+  const handleFormSubmit = (formData) => {
+    // Handle form submission - add API call here
+    console.log('New room data:', formData);
+    
+    // Example: Add new room to the list
+    // You can replace this with an API call
+    // const newRoom = {
+    //   id: rooms.length + 1,
+    //   name: formData.name,
+    //   type: formData.type,
+    //   bedSize: formData.bedSize,
+    //   price: parseFloat(formData.price),
+    //   status: formData.status,
+    //   image: URL.createObjectURL(formData.mainImage)
+    // };
+    
+    // After successful submission
+    setShowAddForm(false);
+    
+    // You might want to refresh the room list or show a success message
+    alert('Room added successfully!');
   };
 
   return (
@@ -159,6 +189,14 @@ const RoomList = () => {
           </div>
         ))}
       </div>
+
+      {/* Add Room Form Popup */}
+      {showAddForm && (
+        <AddRoomForm 
+          onClose={handleCloseForm}
+          onSubmit={handleFormSubmit}
+        />
+      )}
     </div>
   );
 };
