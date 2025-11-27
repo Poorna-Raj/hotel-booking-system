@@ -1,5 +1,7 @@
 import { useState } from "react";
 import styles from "./UserManager.module.css";
+import AdminManager from "../../Component/UserManager/AdminManager/AdminManager";
+import ReceptionistManager from "../../Component/UserManager/ReceptionistManager/ReceptionistManager";
 
 function UserManager() {
   const [activeTab, setActiveTab] = useState("receptionists");
@@ -41,19 +43,9 @@ function UserManager() {
         <div className={styles.contentArea}>
           <div key={activeTab} className={styles.contentInner}>
             {activeTab === "receptionists" ? (
-              <div>
-                <h2 className={styles.contentTitle}>Receptionist Management</h2>
-                <p className={styles.contentText}>
-                  Manage receptionist accounts, permissions, and settings here.
-                </p>
-              </div>
+              <ReceptionistManager />
             ) : (
-              <div>
-                <h2 className={styles.contentTitle}>Admin Management</h2>
-                <p className={styles.contentText}>
-                  Manage admin accounts, permissions, and settings here.
-                </p>
-              </div>
+              <AdminManager />
             )}
           </div>
         </div>
