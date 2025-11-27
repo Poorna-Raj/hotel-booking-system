@@ -12,4 +12,8 @@ public class RoomUpdateRequestDto {
     private int bedCount;
     private String roomStatus;
     private double basePrice;
+    private String imageNo1;
+    private String imageNo2;
+    private String imageNo3;
+    private String imageNo4;
 }
