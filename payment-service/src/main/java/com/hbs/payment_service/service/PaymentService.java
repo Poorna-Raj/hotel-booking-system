@@ -27,6 +27,11 @@ public class PaymentService {
     @Autowired
     private PaymentBookingClientService bookingClientService;
 
+    /**
+     * Create and save a payment to the database
+     * @param dto contains details of the payment
+     * @return {@link PaymentRequestDto} contains the details of the payment
+     */
     public PaymentResponseDto addPayment(PaymentRequestDto dto){
         Payment payment = new Payment();
         if(validatePaymentStatus(dto.getPaymentStatus())) {
@@ -66,6 +71,10 @@ public class PaymentService {
         return mapToDtoFromModel(savedPayment);
     }
 
+    /**
+     * Helper method to update the booking service status
+     * @param savedPayment contains the details of the payment
+     */
     private void processPaymentAndUpdateBookingService(Payment savedPayment) {
         String newStatus;
         switch (savedPayment.getPaymentReason()){
@@ -84,6 +93,12 @@ public class PaymentService {
         bookingClientService.updatePaymentStatus(dto,savedPayment.getBookingId());
     }
 
+    /**
+     * Update an existing payment
+     * @param id ID of the payment
+     * @param dto contains the new details of the payment
+     * @return {@link PaymentRequestDto} contains the details of the payment
+     */
     public PaymentResponseDto updatePayment(long id, PaymentRequestDto dto){
         Payment payment = repository.findById(id)
                 .orElseThrow(() -> new ContentNotFound("Invalid Payment for given ID."));
@@ -120,12 +135,22 @@ public class PaymentService {
         return mapToDtoFromModel(repository.save(payment));
     }
 
+    /**
+     * Fetch the payment based on the ID
+     * @param id ID of the payment
+     * @return {@link PaymentRequestDto} contains the details of the payment
+     */
     public PaymentResponseDto getPayment(long id){
         return mapToDtoFromModel(repository.findById(id)
                 .orElseThrow(() -> new ContentNotFound("Invalid payment for given ID"))
         );
     }
 
+    /**
+     * Helper method to get the balance of a booking based on the ID
+     * @param bookingId ID of the booking
+     * @return {@code double} value based on the result
+     */
     public Double getBookingBalance(long bookingId){
         List<Payment> payments = repository.findByBookingId(bookingId);
         double extraAmount = 0;
@@ -151,6 +176,10 @@ public class PaymentService {
         return paidAmount - extraAmount;
     }
 
+    /**
+     * Fetch all the payment
+     * @return list of {@link PaymentRequestDto} contains the details of the payment
+     */
     public List<PaymentResponseDto> getAllPayments(){
         return repository.findAll()
                 .stream()
@@ -158,6 +187,11 @@ public class PaymentService {
                 .toList();
     }
 
+    /**
+     * Delete an existing payment by ID
+     * @param id ID of the payment
+     * @return {@code boolean} value based on the result
+     */
     public boolean deletePayment(long id){
         Payment payment = repository.findById(id)
                 .orElseThrow(() -> new ContentNotFound("Invalid Payment for given ID."));
@@ -165,6 +199,11 @@ public class PaymentService {
         return true;
     }
 
+    /**
+     * Helper method to convert model class to DTO class
+     * @param save contains details of the payment
+     * @return {@link PaymentRequestDto} contains the details of the payment
+     */
     private PaymentResponseDto mapToDtoFromModel(Payment save) {
         PaymentResponseDto dto = new PaymentResponseDto();
         dto.setAmount(save.getAmount());
@@ -182,6 +221,11 @@ public class PaymentService {
         return dto;
     }
 
+    /**
+     * Helper method to validate payment status
+     * @param status Given payment status
+     * @return {@code boolean} value based on the result
+     */
     public boolean validatePaymentStatus(String status){
         try{
             PaymentStatus.valueOf(status);
@@ -191,6 +235,11 @@ public class PaymentService {
         }
     }
 
+    /**
+     * Helper method to validate the payment type
+     * @param type Given payment type
+     * @return {@code boolean} value based on the result
+     */
     public boolean validatePaymentType(String type){
         try{
             PaymentType.valueOf(type);
@@ -200,6 +249,11 @@ public class PaymentService {
         }
     }
 
+    /**
+     * Helper method to validate the payment reason
+     * @param reason Given reason
+     * @return {@code boolean} value based on the result
+     */
     public boolean validatePaymentReason(String reason){
         try{
             PaymentReason.valueOf(reason);

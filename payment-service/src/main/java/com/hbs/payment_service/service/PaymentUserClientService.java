@@ -15,6 +15,11 @@ public class PaymentUserClientService {
 
     private static final String userService = "userService";
 
+    /**
+     * Validator method to validate if a user is valid
+     * @param id ID of the user
+     * @return {@code boolean} value based on the result
+     */
     @CircuitBreaker(name = userService, fallbackMethod = "validateUserFeedback")
     public Boolean validateUser(long id){
         String url = "http://localhost:8080/user-service/users/" + id + "/is-valid";
