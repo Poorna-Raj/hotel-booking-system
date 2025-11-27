@@ -15,6 +15,11 @@ public class UserServiceClient {
 
     private static final String userService = "userService";
 
+    /**
+     * Check is user is valid user
+     * @param id ID of the user
+     * @return {@code boolean} value based on the result
+     */
     @CircuitBreaker(name = userService, fallbackMethod = "validateUserFeedback")
     public Boolean validateUser(long id){
         String url = "http://localhost:8080/user-service/users/" + id + "/is-valid";

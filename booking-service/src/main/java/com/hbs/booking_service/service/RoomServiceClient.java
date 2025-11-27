@@ -15,6 +15,11 @@ public class RoomServiceClient {
 
     private static final String roomService = "roomService";
 
+    /**
+     * Fetch the price of a room from room service
+     * @param roomId ID of the room
+     * @return {@code double} value based on the result
+     */
     @CircuitBreaker(name = roomService, fallbackMethod = "getPriceFallback")
     public Double getPrice(long roomId){
         String url = "http://localhost:8081/room-service/rooms/" + roomId + "/price";
@@ -30,6 +35,11 @@ public class RoomServiceClient {
         throw new ServiceUnavailable("Room service unavailable!");
     }
 
+    /**
+     * Fetch the room status from the room service
+     * @param roomId ID of the room
+     * @return {@code boolean} value based on the result
+     */
     @CircuitBreaker(name = roomService, fallbackMethod = "isRoomAvailableFallback")
     public Boolean isRoomAvailable(long roomId){
         String url = "http://localhost:8081/room-service/rooms/" + roomId + "/is-available";
@@ -45,6 +55,11 @@ public class RoomServiceClient {
         throw new ServiceUnavailable("Room service unavailable!");
     }
 
+    /**
+     * Fetch the room capacity from the room service
+     * @param roomId ID of the room
+     * @return {@code integer} value based on the result
+     */
     @CircuitBreaker(name = roomService, fallbackMethod = "getRoomCapacityByIdFallback")
     public Integer getRoomCapacityById(long roomId){
         String url = "http://localhost:8081/room-service/rooms/" + roomId + "/capacity";
