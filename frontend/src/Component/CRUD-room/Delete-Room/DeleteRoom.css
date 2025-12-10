@@ -1,0 +1,171 @@
+/* Delete Overlay */
+.delete-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+/* Delete Modal */
+.delete-modal {
+  background-color: white;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 500px;
+  padding: 40px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+/* Delete Icon */
+.delete-icon {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+  animation: scaleIn 0.3s ease-out;
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Delete Title */
+.delete-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #333;
+  margin: 0 0 15px 0;
+}
+
+/* Delete Message */
+.delete-message {
+  font-size: 16px;
+  color: #666;
+  margin: 0 0 25px 0;
+  line-height: 1.5;
+}
+
+.delete-message strong {
+  color: #dc3545;
+  font-weight: 600;
+}
+
+/* Room Info Preview */
+.room-info-preview {
+  background-color: #f8f9fa;
+  border-radius: 6px;
+  padding: 20px;
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.info-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.info-item:last-child {
+  border-bottom: none;
+}
+
+.info-label {
+  font-size: 14px;
+  color: #666;
+  font-weight: 500;
+}
+
+.info-value {
+  font-size: 14px;
+  color: #333;
+  font-weight: 600;
+}
+
+/* Delete Warning */
+.delete-warning {
+  font-size: 14px;
+  color: #dc3545;
+  background-color: #fff5f5;
+  border: 1px solid #ffc9c9;
+  border-radius: 4px;
+  padding: 12px;
+  margin: 0 0 25px 0;
+  line-height: 1.5;
+}
+
+/* Delete Actions */
+.delete-actions {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+}
+
+.delete-cancel-button,
+.delete-confirm-button {
+  padding: 12px 30px;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  min-width: 140px;
+}
+
+.delete-cancel-button {
+  background-color: #6c757d;
+  color: white;
+}
+
+.delete-cancel-button:hover {
+  background-color: #5a6268;
+}
+
+.delete-confirm-button {
+  background-color: #dc3545;
+  color: white;
+}
+
+.delete-confirm-button:hover {
+  background-color: #c82333;
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+  .delete-modal {
+    padding: 30px 20px;
+  }
+
+  .delete-title {
+    font-size: 24px;
+  }
+
+  .delete-message {
+    font-size: 14px;
+  }
+
+  .delete-actions {
+    flex-direction: column;
+  }
+
+  .delete-cancel-button,
+  .delete-confirm-button {
+    width: 100%;
+  }
+}

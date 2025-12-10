@@ -1,0 +1,161 @@
+/* Modal background overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Modal box container */
+.modal-container {
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 2.5rem;
+  width: 500px;
+  max-width: 90%;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Delete Icon */
+.delete-icon {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  animation: scaleIn 0.3s ease-out;
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Title style */
+.modal-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+/* Description style */
+.modal-description {
+  font-size: 1rem;
+  color: #4b5563;
+  margin-bottom: 1.5rem;
+  line-height: 1.5;
+}
+
+.modal-description strong {
+  color: #dc3545;
+  font-weight: 600;
+}
+
+/* Booking Info Preview */
+.booking-info-preview {
+  background-color: #f8f9fa;
+  border-radius: 6px;
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+  text-align: left;
+}
+
+.info-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.info-item:last-child {
+  border-bottom: none;
+}
+
+.info-label {
+  font-size: 0.875rem;
+  color: #666;
+  font-weight: 500;
+}
+
+.info-value {
+  font-size: 0.875rem;
+  color: #333;
+  font-weight: 600;
+}
+
+/* Button container (for Delete and Cancel buttons) */
+.modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+/* Button styling */
+.modal-actions .btn-delete,
+.modal-actions .btn-cancel {
+  padding: 0.75rem 2rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  min-width: 120px;
+  transition: background-color 0.2s;
+}
+
+.modal-actions .btn-delete {
+  background-color: #dc3545;
+  color: white;
+}
+
+.modal-actions .btn-delete:hover {
+  background-color: #c82333;
+}
+
+.modal-actions .btn-cancel {
+  background-color: #6c757d;
+  color: white;
+}
+
+.modal-actions .btn-cancel:hover {
+  background-color: #5a6268;
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+  .modal-container {
+    padding: 2rem 1.5rem;
+    width: 95%;
+  }
+
+  .modal-title {
+    font-size: 1.25rem;
+  }
+
+  .modal-description {
+    font-size: 0.875rem;
+  }
+
+  .modal-actions {
+    flex-direction: column;
+  }
+
+  .modal-actions .btn-delete,
+  .modal-actions .btn-cancel {
+    width: 100%;
+  }
+}
