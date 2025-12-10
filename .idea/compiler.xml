@@ -8,16 +8,27 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
       </profile>
+      <profile name="Annotation profile for room-service" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.42/lombok-1.18.42.jar" />
+        </processorPath>
+        <module name="room-service" />
+        <module name="payment-service" />
+        <module name="booking-service" />
+      </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="booking-service" target="17" />
-      <module name="payment-service" target="17" />
-      <module name="room-service" target="17" />
       <module name="user-service" target="17" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="booking-service" options="-parameters" />
+      <module name="payment-service" options="-parameters" />
+      <module name="room-service" options="-parameters" />
       <module name="user-service" options="-parameters" />
     </option>
   </component>
