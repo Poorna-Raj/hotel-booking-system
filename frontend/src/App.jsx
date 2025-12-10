@@ -9,6 +9,7 @@ import RoomList from "./page/RoomList/RoomList";
 import RoomDetails from "./page/RoomDetails/RoomDetails";
 
 import Login from "./page/login/Login";
+import Dashboard from "./page/Dashboard/Dashboard";
 import UserManager from "./page/user_management/UserManager";
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
     <>
       <Routes>
         <Route path="" element={<Login />} />
+        <Route path="/Dashboard" element={<Dashboard />} />
         <Route path="/user-manager" element={<UserManager />} />
         <Route path="/BookingList" element={<BookingList />} />
         <Route path="/AddBooking" element={<AddBooking />} />
