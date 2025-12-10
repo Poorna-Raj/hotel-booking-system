@@ -1,15 +1,42 @@
 import React, { useState } from 'react';
 import AddBooking from "../CRUD-booking/Add-booking/AddBooking";
-
 import UpdateBooking from '../CRUD-booking/Update-booking/UpdateBooking';
-import ViewBooking from '../CRUD-booking/View-booking/ViewBooking';
+import ViewBooking from '../../page/ViewBooking/ViewBooking';
 import DeleteBookingModal from '../CRUD-booking/Delete-booking/Delete-booking';
-import './BookingList.css'; // Add your custom CSS styles for the table and modals
+import './BookingList.css';
 
 function BookingList() {
   const [bookings, setBookings] = useState([
-    { id: 1, guestName: 'Arosh Smith', roomType: 'Standard Room', checkIn: '2025-12-01', checkOut: '2025-12-05' },
-    { id: 2, guestName: 'John Doe', roomType: 'Deluxe Room', checkIn: '2025-12-10', checkOut: '2025-12-12' },
+    { 
+      id: 1, 
+      roomId: 101,
+      createdBy: 1,
+      customerName: 'Arosh Smith', 
+      customerNic: '123456789V',
+      checkIn: '2025-12-01T14:00:00', 
+      checkOut: '2025-12-05T11:00:00',
+      bookingStatus: 'Confirmed',
+      paymentStatus: 'Paid',
+      totalAmount: 450.00,
+      occupancy: 2,
+      createdAt: '2025-11-15T10:30:00',
+      updatedAt: '2025-11-20T15:45:00'
+    },
+    { 
+      id: 2, 
+      roomId: 205,
+      createdBy: 2,
+      customerName: 'John Doe', 
+      customerNic: '987654321V',
+      checkIn: '2025-12-10T14:00:00', 
+      checkOut: '2025-12-12T11:00:00',
+      bookingStatus: 'Pending',
+      paymentStatus: 'Pending',
+      totalAmount: 300.00,
+      occupancy: 1,
+      createdAt: '2025-11-18T09:15:00',
+      updatedAt: '2025-11-18T09:15:00'
+    },
   ]);
   
   const [selectedBooking, setSelectedBooking] = useState(null);
@@ -59,6 +86,17 @@ function BookingList() {
     setShowDeleteBookingModal(false);
   };
 
+  // Format date for display in table
+  const formatDate = (dateTime) => {
+    if (!dateTime) return 'N/A';
+    const date = new Date(dateTime);
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    });
+  };
+
   return (
     <div className="booking-list-container">
       <h2>Booking List</h2>
@@ -69,19 +107,25 @@ function BookingList() {
         <thead>
           <tr>
             <th>Guest Name</th>
-            <th>Room Type</th>
+            <th>Room ID</th>
             <th>Check-in Date</th>
             <th>Check-out Date</th>
+            <th>Status</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
           {bookings.map((booking) => (
             <tr key={booking.id}>
-              <td>{booking.guestName}</td>
-              <td>{booking.roomType}</td>
-              <td>{booking.checkIn}</td>
-              <td>{booking.checkOut}</td>
+              <td>{booking.customerName}</td>
+              <td>#{booking.roomId}</td>
+              <td>{formatDate(booking.checkIn)}</td>
+              <td>{formatDate(booking.checkOut)}</td>
+              <td>
+                <span className={`status-badge ${booking.bookingStatus.toLowerCase()}`}>
+                  {booking.bookingStatus}
+                </span>
+              </td>
               <td>
                 <button onClick={() => handleViewBooking(booking)}>View</button>
                 <button onClick={() => handleEditBooking(booking)}>Edit</button>
