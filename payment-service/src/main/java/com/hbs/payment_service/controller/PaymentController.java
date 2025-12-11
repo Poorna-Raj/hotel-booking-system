@@ -2,6 +2,7 @@ package com.hbs.payment_service.controller;
 
 import com.hbs.payment_service.data.dto.PaymentRequestDto;
 import com.hbs.payment_service.data.dto.PaymentResponseDto;
+import com.hbs.payment_service.data.dto.RevenueResponseDto;
 import com.hbs.payment_service.service.PaymentService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
@@ -52,5 +53,10 @@ public class PaymentController {
     @GetMapping(path = "bookings/{id}/balance")
     public Double getBalancePaymentAmount(@Valid @PathVariable @Min(1) long id){
         return service.getBookingBalance(id);
+    }
+
+    @GetMapping(path = "payments/revenue")
+    public ResponseEntity<RevenueResponseDto> getRevenueDetails(){
+        return new ResponseEntity<>(service.getRevenueDetails(),HttpStatus.OK);
     }
 }

@@ -3,6 +3,7 @@ package com.hbs.payment_service.service;
 import com.hbs.payment_service.data.dto.BookingStatusUpdateRequestDto;
 import com.hbs.payment_service.data.dto.PaymentRequestDto;
 import com.hbs.payment_service.data.dto.PaymentResponseDto;
+import com.hbs.payment_service.data.dto.RevenueResponseDto;
 import com.hbs.payment_service.data.model.Payment;
 import com.hbs.payment_service.data.model.PaymentReason;
 import com.hbs.payment_service.data.model.PaymentStatus;
@@ -13,7 +14,10 @@ import com.hbs.payment_service.exception.ContentNotFound;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 @Service
@@ -261,5 +265,34 @@ public class PaymentService {
         } catch (IllegalArgumentException e) {
             throw new BadRequest("Invalid Payment Reason");
         }
+    }
+
+    /**
+     * Get revenue details
+     * @return {@link RevenueResponseDto} contains details of revenue
+     */
+    public RevenueResponseDto getRevenueDetails() {
+        RevenueResponseDto dto = new RevenueResponseDto();
+
+        LocalDate today = LocalDate.now();
+        dto.setDailyRevenue(repository.getTimedRevenue(today.atStartOfDay(),today.atTime(LocalTime.MAX),PaymentStatus.SUCCESS));
+
+        LocalDate startOfTheWeekDate = today.with(DayOfWeek.MONDAY);
+        LocalDate endOfTheWeekDate = today.with(DayOfWeek.SUNDAY);
+        dto.setMonthlyRevenue(repository.getTimedRevenue(
+                startOfTheWeekDate.atStartOfDay(),
+                endOfTheWeekDate.atTime(LocalTime.MAX),
+                PaymentStatus.SUCCESS)
+        );
+
+        LocalDate startOfTheMonthDate = today.withDayOfMonth(1);
+        LocalDate endOfTheMonthDate = today.withDayOfMonth(today.lengthOfMonth());
+        dto.setMonthlyRevenue(repository.getTimedRevenue(
+                startOfTheMonthDate.atStartOfDay(),
+                endOfTheMonthDate.atTime(LocalTime.MAX),
+                PaymentStatus.SUCCESS)
+        );
+
+        return dto;
     }
 }
