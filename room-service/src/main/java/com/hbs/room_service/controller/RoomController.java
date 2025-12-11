@@ -69,4 +69,9 @@ public class RoomController {
     public Integer getRoomCapacityById(@Valid @PathVariable @Min(1) long id){
         return service.getRoomCapacityById(id);
     }
+
+    @GetMapping("/count")
+    public Long getRoomCount(){
+        return service.getTotalRoomCount();
+    }
 }

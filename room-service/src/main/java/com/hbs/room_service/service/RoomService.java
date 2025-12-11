@@ -217,6 +217,14 @@ public class RoomService {
     }
 
     /**
+     * Utility method to get the total room count
+     * @return {@code long} value containing the room count
+     */
+    public long getTotalRoomCount(){
+        return repository.count();
+    }
+
+    /**
      * Helper method for conversions between the model class and DTO class
      * @param save given model class
      * @return {@link RoomResponseDto} containing room details

@@ -265,4 +265,24 @@ public class BookingService {
 
         return dto;
     }
+
+    /**
+     * Get active bookings
+     * @return {@code long} value of active bookings
+     */
+    public Long getActiveBookings(){
+        return repository.getActiveBookings(LocalDateTime.now(),BookingStatus.BOOKED);
+    }
+
+    /**
+     * Get upcoming bookings
+     * @return {@code long} value of active bookings
+     */
+    public Long getUpcomingBookings(){
+        return repository.getUpcomingBookings(
+                LocalDateTime.now(),
+                LocalDateTime.now().plusDays(7),
+                BookingStatus.BOOKED
+        );
+    }
 }
