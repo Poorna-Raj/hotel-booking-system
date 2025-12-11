@@ -4,6 +4,7 @@ import com.hbs.user_service.data.dto.UserRequestDto;
 import com.hbs.user_service.data.dto.UserResponseDto;
 import com.hbs.user_service.service.UserService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,12 +22,12 @@ public class UserController {
     }
 
     @GetMapping("/{id}/is-valid")
-    public Boolean isUserValid(@PathVariable long id){
+    public Boolean isUserValid(@Valid @PathVariable @Min(1) long id){
         return service.isUserExist(id);
     }
 
     @GetMapping("/{id}/is-admin")
-    public ResponseEntity<Boolean> validateUserIsAdmin(@PathVariable long id) {
+    public ResponseEntity<Boolean> validateUserIsAdmin(@Valid @PathVariable @Min(1) long id) {
         return new ResponseEntity<>(service.validateUserIsAdmin(id), HttpStatus.OK);
     }
 }
