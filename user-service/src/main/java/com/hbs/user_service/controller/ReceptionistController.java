@@ -3,6 +3,7 @@ package com.hbs.user_service.controller;
 import com.hbs.user_service.data.dto.ReceptionistRegisterDto;
 import com.hbs.user_service.data.dto.ReceptionistResponseDto;
 import com.hbs.user_service.service.ReceptionistService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +18,7 @@ public class ReceptionistController {
     private ReceptionistService service;
 
     @PostMapping
-    public ResponseEntity<ReceptionistResponseDto> addReceptionist(@RequestBody ReceptionistRegisterDto dto){
+    public ResponseEntity<ReceptionistResponseDto> addReceptionist(@Valid @RequestBody ReceptionistRegisterDto dto){
         return new ResponseEntity<>(service.addReceptionist(dto), HttpStatus.CREATED);
     }
 
@@ -32,7 +33,7 @@ public class ReceptionistController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ReceptionistResponseDto> updateReceptionistById(@PathVariable long id, @RequestBody ReceptionistRegisterDto dto){
+    public ResponseEntity<ReceptionistResponseDto> updateReceptionistById(@PathVariable long id, @Valid @RequestBody ReceptionistRegisterDto dto){
         return new ResponseEntity<>(service.updateReceptionist(id,dto),HttpStatus.OK);
     }
 
