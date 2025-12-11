@@ -1,12 +1,30 @@
 package com.hbs.booking_service.data.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
+
 public class PaymentRequestDto {
+    @Positive(message = "Booking ID must be positive")
     private long bookingId;
+
+    @Positive(message = "User ID must be positive")
     private long userId;
+
+    @Positive(message = "Amount must be positive")
     private double amount;
+
+    @NotBlank(message = "Payment type cannot be empty")
     private String paymentType;
+
+    @NotBlank(message = "Payment status cannot be empty")
     private String paymentStatus;
+
+    @NotBlank(message = "Transaction ID cannot be empty")
+    @Size(max = 50, message = "Transaction ID must be at most 50 characters")
     private String transactionId;
+
+    @NotBlank(message = "Payment reason cannot be empty")
     private String paymentReason;
 
     public long getBookingId() {
