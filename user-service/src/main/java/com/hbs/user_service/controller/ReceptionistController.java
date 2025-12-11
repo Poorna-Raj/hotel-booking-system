@@ -17,27 +17,27 @@ public class ReceptionistController {
     private ReceptionistService service;
 
     @PostMapping
-    public ResponseEntity<ReceptionistResponseDto> addAdmin(@RequestBody ReceptionistRegisterDto dto){
+    public ResponseEntity<ReceptionistResponseDto> addReceptionist(@RequestBody ReceptionistRegisterDto dto){
         return new ResponseEntity<>(service.addReceptionist(dto), HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ReceptionistResponseDto> getAdminById(@PathVariable long id){
+    public ResponseEntity<ReceptionistResponseDto> getReceptionistById(@PathVariable long id){
         return new ResponseEntity<>(service.getReceptionistById(id),HttpStatus.OK);
     }
 
     @GetMapping
-    public ResponseEntity<List<ReceptionistResponseDto>> getAllAdmin(){
+    public ResponseEntity<List<ReceptionistResponseDto>> getAllReceptionist(){
         return new ResponseEntity<>(service.getAllReceptionists(),HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ReceptionistResponseDto> updateAdminById(@PathVariable long id, @RequestBody ReceptionistRegisterDto dto){
+    public ResponseEntity<ReceptionistResponseDto> updateReceptionistById(@PathVariable long id, @RequestBody ReceptionistRegisterDto dto){
         return new ResponseEntity<>(service.updateReceptionist(id,dto),HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<HttpStatus> deleteAdminById(@PathVariable long id){
+    public ResponseEntity<HttpStatus> deleteReceptionistById(@PathVariable long id){
         if(service.deleteReceptionistById(id)){
             return new ResponseEntity<>(HttpStatus.OK);
         } else{
