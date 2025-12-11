@@ -76,7 +76,7 @@ function AdminManager() {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [editForm, setEditForm] = useState({
-    name: "",
+    username: "",
     email: "",
     department: "",
   });
@@ -103,7 +103,7 @@ function AdminManager() {
   const handleEdit = (row) => {
     setSelectedUser(row);
     setEditForm({
-      name: row.name,
+      username: row.username,
       email: row.email,
       department: row.department,
     });
@@ -127,7 +127,7 @@ function AdminManager() {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            name: editForm.name,
+            username: editForm.username,
             email: editForm.email,
             department: editForm.department,
           }),
@@ -143,7 +143,7 @@ function AdminManager() {
           user.id === selectedUser.id
             ? {
                 ...user,
-                name: editForm.name,
+                username: editForm.username,
                 email: editForm.email,
                 department: editForm.department,
               }
@@ -211,8 +211,8 @@ function AdminManager() {
       width: "80px",
     },
     {
-      name: "Name",
-      selector: (row) => row.name,
+      name: "Username",
+      selector: (row) => row.username,
       sortable: true,
       grow: 1,
     },
@@ -245,10 +245,10 @@ function AdminManager() {
 
   const filteredData = data.filter(
     (item) =>
-      item.name.toLowerCase().includes(filterText.toLowerCase()) ||
-      item.email.toLowerCase().includes(filterText.toLowerCase()) ||
-      item.id.toString().includes(filterText) ||
-      item.department.toLowerCase().includes(filterText.toLowerCase())
+      (item.username?.toLowerCase() || "").includes(filterText.toLowerCase()) ||
+      (item.email?.toLowerCase() || "").includes(filterText.toLowerCase()) ||
+      item.id?.toString().includes(filterText) ||
+      (item.department?.toLowerCase() || "").includes(filterText.toLowerCase())
   );
 
   const handleClear = () => {
@@ -326,9 +326,9 @@ function AdminManager() {
                 <label>Name</label>
                 <input
                   type="text"
-                  value={editForm.name}
+                  value={editForm.username}
                   onChange={(e) =>
-                    setEditForm({ ...editForm, name: e.target.value })
+                    setEditForm({ ...editForm, username: e.target.value })
                   }
                   className="form-input"
                 />
