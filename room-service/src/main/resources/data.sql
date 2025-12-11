@@ -1,24 +1,159 @@
-INSERT INTO tbl_rooms (name, room_type, bed_type, bed_count, room_status, base_price, created_by, created_at, updated_at) VALUES
+INSERT INTO tbl_rooms (name, room_type, bed_type, bed_count, room_status, base_price, created_by, created_at, updated_at, image_no_1,image_no_2,image_no_3,image_no_4) VALUES
 -- Standard Rooms (Spring Flowers)
-('ROSE', 'STANDARD', 'SINGLE', 2, 'AVAILABLE', 99.99, 3, NOW(), NOW()),
-('LILY', 'STANDARD', 'DOUBLE', 1, 'AVAILABLE', 119.99, 3, NOW(), NOW()),
-('DAISY', 'STANDARD', 'QUEEN', 1, 'BOOKED', 139.99, 3, NOW(), NOW()),
-('IRIS', 'STANDARD', 'QUEEN', 1, 'AVAILABLE', 139.99, 3, NOW(), NOW()),
+(
+    'ROSE', 
+    'STANDARD', 
+    'SINGLE', 
+    2, 
+    'AVAILABLE', 
+    99.99, 
+    3, 
+    NOW(), 
+    NOW(),
+    'https://raw.githubusercontent.com/Poorna-Raj/hotel-booking-system/refs/heads/feature/add-room-images/room-images/Standard/Rose/1.png',
+    'https://raw.githubusercontent.com/Poorna-Raj/hotel-booking-system/refs/heads/feature/add-room-images/room-images/Standard/Rose/2.png',
+    'https://raw.githubusercontent.com/Poorna-Raj/hotel-booking-system/refs/heads/feature/add-room-images/room-images/Standard/Rose/3.png',
+    'https://raw.githubusercontent.com/Poorna-Raj/hotel-booking-system/refs/heads/feature/add-room-images/room-images/Standard/Rose/4.png'
+    
+),
+(
+    'LILY', 
+    'STANDARD', 
+    'DOUBLE', 
+    1, 
+    'AVAILABLE', 
+    119.99, 
+    3, 
+    NOW(), 
+    NOW(),
+    'https://raw.githubusercontent.com/Poorna-Raj/hotel-booking-system/refs/heads/feature/add-room-images/room-images/Standard/Lily/1.png',
+    'https://raw.githubusercontent.com/Poorna-Raj/hotel-booking-system/refs/heads/feature/add-room-images/room-images/Standard/Lily/2.png',
+    'https://raw.githubusercontent.com/Poorna-Raj/hotel-booking-system/refs/heads/feature/add-room-images/room-images/Standard/Lily/3.png',
+    'https://raw.githubusercontent.com/Poorna-Raj/hotel-booking-system/refs/heads/feature/add-room-images/room-images/Standard/Lily/4.png'
+),
+(
+    'DAISY', 
+    'STANDARD', 
+    'QUEEN', 
+    1, 
+    'BOOKED', 
+    139.99, 
+    3, 
+    NOW(), 
+    NOW(),
+    'https://raw.githubusercontent.com/Poorna-Raj/hotel-booking-system/refs/heads/feature/add-room-images/room-images/Standard/Daisy/1.png',
+    'https://raw.githubusercontent.com/Poorna-Raj/hotel-booking-system/refs/heads/feature/add-room-images/room-images/Standard/Daisy/2.png',
+    'https://raw.githubusercontent.com/Poorna-Raj/hotel-booking-system/refs/heads/feature/add-room-images/room-images/Standard/Daisy/3.png',
+    'https://raw.githubusercontent.com/Poorna-Raj/hotel-booking-system/refs/heads/feature/add-room-images/room-images/Standard/Daisy/4.png'
+),
+(
+    'IRIS', 
+    'STANDARD', 
+    'QUEEN', 
+    1, 
+    'AVAILABLE', 
+    139.99, 
+    3, 
+    NOW(), 
+    NOW()
+    'https://raw.githubusercontent.com/Poorna-Raj/hotel-booking-system/refs/heads/feature/add-room-images/room-images/Standard/Iris/1.png',
+    'https://raw.githubusercontent.com/Poorna-Raj/hotel-booking-system/refs/heads/feature/add-room-images/room-images/Standard/Iris/2.png',
+    'https://raw.githubusercontent.com/Poorna-Raj/hotel-booking-system/refs/heads/feature/add-room-images/room-images/Standard/Iris/3.png',
+    'https://raw.githubusercontent.com/Poorna-Raj/hotel-booking-system/refs/heads/feature/add-room-images/room-images/Standard/Iris/4.png'
+),
 
 -- Deluxe Rooms (Summer Flowers)
-('ORCHID', 'DELUXE', 'QUEEN', 1, 'AVAILABLE', 159.99, 3, NOW(), NOW()),
-('SUNFLOWER', 'DELUXE', 'KING', 1, 'MAINTENANCE', 179.99, 3, NOW(), NOW()),
-('TULIP', 'DELUXE', 'KING', 1, 'AVAILABLE', 179.99, 3, NOW(), NOW()),
-('DAFFODIL', 'DELUXE', 'KING', 1, 'AVAILABLE', 169.99, 3, NOW(), NOW()),
+(
+    'ORCHID', 
+    'DELUXE', 
+    'QUEEN', 
+    1, 
+    'AVAILABLE', 
+    159.99, 
+    3, 
+    NOW(), 
+    NOW()
+    'https://raw.githubusercontent.com/Poorna-Raj/hotel-booking-system/refs/heads/feature/add-room-images/room-images/Deluxe/Orchid/1.png',
+    'https://raw.githubusercontent.com/Poorna-Raj/hotel-booking-system/refs/heads/feature/add-room-images/room-images/Deluxe/Orchid/2.png',
+    'https://raw.githubusercontent.com/Poorna-Raj/hotel-booking-system/refs/heads/feature/add-room-images/room-images/Deluxe/Orchid/3.png',
+    'https://raw.githubusercontent.com/Poorna-Raj/hotel-booking-system/refs/heads/feature/add-room-images/room-images/Deluxe/Orchid/4.png'    
+),
+(
+    'SUNFLOWER', 
+    'DELUXE', 
+    'KING', 
+    1, 
+    'MAINTENANCE', 
+    179.99, 
+    3, 
+    NOW(), 
+    NOW()
+    'https://raw.githubusercontent.com/Poorna-Raj/hotel-booking-system/refs/heads/feature/add-room-images/room-images/Deluxe/Sunflower/1.png',
+    'https://raw.githubusercontent.com/Poorna-Raj/hotel-booking-system/refs/heads/feature/add-room-images/room-images/Deluxe/Sunflower/2.png',
+    'https://raw.githubusercontent.com/Poorna-Raj/hotel-booking-system/refs/heads/feature/add-room-images/room-images/Deluxe/Sunflower/3.png',
+    'https://raw.githubusercontent.com/Poorna-Raj/hotel-booking-system/refs/heads/feature/add-room-images/room-images/Deluxe/Sunflower/4.png'    
+),
 
 -- Family Rooms (Fragrant Flowers)
-('LAVENDER', 'FAMILY', 'DOUBLE', 2, 'AVAILABLE', 199.99, 3, NOW(), NOW()),
-('DAHLIA', 'FAMILY', 'QUEEN', 2, 'BOOKED', 219.99, 3, NOW(), NOW()),
-('PEONY', 'FAMILY', 'KING', 2, 'AVAILABLE', 239.99, 3, NOW(), NOW()),
-('GARDENIA', 'FAMILY', 'QUEEN', 2, 'AVAILABLE', 229.99, 3, NOW(), NOW()),
+(
+    'LAVENDER', 
+    'FAMILY', 
+    'DOUBLE', 
+    2, 
+    'AVAILABLE', 
+    199.99, 
+    3, 
+    NOW(), 
+    NOW()
+    'https://raw.githubusercontent.com/Poorna-Raj/hotel-booking-system/refs/heads/feature/add-room-images/room-images/Family/Lavender/1.png',
+    'https://raw.githubusercontent.com/Poorna-Raj/hotel-booking-system/refs/heads/feature/add-room-images/room-images/Family/Lavender/2.png',
+    'https://raw.githubusercontent.com/Poorna-Raj/hotel-booking-system/refs/heads/feature/add-room-images/room-images/Family/Lavender/3.png',
+    'https://raw.githubusercontent.com/Poorna-Raj/hotel-booking-system/refs/heads/feature/add-room-images/room-images/Family/Lavender/4.png'    
+),
+(
+    'DAHLIA', 
+    'FAMILY', 
+    'QUEEN', 
+    2, 
+    'BOOKED', 
+    219.99, 
+    3, 
+    NOW(), 
+    NOW()
+    'https://raw.githubusercontent.com/Poorna-Raj/hotel-booking-system/refs/heads/feature/add-room-images/room-images/Family/Dahlia/1.png',
+    'https://raw.githubusercontent.com/Poorna-Raj/hotel-booking-system/refs/heads/feature/add-room-images/room-images/Family/Dahlia/2.png',
+    'https://raw.githubusercontent.com/Poorna-Raj/hotel-booking-system/refs/heads/feature/add-room-images/room-images/Family/Dahlia/3.png',
+    'https://raw.githubusercontent.com/Poorna-Raj/hotel-booking-system/refs/heads/feature/add-room-images/room-images/Family/Dahlia/4.png'      
+),
 
 -- Suite Rooms (Exotic Flowers)
-('LOTUS', 'SUITE', 'KING', 3, 'AVAILABLE', 299.99, 3, NOW(), NOW()),
-('MAGNOLIA', 'SUITE', 'KING', 3, 'UNAVAILABLE', 329.99, 3, NOW(), NOW()),
-('JASMINE', 'SUITE', 'KING', 3, 'AVAILABLE', 349.99, 3, NOW(), NOW()),
-('HIBISCUS', 'SUITE', 'KING', 3, 'AVAILABLE', 359.99, 3, NOW(), NOW());
+(
+    'JASMINE', 
+    'SUITE', 
+    'KING', 
+    3, 
+    'AVAILABLE', 
+    349.99, 
+    3, 
+    NOW(), 
+    NOW()
+    'https://raw.githubusercontent.com/Poorna-Raj/hotel-booking-system/refs/heads/feature/add-room-images/room-images/Suite/Jasmin/1.png',
+    'https://raw.githubusercontent.com/Poorna-Raj/hotel-booking-system/refs/heads/feature/add-room-images/room-images/Suite/Jasmin/2.png',
+    'https://raw.githubusercontent.com/Poorna-Raj/hotel-booking-system/refs/heads/feature/add-room-images/room-images/Suite/Jasmin/3.png',
+    'https://raw.githubusercontent.com/Poorna-Raj/hotel-booking-system/refs/heads/feature/add-room-images/room-images/Suite/Jasmin/4.png'      
+),
+(
+    'HIBISCUS', 
+    'SUITE', 
+    'KING', 
+    3, 
+    'AVAILABLE', 
+    359.99, 
+    3, 
+    NOW(), 
+    NOW()
+    'https://raw.githubusercontent.com/Poorna-Raj/hotel-booking-system/refs/heads/feature/add-room-images/room-images/Suite/Hibiscus/1.png',
+    'https://raw.githubusercontent.com/Poorna-Raj/hotel-booking-system/refs/heads/feature/add-room-images/room-images/Suite/Hibiscus/2.png',
+    'https://raw.githubusercontent.com/Poorna-Raj/hotel-booking-system/refs/heads/feature/add-room-images/room-images/Suite/Hibiscus/3.png',
+    'https://raw.githubusercontent.com/Poorna-Raj/hotel-booking-system/refs/heads/feature/add-room-images/room-images/Suite/Hibiscus/4.png'     
+);
