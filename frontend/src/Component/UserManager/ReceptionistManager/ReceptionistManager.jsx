@@ -76,7 +76,7 @@ function ReceptionistManager() {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [editForm, setEditForm] = useState({
-    name: "",
+    username: "",
     email: "",
     address: "",
   });
@@ -103,7 +103,7 @@ function ReceptionistManager() {
   const handleEdit = (row) => {
     setSelectedUser(row);
     setEditForm({
-      name: row.name,
+      username: row.username,
       email: row.email,
       address: row.address,
     });
@@ -127,7 +127,7 @@ function ReceptionistManager() {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            name: editForm.name,
+            username: editForm.username,
             email: editForm.email,
             address: editForm.address,
           }),
@@ -143,7 +143,7 @@ function ReceptionistManager() {
           user.id === selectedUser.id
             ? {
                 ...user,
-                name: editForm.name,
+                username: editForm.username,
                 email: editForm.email,
                 address: editForm.address,
               }
@@ -211,8 +211,8 @@ function ReceptionistManager() {
       width: "80px",
     },
     {
-      name: "Name",
-      selector: (row) => row.name,
+      name: "Username",
+      selector: (row) => row.username,
       sortable: true,
       grow: 1,
     },
@@ -245,10 +245,10 @@ function ReceptionistManager() {
 
   const filteredData = data.filter(
     (item) =>
-      item.name.toLowerCase().includes(filterText.toLowerCase()) ||
-      item.email.toLowerCase().includes(filterText.toLowerCase()) ||
-      item.id.toString().includes(filterText) ||
-      item.address.toLowerCase().includes(filterText.toLowerCase())
+      (item.username?.toLowerCase() || "").includes(filterText.toLowerCase()) ||
+      (item.email?.toLowerCase() || "").includes(filterText.toLowerCase()) ||
+      item.id?.toString().includes(filterText) ||
+      (item.address?.toLowerCase() || "").includes(filterText.toLowerCase())
   );
 
   const handleClear = () => {
@@ -326,9 +326,9 @@ function ReceptionistManager() {
                 <label>Name</label>
                 <input
                   type="text"
-                  value={editForm.name}
+                  value={editForm.username}
                   onChange={(e) =>
-                    setEditForm({ ...editForm, name: e.target.value })
+                    setEditForm({ ...editForm, username: e.target.value })
                   }
                   className="form-input"
                 />
