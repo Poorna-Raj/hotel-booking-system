@@ -3,6 +3,7 @@ package com.hbs.user_service.controller;
 import com.hbs.user_service.data.dto.AdminRegisterDto;
 import com.hbs.user_service.data.dto.AdminResponseDto;
 import com.hbs.user_service.service.AdminService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +18,7 @@ public class AdminController {
     private AdminService service;
 
     @PostMapping
-    public ResponseEntity<AdminResponseDto> addAdmin(@RequestBody AdminRegisterDto dto){
+    public ResponseEntity<AdminResponseDto> addAdmin(@Valid @RequestBody AdminRegisterDto dto){
         return new ResponseEntity<>(service.addAdmin(dto), HttpStatus.CREATED);
     }
 
@@ -32,7 +33,7 @@ public class AdminController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<AdminResponseDto> updateAdminById(@PathVariable long id, @RequestBody AdminRegisterDto dto){
+    public ResponseEntity<AdminResponseDto> updateAdminById(@PathVariable long id, @Valid @RequestBody AdminRegisterDto dto){
         return new ResponseEntity<>(service.updateAdmin(id,dto),HttpStatus.OK);
     }
 
