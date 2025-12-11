@@ -1,6 +1,7 @@
 package com.hbs.booking_service.data.repository;
 
 import com.hbs.booking_service.data.model.Booking;
+import com.hbs.booking_service.data.model.BookingStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -34,5 +35,27 @@ public interface BookingRepository extends JpaRepository<Booking,Long> {
             @Param("bookingId") Long bookingId
     );
 
+    @Query("""
+    SELECT COUNT(b) FROM Booking b
+    WHERE b.checkIn <= :today
+    AND b.checkOut > :today
+    AND b.bookingStatus = :booked
+""")
+    Long getActiveBookings(
+            @Param("today") LocalDateTime today,
+            @Param("booked") BookingStatus status
+    );
+
+    @Query("""
+    SELECT COUNT(b) FROM Booking b
+    WHERE b.checkIn >= :today
+    AND b.checkIn <= :week
+    AND b.bookingStatus = :booked
+""")
+    Long getUpcomingBookings(
+            @Param("today") LocalDateTime today,
+            @Param("week") LocalDateTime week,
+            @Param("booked") BookingStatus status
+    );
 
 }
