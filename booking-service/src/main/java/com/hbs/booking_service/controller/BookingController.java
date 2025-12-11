@@ -76,4 +76,14 @@ public class BookingController {
         service.setCheckoutById(dto,id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @GetMapping("/active")
+    public Long getActiveBookings(){
+        return service.getActiveBookings();
+    }
+
+    @GetMapping("/upcoming")
+    public Long getUpcomingBookings(){
+        return service.getUpcomingBookings();
+    }
 }
