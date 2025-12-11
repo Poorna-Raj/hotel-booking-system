@@ -1,12 +1,31 @@
 package com.hbs.room_service.data.dto;
 
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
+
 public class RoomUpdateRequestDto {
+    @NotBlank(message = "Room name cannot be empty")
+    @Size(max = 50, message = "Room name must be at most 50 characters")
     private String name;
+
+    @NotBlank(message = "Room type cannot be empty")
     private String roomType;
+
+    @NotBlank(message = "Bed type cannot be empty")
     private String bedType;
+
+    @Min(value = 1, message = "Bed count must be at least 1")
     private int bedCount;
+
+    @NotBlank(message = "Room status cannot be empty")
     private String roomStatus;
+
+    @Positive(message = "Base price must be positive")
     private double basePrice;
+
+    @NotBlank(message = "Image 1 is required")
     private String imageNo1;
     private String imageNo2;
     private String imageNo3;

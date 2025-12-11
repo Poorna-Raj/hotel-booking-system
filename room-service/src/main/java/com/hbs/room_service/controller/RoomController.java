@@ -4,6 +4,8 @@ import com.hbs.room_service.data.dto.RoomRequestDto;
 import com.hbs.room_service.data.dto.RoomResponseDto;
 import com.hbs.room_service.data.dto.RoomUpdateRequestDto;
 import com.hbs.room_service.service.RoomService;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,23 +20,23 @@ public class RoomController {
     private RoomService service;
 
     @PostMapping
-    public ResponseEntity<RoomResponseDto> addRoom(@RequestBody RoomRequestDto dto){
+    public ResponseEntity<RoomResponseDto> addRoom(@Valid @RequestBody RoomRequestDto dto){
         return new ResponseEntity<>(service.addRoom(dto), HttpStatus.CREATED);
     }
 
     @PutMapping(path = "/{id}")
     public ResponseEntity<RoomResponseDto> updateRoom(
-            @RequestBody RoomUpdateRequestDto dto,
-            @PathVariable long id,
-            @RequestParam long userId
+            @Valid @RequestBody RoomUpdateRequestDto dto,
+            @Valid @PathVariable @Min(1) long id,
+            @Valid @RequestParam @Min(1) long userId
             ){
         return new ResponseEntity<>(service.updateRoom(userId,id,dto),HttpStatus.OK);
     }
 
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<HttpStatus> deleteRoomById(
-            @PathVariable long id,
-            @RequestParam long userId
+            @Valid @PathVariable @Min(1) long id,
+            @Valid @RequestParam @Min(1) long userId
     ){
         if(service.deleteRoom(userId,id)) {
             return new ResponseEntity<>(HttpStatus.OK);
@@ -44,7 +46,7 @@ public class RoomController {
     }
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<RoomResponseDto> getRoomById(@PathVariable long id){
+    public ResponseEntity<RoomResponseDto> getRoomById(@Valid @PathVariable @Min(1) long id){
         return new ResponseEntity<>(service.getRoomById(id),HttpStatus.OK);
     }
 
@@ -54,17 +56,17 @@ public class RoomController {
     }
 
     @GetMapping("/{id}/price")
-    public Double getRoomPriceById(@PathVariable long id){
+    public Double getRoomPriceById(@Valid @PathVariable @Min(1) long id){
         return service.getRoomPriceById(id);
     }
 
     @GetMapping("/{id}/is-available")
-    public Boolean isRoomAvailableForBooking(@PathVariable long id){
+    public Boolean isRoomAvailableForBooking(@Valid @PathVariable @Min(1) long id){
         return service.isRoomValidForBooking(id);
     }
 
     @GetMapping("/{id}/capacity")
-    public Integer getRoomCapacityById(@PathVariable long id){
+    public Integer getRoomCapacityById(@Valid @PathVariable @Min(1) long id){
         return service.getRoomCapacityById(id);
     }
 }
