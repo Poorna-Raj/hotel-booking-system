@@ -1,20 +1,20 @@
-INSERT INTO tbl_rooms (name, room_type, bed_type, bed_count, room_status, base_price, created_by, created_at, updated_at, image_no_1,image_no_2,image_no_3,image_no_4) VALUES
+INSERT INTO tbl_rooms (name, room_type, bed_type, bed_count, room_status, base_price, created_by, created_at, updated_at, image_no1,image_no2,image_no3,image_no4) VALUES
 -- Standard Rooms (Spring Flowers)
 (
-    'ROSE', 
-    'STANDARD', 
-    'SINGLE', 
-    2, 
-    'AVAILABLE', 
-    99.99, 
-    3, 
-    NOW(), 
+    'ROSE',
+    'STANDARD',
+    'SINGLE',
+    2,
+    'AVAILABLE',
+    99.99,
+    3,
+    NOW(),
     NOW(),
     'https://raw.githubusercontent.com/Poorna-Raj/hotel-booking-system/refs/heads/feature/add-room-images/room-images/Standard/Rose/1.png',
     'https://raw.githubusercontent.com/Poorna-Raj/hotel-booking-system/refs/heads/feature/add-room-images/room-images/Standard/Rose/2.png',
     'https://raw.githubusercontent.com/Poorna-Raj/hotel-booking-system/refs/heads/feature/add-room-images/room-images/Standard/Rose/3.png',
     'https://raw.githubusercontent.com/Poorna-Raj/hotel-booking-system/refs/heads/feature/add-room-images/room-images/Standard/Rose/4.png'
-    
+
 ),
 (
     'LILY', 
@@ -55,7 +55,7 @@ INSERT INTO tbl_rooms (name, room_type, bed_type, bed_count, room_status, base_p
     139.99, 
     3, 
     NOW(), 
-    NOW()
+    NOW(),
     'https://raw.githubusercontent.com/Poorna-Raj/hotel-booking-system/refs/heads/feature/add-room-images/room-images/Standard/Iris/1.png',
     'https://raw.githubusercontent.com/Poorna-Raj/hotel-booking-system/refs/heads/feature/add-room-images/room-images/Standard/Iris/2.png',
     'https://raw.githubusercontent.com/Poorna-Raj/hotel-booking-system/refs/heads/feature/add-room-images/room-images/Standard/Iris/3.png',
@@ -72,7 +72,7 @@ INSERT INTO tbl_rooms (name, room_type, bed_type, bed_count, room_status, base_p
     159.99, 
     3, 
     NOW(), 
-    NOW()
+    NOW(),
     'https://raw.githubusercontent.com/Poorna-Raj/hotel-booking-system/refs/heads/feature/add-room-images/room-images/Deluxe/Orchid/1.png',
     'https://raw.githubusercontent.com/Poorna-Raj/hotel-booking-system/refs/heads/feature/add-room-images/room-images/Deluxe/Orchid/2.png',
     'https://raw.githubusercontent.com/Poorna-Raj/hotel-booking-system/refs/heads/feature/add-room-images/room-images/Deluxe/Orchid/3.png',
@@ -87,7 +87,7 @@ INSERT INTO tbl_rooms (name, room_type, bed_type, bed_count, room_status, base_p
     179.99, 
     3, 
     NOW(), 
-    NOW()
+    NOW(),
     'https://raw.githubusercontent.com/Poorna-Raj/hotel-booking-system/refs/heads/feature/add-room-images/room-images/Deluxe/Sunflower/1.png',
     'https://raw.githubusercontent.com/Poorna-Raj/hotel-booking-system/refs/heads/feature/add-room-images/room-images/Deluxe/Sunflower/2.png',
     'https://raw.githubusercontent.com/Poorna-Raj/hotel-booking-system/refs/heads/feature/add-room-images/room-images/Deluxe/Sunflower/3.png',
@@ -104,7 +104,7 @@ INSERT INTO tbl_rooms (name, room_type, bed_type, bed_count, room_status, base_p
     199.99, 
     3, 
     NOW(), 
-    NOW()
+    NOW(),
     'https://raw.githubusercontent.com/Poorna-Raj/hotel-booking-system/refs/heads/feature/add-room-images/room-images/Family/Lavender/1.png',
     'https://raw.githubusercontent.com/Poorna-Raj/hotel-booking-system/refs/heads/feature/add-room-images/room-images/Family/Lavender/2.png',
     'https://raw.githubusercontent.com/Poorna-Raj/hotel-booking-system/refs/heads/feature/add-room-images/room-images/Family/Lavender/3.png',
@@ -119,7 +119,7 @@ INSERT INTO tbl_rooms (name, room_type, bed_type, bed_count, room_status, base_p
     219.99, 
     3, 
     NOW(), 
-    NOW()
+    NOW(),
     'https://raw.githubusercontent.com/Poorna-Raj/hotel-booking-system/refs/heads/feature/add-room-images/room-images/Family/Dahlia/1.png',
     'https://raw.githubusercontent.com/Poorna-Raj/hotel-booking-system/refs/heads/feature/add-room-images/room-images/Family/Dahlia/2.png',
     'https://raw.githubusercontent.com/Poorna-Raj/hotel-booking-system/refs/heads/feature/add-room-images/room-images/Family/Dahlia/3.png',
@@ -136,7 +136,7 @@ INSERT INTO tbl_rooms (name, room_type, bed_type, bed_count, room_status, base_p
     349.99, 
     3, 
     NOW(), 
-    NOW()
+    NOW(),
     'https://raw.githubusercontent.com/Poorna-Raj/hotel-booking-system/refs/heads/feature/add-room-images/room-images/Suite/Jasmin/1.png',
     'https://raw.githubusercontent.com/Poorna-Raj/hotel-booking-system/refs/heads/feature/add-room-images/room-images/Suite/Jasmin/2.png',
     'https://raw.githubusercontent.com/Poorna-Raj/hotel-booking-system/refs/heads/feature/add-room-images/room-images/Suite/Jasmin/3.png',
@@ -151,7 +151,7 @@ INSERT INTO tbl_rooms (name, room_type, bed_type, bed_count, room_status, base_p
     359.99, 
     3, 
     NOW(), 
-    NOW()
+    NOW(),
     'https://raw.githubusercontent.com/Poorna-Raj/hotel-booking-system/refs/heads/feature/add-room-images/room-images/Suite/Hibiscus/1.png',
     'https://raw.githubusercontent.com/Poorna-Raj/hotel-booking-system/refs/heads/feature/add-room-images/room-images/Suite/Hibiscus/2.png',
     'https://raw.githubusercontent.com/Poorna-Raj/hotel-booking-system/refs/heads/feature/add-room-images/room-images/Suite/Hibiscus/3.png',
