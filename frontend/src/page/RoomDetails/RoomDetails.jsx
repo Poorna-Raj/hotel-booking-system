@@ -49,6 +49,9 @@ const RoomDetails = () => {
   const handleUpdateSubmit = async (formData) => {
     try {
       const userId = localStorage.getItem("userId");
+      if (!userId) {
+        navigate("/");
+      }
       const res = await updateRoomById(id, formData, userId);
       if (res.status === 200) {
         alert("Successfully updated!");
@@ -70,6 +73,9 @@ const RoomDetails = () => {
   const handleDeleteConfirm = async (roomId) => {
     try {
       const userId = localStorage.getItem("userId");
+      if (!userId) {
+        navigate("/");
+      }
       const res = await deleteRoomById(roomId, userId);
       if (res.status === 200) {
         alert("Successfully deleted!");

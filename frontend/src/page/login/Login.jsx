@@ -60,7 +60,7 @@ function Login() {
       console.log(`${activeTab} successful:`, response.data);
 
       if (activeTab === "login" && response.data && response.status === 200) {
-        localStorage.setItem("user", JSON.stringify(response.data));
+        localStorage.setItem("userId", response.data.id);
         navigate("/Dashboard");
       }
 
