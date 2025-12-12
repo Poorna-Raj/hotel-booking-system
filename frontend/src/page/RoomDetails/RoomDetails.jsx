@@ -3,7 +3,7 @@ import "./RoomDetails.css";
 import UpdateRoomForm from "../../Component/CRUD-room/Update-Room/UpdateRoom";
 import DeleteRoomModal from "../../Component/CRUD-room/Delete-Room/DeleteRoom";
 import { useNavigate, useParams } from "react-router-dom";
-import { getRoomById } from "./api";
+import { getRoomById, updateRoomById } from "./api";
 
 const RoomDetails = () => {
   const [showUpdateForm, setShowUpdateForm] = useState(false);
@@ -46,13 +46,19 @@ const RoomDetails = () => {
     setShowUpdateForm(false);
   };
 
-  const handleUpdateSubmit = (formData) => {
-    // Handle update submission - add API call here
-    console.log("Updated room data:", formData);
-
-    // After successful update
+  const handleUpdateSubmit = async (formData) => {
+    try {
+      const userId = localStorage.getItem("userId");
+      const res = await updateRoomById(userId, formData);
+      if (res.status === 200) {
+        alert("Successfully updated!");
+        fetchRoom();
+      }
+    } catch (err) {
+      console.error("Failed to fetch room: ", err);
+      alert(err.message);
+    }
     setShowUpdateForm(false);
-    alert("Room updated successfully!");
 
     // You might want to refresh the room data or navigate back
   };
