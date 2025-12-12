@@ -1,31 +1,34 @@
-import React, { useState } from 'react';
-import './RoomDetails.css';
-import UpdateRoomForm from '../../Component/CRUD-room/Update-Room/UpdateRoom';
-import DeleteRoomModal from '../../Component/CRUD-room/Delete-Room/DeleteRoom';
+import React, { startTransition, useEffect, useState } from "react";
+import "./RoomDetails.css";
+import UpdateRoomForm from "../../Component/CRUD-room/Update-Room/UpdateRoom";
+import DeleteRoomModal from "../../Component/CRUD-room/Delete-Room/DeleteRoom";
+import { useNavigate, useParams } from "react-router-dom";
+import { getRoomById } from "./api";
 
 const RoomDetails = () => {
   const [showUpdateForm, setShowUpdateForm] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const { id } = useParams();
+  const [roomData, setRoomData] = useState(null);
+  const navigate = useNavigate();
 
-  // Sample room data - you can pass this as props or fetch from API
-  const room = {
-    id: 1,
-    name: 'Deluxe Suite',
-    type: 'Luxury',
-    bedSize: 'King Size',
-    price: 12500,
-    status: 'Available',
-    roomNumber: '101',
-    floor: '1st Floor',
-    capacity: '2 Adults',
-    view: 'City View',
-    image: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=800&h=500&fit=crop',
-    additionalImages: [
-      'https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=300&h=200&fit=crop',
-      'https://images.unsplash.com/photo-1590490360182-c33d57733427?w=300&h=200&fit=crop',
-      'https://images.unsplash.com/photo-1566665797739-1674de7a421a?w=300&h=200&fit=crop'
-    ]
+  const fetchRoom = async () => {
+    try {
+      const res = await getRoomById(id);
+      if (res.status === 200) {
+        startTransition(() => {
+          setRoomData(res.data);
+        });
+      }
+    } catch (err) {
+      console.error(err.message);
+      alert(err.error);
+    }
   };
+
+  useEffect(() => {
+    fetchRoom();
+  }, [id]);
 
   const handleUpdate = () => {
     setShowUpdateForm(true);
@@ -36,9 +39,7 @@ const RoomDetails = () => {
   };
 
   const handleBack = () => {
-    // Navigate back to room list
-    console.log('Go back to room list');
-    // You can add navigation here: navigate('/rooms')
+    navigate("/RoomList");
   };
 
   const handleCloseUpdateForm = () => {
@@ -47,12 +48,12 @@ const RoomDetails = () => {
 
   const handleUpdateSubmit = (formData) => {
     // Handle update submission - add API call here
-    console.log('Updated room data:', formData);
-    
+    console.log("Updated room data:", formData);
+
     // After successful update
     setShowUpdateForm(false);
-    alert('Room updated successfully!');
-    
+    alert("Room updated successfully!");
+
     // You might want to refresh the room data or navigate back
   };
 
@@ -62,15 +63,23 @@ const RoomDetails = () => {
 
   const handleDeleteConfirm = (roomId) => {
     // Handle delete confirmation - add API call here
-    console.log('Deleting room:', roomId);
-    
+    console.log("Deleting room:", roomId);
+
     // After successful deletion
     setShowDeleteModal(false);
-    alert('Room deleted successfully!');
-    
+    alert("Room deleted successfully!");
+
     // Navigate back to room list
     // navigate('/rooms')
   };
+
+  if (!roomData) return <p>Loading room details...</p>;
+
+  const additionalImages = [
+    roomData.imageNo2,
+    roomData.imageNo3,
+    roomData.imageNo4,
+  ].filter(Boolean);
 
   return (
     <div className="room-details-container">
@@ -91,73 +100,88 @@ const RoomDetails = () => {
       <div className="details-content">
         {/* Main Image Section */}
         <div className="main-image-section">
-          <img src={room.image} alt={room.name} className="main-image" />
-          <span className={`status-badge ${room.status.toLowerCase()}`}>
-            {room.status}
+          <img
+            src={roomData.imageNo1}
+            alt={roomData.name}
+            className="main-image"
+          />
+          <span className={`status-badge ${roomData.roomStatus.toLowerCase()}`}>
+            {roomData.roomStatus}
           </span>
         </div>
 
         {/* Additional Images */}
         <div className="additional-images">
-          {room.additionalImages.map((img, index) => (
-            <img key={index} src={img} alt={`Room view ${index + 1}`} className="thumbnail-image" />
+          {additionalImages.map((img, index) => (
+            <img
+              key={index}
+              src={img}
+              alt={`Room view ${index + 1}`}
+              className="thumbnail-image"
+            />
           ))}
         </div>
 
         {/* Room Information */}
         <div className="info-section">
           <div className="info-header">
-            <h1 className="room-title">{room.name}</h1>
-            <div className="room-price-large">Rs. {room.price.toLocaleString()}</div>
+            <h1 className="room-title">{roomData.name}</h1>
+            <div className="room-price-large">
+              USD {roomData.basePrice.toLocaleString()}
+            </div>
           </div>
 
           {/* Details Grid */}
           <div className="details-grid">
             <div className="detail-card">
-              <div className="detail-icon">🏠</div>
+              <div className="detail-icon">🏷️</div>
               <div className="detail-info">
-                <span className="detail-label">Room Number</span>
-                <span className="detail-value">{room.roomNumber}</span>
-              </div>
-            </div>
-
-            <div className="detail-card">
-              <div className="detail-icon">🏢</div>
-              <div className="detail-info">
-                <span className="detail-label">Floor</span>
-                <span className="detail-value">{room.floor}</span>
+                <span className="detail-label">Room Type</span>
+                <span className="detail-value">{roomData.roomType}</span>
               </div>
             </div>
 
             <div className="detail-card">
               <div className="detail-icon">🛏️</div>
               <div className="detail-info">
-                <span className="detail-label">Bed Size</span>
-                <span className="detail-value">{room.bedSize}</span>
+                <span className="detail-label">Bed Type</span>
+                <span className="detail-value">{roomData.bedType}</span>
               </div>
             </div>
 
             <div className="detail-card">
-              <div className="detail-icon">👥</div>
+              <div className="detail-icon">🔢</div>
               <div className="detail-info">
-                <span className="detail-label">Capacity</span>
-                <span className="detail-value">{room.capacity}</span>
+                <span className="detail-label">Bed Count</span>
+                <span className="detail-value">{roomData.bedCount}</span>
               </div>
             </div>
 
             <div className="detail-card">
-              <div className="detail-icon">🏷️</div>
+              <div className="detail-icon">📅</div>
               <div className="detail-info">
-                <span className="detail-label">Room Type</span>
-                <span className="detail-value">{room.type}</span>
+                <span className="detail-label">Created By</span>
+                <span className="detail-value">{roomData.createdBy}</span>
               </div>
             </div>
 
             <div className="detail-card">
-              <div className="detail-icon">🌆</div>
+              <div className="detail-icon">🕒</div>
               <div className="detail-info">
-                <span className="detail-label">View</span>
-                <span className="detail-value">{room.view}</span>
+                <span className="detail-label">Created At</span>
+                <span className="detail-value">
+                  {new Date(roomData.createdAt).toLocaleString()}
+                </span>
+              </div>
+            </div>
+
+            <div className="detail-card">
+              <div className="detail-icon">🕒</div>
+              <div className="detail-info">
+                <span className="detail-label">Update At</span>
+                <span className="detail-value">
+                  {new Date(roomData.updatedAt).toLocaleString()}
+                </span>
               </div>
             </div>
           </div>
@@ -166,8 +190,8 @@ const RoomDetails = () => {
 
       {/* Update Room Form Popup */}
       {showUpdateForm && (
-        <UpdateRoomForm 
-          room={room}
+        <UpdateRoomForm
+          room={roomData}
           onClose={handleCloseUpdateForm}
           onSubmit={handleUpdateSubmit}
         />
@@ -175,8 +199,8 @@ const RoomDetails = () => {
 
       {/* Delete Room Modal */}
       {showDeleteModal && (
-        <DeleteRoomModal 
-          room={room}
+        <DeleteRoomModal
+          room={roomData}
           onClose={handleCloseDeleteModal}
           onConfirm={handleDeleteConfirm}
         />
