@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "./Update-booking.css";
+import { updateBooking } from "./api";
 
 function UpdateBooking({ booking, setShowUpdateBookingModal }) {
   const [formData, setFormData] = useState({
@@ -36,12 +37,26 @@ function UpdateBooking({ booking, setShowUpdateBookingModal }) {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validate()) return;
 
-    console.log("Booking updated:", formData);
-    // Add your API call here to save updated booking
+    try {
+      const res = await updateBooking(booking.id, formData);
+      if (res.status === 200) {
+        alert("Update Success");
+      }
+    } catch (err) {
+      if (err.response) {
+        console.error("Backend error:", err.response.data);
+        console.error("Status:", err.response.status);
+        console.error("Message:", err.response.data.message);
+        alert(err.response.data.message);
+      } else {
+        console.error("Network/Unexpected error:", err);
+        alert("Unexpected error occurred");
+      }
+    }
 
     setSubmitted(true);
     setTimeout(() => setSubmitted(false), 3000);
@@ -149,7 +164,7 @@ function UpdateBooking({ booking, setShowUpdateBookingModal }) {
                   <option value="">Select Status</option>
                   <option value="COMPLETED">Completed</option>
                   <option value="BOOKED">Booked</option>
-                  <option value="CANCELLED">Cancelled</option>
+                  <option value="CANCELED">Canceled</option>
                 </select>
                 {errors.bookingStatus && (
                   <p className="form-error">{errors.bookingStatus}</p>
