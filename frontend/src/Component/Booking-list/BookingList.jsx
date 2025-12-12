@@ -4,7 +4,7 @@ import UpdateBooking from "../CRUD-booking/Update-booking/UpdateBooking";
 import ViewBooking from "../../page/ViewBooking/ViewBooking";
 import DeleteBookingModal from "../CRUD-booking/Delete-booking/Delete-booking";
 import "./BookingList.css";
-import { getAllBookings } from "./api";
+import { deleteBooking, getAllBookings } from "./api";
 
 function BookingList() {
   const [bookingData, setBookingData] = useState([]);
@@ -69,8 +69,24 @@ function BookingList() {
   };
 
   // Handle Delete Confirmation
-  const handleConfirmDelete = () => {
-    //TODO:: fix
+  const handleConfirmDelete = async (id) => {
+    try {
+      const res = await deleteBooking(id);
+      if (res.status === 200) {
+        console.log("Delete Success");
+        fetchBookings();
+      }
+    } catch (err) {
+      if (err.response) {
+        console.error("Backend error:", err.response.data);
+        console.error("Status:", err.response.status);
+        console.error("Message:", err.response.data.message);
+        alert(err.response.data.message);
+      } else {
+        console.error("Network/Unexpected error:", err);
+        alert("Unexpected error occurred");
+      }
+    }
     setShowDeleteBookingModal(false);
   };
 
@@ -161,7 +177,7 @@ function BookingList() {
           <DeleteBookingModal
             booking={selectedBooking}
             handleConfirmDelete={handleConfirmDelete}
-            setShowDeleteBookingModal={setShowDeleteBookingModal}
+            onClose={() => setShowDeleteBookingModal(false)}
           />
         </div>
       )}
