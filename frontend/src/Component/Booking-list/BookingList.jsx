@@ -1,49 +1,37 @@
-import React, { useState } from 'react';
+import React, { startTransition, useEffect, useState } from "react";
 import AddBooking from "../CRUD-booking/Add-booking/AddBooking";
-import UpdateBooking from '../CRUD-booking/Update-booking/UpdateBooking';
-import ViewBooking from '../../page/ViewBooking/ViewBooking';
-import DeleteBookingModal from '../CRUD-booking/Delete-booking/Delete-booking';
-import './BookingList.css';
+import UpdateBooking from "../CRUD-booking/Update-booking/UpdateBooking";
+import ViewBooking from "../../page/ViewBooking/ViewBooking";
+import DeleteBookingModal from "../CRUD-booking/Delete-booking/Delete-booking";
+import "./BookingList.css";
+import { getAllBookings } from "./api";
 
 function BookingList() {
-  const [bookings, setBookings] = useState([
-    { 
-      id: 1, 
-      roomId: 101,
-      createdBy: 1,
-      customerName: 'Arosh Smith', 
-      customerNic: '123456789V',
-      checkIn: '2025-12-01T14:00:00', 
-      checkOut: '2025-12-05T11:00:00',
-      bookingStatus: 'Confirmed',
-      paymentStatus: 'Paid',
-      totalAmount: 450.00,
-      occupancy: 2,
-      createdAt: '2025-11-15T10:30:00',
-      updatedAt: '2025-11-20T15:45:00'
-    },
-    { 
-      id: 2, 
-      roomId: 205,
-      createdBy: 2,
-      customerName: 'John Doe', 
-      customerNic: '987654321V',
-      checkIn: '2025-12-10T14:00:00', 
-      checkOut: '2025-12-12T11:00:00',
-      bookingStatus: 'Pending',
-      paymentStatus: 'Pending',
-      totalAmount: 300.00,
-      occupancy: 1,
-      createdAt: '2025-11-18T09:15:00',
-      updatedAt: '2025-11-18T09:15:00'
-    },
-  ]);
-  
+  const [bookingData, setBookingData] = useState([]);
+
   const [selectedBooking, setSelectedBooking] = useState(null);
   const [showAddBookingModal, setShowAddBookingModal] = useState(false);
   const [showUpdateBookingModal, setShowUpdateBookingModal] = useState(false);
   const [showViewBookingModal, setShowViewBookingModal] = useState(false);
   const [showDeleteBookingModal, setShowDeleteBookingModal] = useState(false);
+
+  const fetchBookings = async () => {
+    try {
+      const res = await getAllBookings();
+      if (res.status === 200) {
+        startTransition(() => {
+          setBookingData(res.data);
+        });
+      }
+    } catch (err) {
+      console.error("Failed to fetch booking: ", err);
+      alert(err.message);
+    }
+  };
+
+  useEffect(() => {
+    fetchBookings();
+  }, []);
 
   // Handle Add Booking
   const handleAddBooking = () => {
@@ -82,18 +70,18 @@ function BookingList() {
 
   // Handle Delete Confirmation
   const handleConfirmDelete = () => {
-    setBookings(bookings.filter((booking) => booking.id !== selectedBooking.id));
+    //TODO:: fix
     setShowDeleteBookingModal(false);
   };
 
   // Format date for display in table
   const formatDate = (dateTime) => {
-    if (!dateTime) return 'N/A';
+    if (!dateTime) return "N/A";
     const date = new Date(dateTime);
-    return date.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric'
+    return date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
     });
   };
 
@@ -115,21 +103,25 @@ function BookingList() {
           </tr>
         </thead>
         <tbody>
-          {bookings.map((booking) => (
+          {bookingData.map((booking) => (
             <tr key={booking.id}>
               <td>{booking.customerName}</td>
               <td>#{booking.roomId}</td>
               <td>{formatDate(booking.checkIn)}</td>
               <td>{formatDate(booking.checkOut)}</td>
               <td>
-                <span className={`status-badge ${booking.bookingStatus.toLowerCase()}`}>
+                <span
+                  className={`status-badge ${booking.bookingStatus.toLowerCase()}`}
+                >
                   {booking.bookingStatus}
                 </span>
               </td>
               <td>
                 <button onClick={() => handleViewBooking(booking)}>View</button>
                 <button onClick={() => handleEditBooking(booking)}>Edit</button>
-                <button onClick={() => handleDeleteBooking(booking)}>Delete</button>
+                <button onClick={() => handleDeleteBooking(booking)}>
+                  Delete
+                </button>
               </td>
             </tr>
           ))}
@@ -139,21 +131,27 @@ function BookingList() {
       {/* Add Booking Modal */}
       {showAddBookingModal && (
         <div className="modal-overlay">
-          <AddBooking setShowAddBookingModal={setShowAddBookingModal} setBookings={setBookings} />
+          <AddBooking setShowAddBookingModal={setShowAddBookingModal} />
         </div>
       )}
 
       {/* Update Booking Modal */}
       {showUpdateBookingModal && (
         <div className="modal-overlay">
-          <UpdateBooking booking={selectedBooking} setShowUpdateBookingModal={setShowUpdateBookingModal} setBookings={setBookings} />
+          <UpdateBooking
+            booking={selectedBooking}
+            setShowUpdateBookingModal={setShowUpdateBookingModal}
+          />
         </div>
       )}
 
       {/* View Booking Modal */}
       {showViewBookingModal && (
         <div className="modal-overlay">
-          <ViewBooking booking={selectedBooking} setShowViewBookingModal={setShowViewBookingModal} />
+          <ViewBooking
+            booking={selectedBooking}
+            setShowViewBookingModal={setShowViewBookingModal}
+          />
         </div>
       )}
 
