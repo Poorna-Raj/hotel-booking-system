@@ -1,19 +1,18 @@
-import React, { useState } from 'react';
-import './UpdateRoom.css';
+import React, { useState } from "react";
+import "./UpdateRoom.css";
 
 const UpdateRoomForm = ({ room, onClose, onSubmit }) => {
   const [formData, setFormData] = useState({
-    name: room.name || '',
-    roomNumber: room.roomNumber || '',
-    type: room.type || '',
-    bedSize: room.bedSize || '',
-    floor: room.floor || '',
-    capacity: room.capacity || '',
-    view: room.view || '',
-    price: room.price || '',
-    status: room.status || 'Available',
-    mainImage: null,
-    additionalImages: []
+    name: room.name,
+    roomType: room.roomType,
+    bedType: room.bedType,
+    bedCount: room.bedCount,
+    roomStatus: room.roomStatus,
+    basePrice: room.basePrice,
+    imageNo1: room.imageNo1,
+    imageNo2: room.imageNo2,
+    imageNo3: room.imageNo3,
+    imageNo4: room.imageNo4,
   });
 
   const [errors, setErrors] = useState({});
@@ -22,41 +21,27 @@ const UpdateRoomForm = ({ room, onClose, onSubmit }) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]: value
+      [name]: value,
     });
     // Clear error when user starts typing
     if (errors[name]) {
       setErrors({
         ...errors,
-        [name]: ''
-      });
-    }
-  };
-
-  const handleFileChange = (e) => {
-    const { name, files } = e.target;
-    if (name === 'mainImage') {
-      setFormData({
-        ...formData,
-        mainImage: files[0]
-      });
-    } else if (name === 'additionalImages') {
-      setFormData({
-        ...formData,
-        additionalImages: Array.from(files)
+        [name]: "",
       });
     }
   };
 
   const validateForm = () => {
     const newErrors = {};
-    if (!formData.name.trim()) newErrors.name = 'Room name is required';
-    if (!formData.roomNumber.trim()) newErrors.roomNumber = 'Room number is required';
-    if (!formData.type) newErrors.type = 'Room type is required';
-    if (!formData.bedSize) newErrors.bedSize = 'Bed size is required';
-    if (!formData.floor.trim()) newErrors.floor = 'Floor is required';
-    if (!formData.capacity.trim()) newErrors.capacity = 'Capacity is required';
-    if (!formData.price.trim()) newErrors.price = 'Price is required';
+    if (!formData.name.trim()) newErrors.name = "Room name is required";
+    if (!formData.roomType) newErrors.roomType = "Room type is required";
+    if (!formData.bedType) newErrors.bedType = "Bed type is required";
+    if (!formData.bedCount || formData.bedCount < 1)
+      newErrors.bedCount = "Bed count must be at least 1";
+    if (!formData.roomStatus) newErrors.roomStatus = "Room status is required";
+    if (!formData.basePrice || formData.basePrice <= 0)
+      newErrors.basePrice = "Base price must be greater than 0";
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -65,7 +50,7 @@ const UpdateRoomForm = ({ room, onClose, onSubmit }) => {
   const handleSubmit = () => {
     if (validateForm()) {
       onSubmit(formData);
-      console.log('Form updated:', formData);
+      console.log("Form updated:", formData);
     }
   };
 
@@ -78,12 +63,14 @@ const UpdateRoomForm = ({ room, onClose, onSubmit }) => {
       <div className="form-container">
         <div className="form-header">
           <h2>Update Room</h2>
-          <button className="close-button" onClick={handleCancel}>×</button>
+          <button className="close-button" onClick={handleCancel}>
+            ×
+          </button>
         </div>
 
         <div className="room-form">
           <div className="form-grid">
-            {/* Room Name */}
+            {/* Name */}
             <div className="form-group">
               <label htmlFor="name">Room Name *</label>
               <input
@@ -92,171 +79,166 @@ const UpdateRoomForm = ({ room, onClose, onSubmit }) => {
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
-                placeholder="e.g., Deluxe Suite"
-                className={errors.name ? 'error' : ''}
+                className={errors.name ? "error" : ""}
               />
-              {errors.name && <span className="error-message">{errors.name}</span>}
-            </div>
-
-            {/* Room Number */}
-            <div className="form-group">
-              <label htmlFor="roomNumber">Room Number *</label>
-              <input
-                type="text"
-                id="roomNumber"
-                name="roomNumber"
-                value={formData.roomNumber}
-                onChange={handleChange}
-                placeholder="e.g., 101"
-                className={errors.roomNumber ? 'error' : ''}
-              />
-              {errors.roomNumber && <span className="error-message">{errors.roomNumber}</span>}
+              {errors.name && (
+                <span className="error-message">{errors.name}</span>
+              )}
             </div>
 
             {/* Room Type */}
             <div className="form-group">
-              <label htmlFor="type">Room Type *</label>
+              <label htmlFor="roomType">Room Type *</label>
               <select
-                id="type"
-                name="type"
-                value={formData.type}
+                id="roomType"
+                name="roomType"
+                value={formData.roomType || ""}
                 onChange={handleChange}
-                className={errors.type ? 'error' : ''}
+                className={errors.roomType ? "error" : ""}
               >
                 <option value="">Select Type</option>
-                <option value="Standard">Standard</option>
-                <option value="Deluxe">Deluxe</option>
-                <option value="Luxury">Luxury</option>
-                <option value="Suite">Suite</option>
+                <option value="STANDARD">Standard</option>
+                <option value="DELUXE">Deluxe</option>
+                <option value="FAMILY">Family</option>
+                <option value="SUITE">Suite</option>
               </select>
-              {errors.type && <span className="error-message">{errors.type}</span>}
+              {errors.roomType && (
+                <span className="error-message">{errors.roomType}</span>
+              )}
             </div>
 
-            {/* Bed Size */}
+            {/* Bed Type */}
             <div className="form-group">
-              <label htmlFor="bedSize">Bed Size *</label>
+              <label htmlFor="bedType">Bed Type *</label>
               <select
-                id="bedSize"
-                name="bedSize"
-                value={formData.bedSize}
+                id="bedType"
+                name="bedType"
+                value={formData.bedType}
                 onChange={handleChange}
-                className={errors.bedSize ? 'error' : ''}
+                className={errors.bedType ? "error" : ""}
               >
-                <option value="">Select Bed Size</option>
-                <option value="Single">Single</option>
-                <option value="Double">Double</option>
-                <option value="Queen Size">Queen Size</option>
-                <option value="King Size">King Size</option>
+                <option value="">Select Bed Type</option>
+                <option value="SINGLE">Single</option>
+                <option value="DOUBLE">Double</option>
+                <option value="QUEEN">Queen</option>
+                <option value="KING">King</option>
               </select>
-              {errors.bedSize && <span className="error-message">{errors.bedSize}</span>}
+              {errors.bedType && (
+                <span className="error-message">{errors.bedType}</span>
+              )}
             </div>
 
-            {/* Floor */}
+            {/* Bed Count */}
             <div className="form-group">
-              <label htmlFor="floor">Floor *</label>
-              <input
-                type="text"
-                id="floor"
-                name="floor"
-                value={formData.floor}
-                onChange={handleChange}
-                placeholder="e.g., 1st Floor"
-                className={errors.floor ? 'error' : ''}
-              />
-              {errors.floor && <span className="error-message">{errors.floor}</span>}
-            </div>
-
-            {/* Capacity */}
-            <div className="form-group">
-              <label htmlFor="capacity">Capacity *</label>
-              <input
-                type="text"
-                id="capacity"
-                name="capacity"
-                value={formData.capacity}
-                onChange={handleChange}
-                placeholder="e.g., 2 Adults"
-                className={errors.capacity ? 'error' : ''}
-              />
-              {errors.capacity && <span className="error-message">{errors.capacity}</span>}
-            </div>
-
-            {/* View */}
-            <div className="form-group">
-              <label htmlFor="view">View</label>
-              <input
-                type="text"
-                id="view"
-                name="view"
-                value={formData.view}
-                onChange={handleChange}
-                placeholder="e.g., City View, Sea View"
-              />
-            </div>
-
-            {/* Price */}
-            <div className="form-group">
-              <label htmlFor="price">Price (Rs.) *</label>
+              <label htmlFor="bedCount">Bed Count *</label>
               <input
                 type="number"
-                id="price"
-                name="price"
-                value={formData.price}
+                id="bedCount"
+                name="bedCount"
+                min="1"
+                value={formData.bedCount}
                 onChange={handleChange}
-                placeholder="e.g., 12500"
-                className={errors.price ? 'error' : ''}
+                className={errors.bedCount ? "error" : ""}
               />
-              {errors.price && <span className="error-message">{errors.price}</span>}
+              {errors.bedCount && (
+                <span className="error-message">{errors.bedCount}</span>
+              )}
             </div>
 
-            {/* Status */}
+            {/* Room Status */}
             <div className="form-group">
-              <label htmlFor="status">Status *</label>
+              <label htmlFor="roomStatus">Status *</label>
               <select
-                id="status"
-                name="status"
-                value={formData.status}
+                id="roomStatus"
+                name="roomStatus"
+                value={formData.roomStatus}
                 onChange={handleChange}
+                className={errors.roomStatus ? "error" : ""}
               >
-                <option value="Available">Available</option>
-                <option value="Booked">Booked</option>
+                <option value="">Select Status</option>
+                <option value="AVAILABLE">Available</option>
+                <option value="BOOKED">Booked</option>
+                <option value="MAINTENANCE">Maintenance</option>
+                <option value="UNAVAILABLE">Unavailable</option>
               </select>
+              {errors.roomStatus && (
+                <span className="error-message">{errors.roomStatus}</span>
+              )}
+            </div>
+
+            {/* Base Price */}
+            <div className="form-group">
+              <label htmlFor="basePrice">Base Price (Rs.) *</label>
+              <input
+                type="number"
+                id="basePrice"
+                name="basePrice"
+                min="0"
+                step="0.01"
+                value={formData.basePrice}
+                onChange={handleChange}
+                className={errors.basePrice ? "error" : ""}
+              />
+              {errors.basePrice && (
+                <span className="error-message">{errors.basePrice}</span>
+              )}
             </div>
           </div>
 
-          {/* Main Image */}
-          <div className="form-group full-width">
-            <label htmlFor="mainImage">Update Main Image (Optional)</label>
+          <div className="form-group">
+            <label htmlFor="imageNo1">Image 1 URL</label>
             <input
-              type="file"
-              id="mainImage"
-              name="mainImage"
-              accept="image/*"
-              onChange={handleFileChange}
+              type="text"
+              id="imageNo1"
+              name="imageNo1"
+              value={formData.imageNo1}
+              onChange={handleChange}
+              placeholder="https://..."
             />
-            <span className="helper-text">Leave empty to keep current image</span>
           </div>
 
-          {/* Additional Images */}
-          <div className="form-group full-width">
-            <label htmlFor="additionalImages">Update Additional Images (Optional, Max 3)</label>
+          <div className="form-group">
+            <label htmlFor="imageNo2">Image 2 URL</label>
             <input
-              type="file"
-              id="additionalImages"
-              name="additionalImages"
-              accept="image/*"
-              multiple
-              onChange={handleFileChange}
+              type="text"
+              id="imageNo2"
+              name="imageNo2"
+              value={formData.imageNo2}
+              onChange={handleChange}
+              placeholder="https://..."
             />
-            <span className="helper-text">Leave empty to keep current images</span>
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="imageNo3">Image 3 URL</label>
+            <input
+              type="text"
+              id="imageNo3"
+              name="imageNo3"
+              value={formData.imageNo3}
+              onChange={handleChange}
+              placeholder="https://..."
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="imageNo4">Image 4 URL</label>
+            <input
+              type="text"
+              id="imageNo4"
+              name="imageNo4"
+              value={formData.imageNo4}
+              onChange={handleChange}
+              placeholder="https://..."
+            />
           </div>
 
           {/* Form Actions */}
           <div className="form-actions">
-            <button type="button" className="cancel-button" onClick={handleCancel}>
+            <button className="cancel-button" onClick={handleCancel}>
               Cancel
             </button>
-            <button type="button" className="submit-button" onClick={handleSubmit}>
+            <button className="submit-button" onClick={handleSubmit}>
               Update Room
             </button>
           </div>

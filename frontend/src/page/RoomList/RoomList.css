@@ -152,7 +152,17 @@
 }
 
 .status-badge.booked {
-  background-color: #f44336;
+  background-color: #1175f8;
+  color: white;
+}
+
+.status-badge.maintenance {
+  background-color: #1175f8;
+  color: white;
+}
+
+.status-badge.unavailable {
+  background-color: #865a09;
   color: white;
 }
 

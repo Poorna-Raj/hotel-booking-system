@@ -1,0 +1,19 @@
+import axios from 'axios';
+
+const API_URL = 'http://localhost:8081/room-service/rooms';
+
+export const getRoomById =
+    (id) => {
+      return axios.get(`${API_URL}/${id}`);
+    }
+
+export const updateRoomById =
+    (id, data, userId) => {
+      return axios.put(
+          `${API_URL}/${id}?userId=${userId}`, data,
+          {headers: {'Content-Type': 'application/json'}});
+    }
+
+export const deleteRoomById = (id, userId) => {
+  return axios.delete(`${API_URL}/${id}?userId=${userId}`);
+}
