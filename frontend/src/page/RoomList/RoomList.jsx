@@ -2,8 +2,10 @@ import React, { startTransition, useEffect, useState } from "react";
 import "./RoomList.css";
 import AddRoomForm from "../../Component/CRUD-room/Add-Room/AddRoom";
 import { createRoom, getRooms } from "./roomApi";
+import { useNavigate } from "react-router-dom";
 
 const RoomList = () => {
+  const navigate = useNavigate();
   const [searchName, setSearchName] = useState("");
   const [roomStatus, setRoomStatus] = useState("--ALL--");
   const [orderBy, setOrderBy] = useState("--DEFAULT--");
@@ -35,9 +37,7 @@ const RoomList = () => {
   };
 
   const handleViewDetails = (roomId) => {
-    // This will navigate to room details page or open details popup
-    console.log("View details for room:", roomId);
-    // You can add navigation here: navigate(`/rooms/${roomId}`)
+    navigate(`/RoomDetails/${roomId}`);
   };
 
   const handleAddRoom = () => {
