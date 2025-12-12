@@ -30,6 +30,7 @@ const RoomList = () => {
 
   const handleSearch = () => {
     // Search functionality will filter rooms
+    //TODO::implement the function here
     console.log("Searching...", { searchName, roomStatus, orderBy });
   };
 
