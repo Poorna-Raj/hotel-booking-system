@@ -3,7 +3,7 @@ import "./RoomDetails.css";
 import UpdateRoomForm from "../../Component/CRUD-room/Update-Room/UpdateRoom";
 import DeleteRoomModal from "../../Component/CRUD-room/Delete-Room/DeleteRoom";
 import { useNavigate, useParams } from "react-router-dom";
-import { getRoomById, updateRoomById } from "./api";
+import { deleteRoomById, getRoomById, updateRoomById } from "./api";
 
 const RoomDetails = () => {
   const [showUpdateForm, setShowUpdateForm] = useState(false);
@@ -49,13 +49,13 @@ const RoomDetails = () => {
   const handleUpdateSubmit = async (formData) => {
     try {
       const userId = localStorage.getItem("userId");
-      const res = await updateRoomById(userId, formData);
+      const res = await updateRoomById(id, formData, userId);
       if (res.status === 200) {
         alert("Successfully updated!");
         fetchRoom();
       }
     } catch (err) {
-      console.error("Failed to fetch room: ", err);
+      console.error("Failed to update room: ", err);
       alert(err.message);
     }
     setShowUpdateForm(false);
@@ -67,16 +67,20 @@ const RoomDetails = () => {
     setShowDeleteModal(false);
   };
 
-  const handleDeleteConfirm = (roomId) => {
-    // Handle delete confirmation - add API call here
-    console.log("Deleting room:", roomId);
-
-    // After successful deletion
+  const handleDeleteConfirm = async (roomId) => {
+    try {
+      const userId = localStorage.getItem("userId");
+      const res = await deleteRoomById(roomId, userId);
+      if (res.status === 200) {
+        alert("Successfully deleted!");
+        fetchRoom();
+      }
+    } catch (err) {
+      console.error("Failed to delete room: ", err);
+      alert(err.message);
+    }
     setShowDeleteModal(false);
-    alert("Room deleted successfully!");
-
-    // Navigate back to room list
-    // navigate('/rooms')
+    navigate("/RoomList");
   };
 
   if (!roomData) return <p>Loading room details...</p>;
