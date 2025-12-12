@@ -22,10 +22,10 @@ function App() {
         <Route path="/BookingList" element={<BookingList />} />
         <Route path="/AddBooking" element={<AddBooking />} />
         <Route path="/Updatebooking" element={<UpdateBooking />} />
-       <Route path="/ViewBooking" element={<ViewBooking />} />
+        <Route path="/ViewBooking" element={<ViewBooking />} />
         <Route path="/Delete-booking" element={<DeleteBookingModal />} />
         <Route path="/RoomList" element={<RoomList />} />
-        <Route path="/RoomDetails" element={<RoomDetails />} />
+        <Route path="/RoomDetails/:id" element={<RoomDetails />} />
       </Routes>
     </>
   );

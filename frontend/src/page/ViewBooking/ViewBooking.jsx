@@ -6,10 +6,19 @@ function ViewBooking({ booking, setShowViewBookingModal, setBookings }) {
   const [extraPaymentReason, setExtraPaymentReason] = useState('');
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [checkoutSuccess, setCheckoutSuccess] = useState(false);
+  const [showAdditionalPaymentModal, setShowAdditionalPaymentModal] = useState(false);
+  const [additionalPaymentForm, setAdditionalPaymentForm] = useState({
+    amount: '',
+    paymentType: '',
+    paymentStatus: 'Pending',
+    transactionId: '',
+    paymentReason: ''
+  });
+  const [additionalPaymentSuccess, setAdditionalPaymentSuccess] = useState(false);
 
   // Check if booking is valid before proceeding
   if (!booking) {
-    return <div>Loading...</div>; // Fallback UI if booking is not available
+    return <div>Loading...</div>;
   }
 
   const formatDateTime = (dateTime) => {
@@ -41,7 +50,6 @@ function ViewBooking({ booking, setShowViewBookingModal, setBookings }) {
   };
 
   const handleConfirmCheckout = () => {
-    // Update booking status
     setBookings(prevBookings => 
       prevBookings.map(b => 
         b.id === booking.id 
@@ -59,7 +67,6 @@ function ViewBooking({ booking, setShowViewBookingModal, setBookings }) {
     setShowConfirmModal(false);
     setCheckoutSuccess(true);
     
-    // Close after showing success message
     setTimeout(() => {
       setShowViewBookingModal(false);
     }, 2000);
@@ -67,6 +74,102 @@ function ViewBooking({ booking, setShowViewBookingModal, setBookings }) {
 
   const handleCancelCheckout = () => {
     setShowConfirmModal(false);
+  };
+
+  const handleAdditionalPaymentClick = () => {
+    // Pre-fill with example data for testing
+    setAdditionalPaymentForm({
+      amount: '150.50',
+      paymentType: 'Credit Card',
+      paymentStatus: 'Paid',
+      transactionId: 'TXN123456789',
+      paymentReason: 'Late checkout fee and mini bar charges'
+    });
+    setShowAdditionalPaymentModal(true);
+  };
+
+  const handleAdditionalPaymentChange = (field, value) => {
+    setAdditionalPaymentForm(prev => ({
+      ...prev,
+      [field]: value
+    }));
+  };
+
+  const handleSubmitAdditionalPayment = async (e) => {
+    e.preventDefault();
+    
+    // Validate form
+    if (!additionalPaymentForm.amount || !additionalPaymentForm.paymentType || 
+        !additionalPaymentForm.transactionId || !additionalPaymentForm.paymentReason) {
+      alert('Please fill in all required fields');
+      return;
+    }
+
+    // Create payment object
+    const paymentData = {
+      bookingId: booking.id,
+      userId: booking.createdBy,
+      amount: parseFloat(additionalPaymentForm.amount),
+      paymentType: additionalPaymentForm.paymentType,
+      paymentStatus: additionalPaymentForm.paymentStatus,
+      transactionId: additionalPaymentForm.transactionId,
+      paymentReason: additionalPaymentForm.paymentReason
+    };
+
+    console.log('Additional Payment Submitted:', paymentData);
+    
+    // TODO: Replace this with your actual API call
+    // Example API call (commented out):
+    /*
+    try {
+      const response = await fetch('YOUR_API_ENDPOINT_HERE', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(paymentData)
+      });
+      
+      if (!response.ok) {
+        throw new Error('Payment submission failed');
+      }
+      
+      const result = await response.json();
+      console.log('Payment saved:', result);
+    } catch (error) {
+      console.error('Error submitting payment:', error);
+      alert('Failed to submit payment. Please try again.');
+      return;
+    }
+    */
+    
+    // For now, just simulate success (remove this when you add real API)
+    // Show success message
+    setAdditionalPaymentSuccess(true);
+    
+    // Reset form and close modal after 2 seconds
+    setTimeout(() => {
+      setAdditionalPaymentSuccess(false);
+      setShowAdditionalPaymentModal(false);
+      setAdditionalPaymentForm({
+        amount: '',
+        paymentType: '',
+        paymentStatus: 'Pending',
+        transactionId: '',
+        paymentReason: ''
+      });
+    }, 2000);
+  };
+
+  const handleCancelAdditionalPayment = () => {
+    setShowAdditionalPaymentModal(false);
+    setAdditionalPaymentForm({
+      amount: '',
+      paymentType: '',
+      paymentStatus: 'Pending',
+      transactionId: '',
+      paymentReason: ''
+    });
   };
 
   return (
@@ -205,6 +308,13 @@ function ViewBooking({ booking, setShowViewBookingModal, setBookings }) {
               </div>
 
               <button 
+                className="additional-payment-btn" 
+                onClick={handleAdditionalPaymentClick}
+              >
+                💳 Add Additional Payment
+              </button>
+
+              <button 
                 className="checkout-btn" 
                 onClick={handleCheckoutClick}
                 disabled={checkoutSuccess}
@@ -221,6 +331,134 @@ function ViewBooking({ booking, setShowViewBookingModal, setBookings }) {
             )}
           </div>
         </div>
+
+        {/* Additional Payment Modal */}
+        {showAdditionalPaymentModal && (
+          <div className="confirm-overlay">
+            <div className="additional-payment-modal">
+              <div className="modal-header">
+                <h2>💳 Additional Payment</h2>
+                <button className="close-modal-btn" onClick={handleCancelAdditionalPayment}>
+                  ✕
+                </button>
+              </div>
+
+              {additionalPaymentSuccess && (
+                <div className="success-banner-modal">
+                  ✓ Additional payment recorded successfully!
+                </div>
+              )}
+
+              <form onSubmit={handleSubmitAdditionalPayment} className="additional-payment-form">
+                <div className="form-row">
+                  <label className="form-label">Booking ID</label>
+                  <input
+                    type="text"
+                    className="form-input"
+                    value={booking.id}
+                    disabled
+                  />
+                </div>
+
+                <div className="form-row">
+                  <label className="form-label">User ID</label>
+                  <input
+                    type="text"
+                    className="form-input"
+                    value={booking.createdBy}
+                    disabled
+                  />
+                </div>
+
+                <div className="form-row">
+                  <label className="form-label">Amount <span className="required">*</span></label>
+                  <input
+                    type="number"
+                    className="form-input"
+                    placeholder="0.00"
+                    min="0.1"
+                    step="0.01"
+                    value={additionalPaymentForm.amount}
+                    onChange={(e) => handleAdditionalPaymentChange('amount', e.target.value)}
+                    required
+                  />
+                </div>
+
+                <div className="form-row">
+                  <label className="form-label">Payment Type <span className="required">*</span></label>
+                  <select
+                    className="form-input"
+                    value={additionalPaymentForm.paymentType}
+                    onChange={(e) => handleAdditionalPaymentChange('paymentType', e.target.value)}
+                    required
+                  >
+                    <option value="">Select payment type</option>
+                    <option value="Cash">Cash</option>
+                    <option value="Credit Card">Credit Card</option>
+                    <option value="Debit Card">Debit Card</option>
+                    <option value="Bank Transfer">Bank Transfer</option>
+                    <option value="Online Payment">Online Payment</option>
+                  </select>
+                </div>
+
+                <div className="form-row">
+                  <label className="form-label">Payment Status <span className="required">*</span></label>
+                  <select
+                    className="form-input"
+                    value={additionalPaymentForm.paymentStatus}
+                    onChange={(e) => handleAdditionalPaymentChange('paymentStatus', e.target.value)}
+                    required
+                  >
+                    <option value="Pending">Pending</option>
+                    <option value="Paid">Paid</option>
+                    <option value="Failed">Failed</option>
+                    <option value="Refunded">Refunded</option>
+                  </select>
+                </div>
+
+                <div className="form-row">
+                  <label className="form-label">Transaction ID <span className="required">*</span></label>
+                  <input
+                    type="text"
+                    className="form-input"
+                    placeholder="Enter transaction ID"
+                    value={additionalPaymentForm.transactionId}
+                    onChange={(e) => handleAdditionalPaymentChange('transactionId', e.target.value)}
+                    required
+                  />
+                </div>
+
+                <div className="form-row">
+                  <label className="form-label">Payment Reason <span className="required">*</span></label>
+                  <textarea
+                    className="form-textarea"
+                    placeholder="Enter reason for additional payment (e.g., Late checkout fee, Damage charges, Extra services)"
+                    rows="4"
+                    value={additionalPaymentForm.paymentReason}
+                    onChange={(e) => handleAdditionalPaymentChange('paymentReason', e.target.value)}
+                    required
+                  />
+                </div>
+
+                <div className="form-buttons">
+                  <button 
+                    type="button" 
+                    className="btn-cancel-form" 
+                    onClick={handleCancelAdditionalPayment}
+                  >
+                    Cancel
+                  </button>
+                  <button 
+                    type="submit" 
+                    className="btn-submit-form"
+                  >
+                    Submit Payment
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
 
         {/* Confirmation Modal */}
         {showConfirmModal && (

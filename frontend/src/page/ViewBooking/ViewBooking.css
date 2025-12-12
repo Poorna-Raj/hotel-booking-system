@@ -265,6 +265,26 @@
   margin: 0;
 }
 
+/* Additional Payment Button */
+.additional-payment-btn {
+  width: 100%;
+  padding: 16px;
+  background: linear-gradient(135deg, #42a5f5 0%, #1e88e5 100%);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: opacity 0.2s ease;
+  box-shadow: 0 4px 15px rgba(30, 136, 229, 0.3);
+}
+
+.additional-payment-btn:hover {
+  opacity: 0.9;
+}
+
 /* Checkout Button */
 .checkout-btn {
   width: 100%;
@@ -276,7 +296,7 @@
   font-size: 18px;
   font-weight: 700;
   cursor: pointer;
-  margin-top: 25px;
+  margin-top: 15px;
   transition: opacity 0.2s ease;
   box-shadow: 0 4px 15px rgba(255, 107, 74, 0.4);
 }
@@ -316,7 +336,7 @@
   color: white;
 }
 
-/* Confirmation Modal */
+/* Confirmation Modal Overlay */
 .confirm-overlay {
   position: fixed;
   top: 0;
@@ -328,8 +348,11 @@
   justify-content: center;
   align-items: center;
   z-index: 2000;
+  overflow-y: auto;
+  padding: 20px;
 }
 
+/* Confirmation Modal */
 .confirm-modal {
   background: white;
   border-radius: 16px;
@@ -422,6 +445,160 @@
   opacity: 0.9;
 }
 
+/* Additional Payment Modal */
+.additional-payment-modal {
+  background: white;
+  border-radius: 16px;
+  padding: 0;
+  max-width: 600px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30px;
+  border-bottom: 2px solid #ffe8dc;
+  position: sticky;
+  top: 0;
+  background: white;
+  z-index: 10;
+}
+
+.modal-header h2 {
+  color: #d84315;
+  font-size: 26px;
+  margin: 0;
+}
+
+.close-modal-btn {
+  background: #f5f5f5;
+  border: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  font-size: 20px;
+  color: #666;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.close-modal-btn:hover {
+  background: #e0e0e0;
+}
+
+.success-banner-modal {
+  background: linear-gradient(135deg, #66bb6a 0%, #43a047 100%);
+  color: white;
+  padding: 12px 30px;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+/* Additional Payment Form */
+.additional-payment-form {
+  padding: 30px;
+}
+
+.form-row {
+  margin-bottom: 20px;
+}
+
+.form-label {
+  display: block;
+  color: #2c3e50;
+  font-weight: 600;
+  font-size: 15px;
+  margin-bottom: 8px;
+}
+
+.required {
+  color: #ff5722;
+  font-weight: 700;
+}
+
+.form-input,
+.form-textarea {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 15px;
+  font-family: inherit;
+  transition: border-color 0.2s ease;
+  box-sizing: border-box;
+}
+
+.form-input:focus,
+.form-textarea:focus {
+  border-color: #42a5f5;
+  outline: none;
+}
+
+.form-input:disabled {
+  background: #f5f5f5;
+  color: #999;
+  cursor: not-allowed;
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.form-input::placeholder,
+.form-textarea::placeholder {
+  color: #999;
+}
+
+/* Form Buttons */
+.form-buttons {
+  display: flex;
+  gap: 15px;
+  justify-content: flex-end;
+  margin-top: 30px;
+  padding-top: 25px;
+  border-top: 2px solid #f5f5f5;
+}
+
+.btn-cancel-form,
+.btn-submit-form {
+  padding: 14px 28px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.btn-cancel-form {
+  background: #e0e0e0;
+  color: #666;
+}
+
+.btn-cancel-form:hover {
+  opacity: 0.8;
+}
+
+.btn-submit-form {
+  background: linear-gradient(135deg, #42a5f5 0%, #1e88e5 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(30, 136, 229, 0.3);
+}
+
+.btn-submit-form:hover {
+  opacity: 0.9;
+}
+
 /* Responsive Design */
 @media (max-width: 1024px) {
   .checkout-content {
@@ -442,8 +619,17 @@
     font-size: 28px;
   }
 
-  .confirm-modal {
+  .confirm-modal,
+  .additional-payment-modal {
     padding: 30px 20px;
+  }
+
+  .modal-header {
+    padding: 20px;
+  }
+
+  .additional-payment-form {
+    padding: 20px;
   }
 
   .payment-row.total {
@@ -452,5 +638,14 @@
 
   .payment-row.total .amount {
     font-size: 26px;
+  }
+
+  .form-buttons {
+    flex-direction: column;
+  }
+
+  .btn-cancel-form,
+  .btn-submit-form {
+    width: 100%;
   }
 }

@@ -1,12 +1,28 @@
 package com.hbs.payment_service.data.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
+
 public class PaymentRequestDto {
+    @Positive(message = "Booking ID must be positive")
     private long bookingId;
+
+    @Positive(message = "User ID must be positive")
     private long userId;
+
+    @Positive(message = "Amount must be positive")
     private double amount;
+
+    @NotBlank(message = "Payment type cannot be empty")
     private String paymentType;
+
+    @NotBlank(message = "Payment status cannot be empty")
     private String paymentStatus;
+
     private String transactionId;
+
+    @NotBlank(message = "Payment status cannot be empty")
     private String paymentReason;
 
     public long getBookingId() {

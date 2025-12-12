@@ -6,10 +6,12 @@ import { faSignIn } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useRef } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
   const [activeTab, setActiveTab] = useState("login");
   const formRef = useRef(null);
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     username: "",
@@ -58,8 +60,8 @@ function Login() {
       console.log(`${activeTab} successful:`, response.data);
 
       if (activeTab === "login" && response.data && response.status === 200) {
-        localStorage.setItem("user", JSON.stringify(response.data));
-        // redirect to dashboard based on the role
+        localStorage.setItem("userId", response.data.id);
+        navigate("/Dashboard");
       }
 
       if (activeTab === "register" && response.status === 201) {
@@ -71,7 +73,7 @@ function Login() {
       if (err.response) {
         console.error("Error:", err.response.data.message || err.response.data);
       } else {
-        console.error("Network or server error:", err.message);
+        console.error("Network or server error:", err.error);
       }
     }
   };
@@ -121,12 +123,14 @@ function Login() {
                 placeholder="Username"
                 required
                 onChange={handleChanges}
+                name="username"
               />
               <input
                 type="password"
                 placeholder="Password"
                 required
                 onChange={handleChanges}
+                name="password"
               />
               <button type="submit">
                 <FontAwesomeIcon icon={faSignIn} className={styles.fontIcon} />
@@ -146,24 +150,28 @@ function Login() {
                 placeholder="Username"
                 required
                 onChange={handleChanges}
+                name="username"
               />
               <input
                 type="email"
                 placeholder="Email"
                 required
                 onChange={handleChanges}
+                name="email"
               />
               <input
                 type="password"
                 placeholder="Password"
                 required
                 onChange={handleChanges}
+                name="password"
               />
               <input
                 type="text"
                 placeholder="Address"
                 required
                 onChange={handleChanges}
+                name="address"
               />
               <button type="submit">
                 <FontAwesomeIcon icon={faSignIn} className={styles.fontIcon} />
