@@ -113,7 +113,7 @@ function BookingList() {
                 <span
                   className={`status-badge ${booking.bookingStatus.toLowerCase()}`}
                 >
-                  {booking.bookingStatus}
+                  {booking.bookingStatus || "N/A"}
                 </span>
               </td>
               <td>
