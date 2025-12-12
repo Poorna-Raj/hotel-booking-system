@@ -9,6 +9,6 @@ export const getRoomById =
 
 export const updateRoomById = (id, data) => {
   return axios.put(
-      `${API_URL}/${id}?userId=3`, data,
+      `${API_URL}/${id}?userId=${id}`, data,
       {headers: {'Content-Type': 'application/json'}});
 }
