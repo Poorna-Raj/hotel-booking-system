@@ -1,254 +1,271 @@
-import { useState } from 'react';
-import './Add-Booking.css';
+import { useState } from "react";
+import "./Add-Booking.css";
+import { useNavigate } from "react-router-dom";
+import { addNewBooking } from "./api";
 
 function AddBooking({ setShowAddBookingModal }) {
+  const navigate = useNavigate();
+  const userId = localStorage.getItem("userId");
+  if (!userId) {
+    navigate("/");
+  }
   const [formData, setFormData] = useState({
-    guestName: '',
-    email: '',
-    phone: '',
-    checkIn: '',
-    checkOut: '',
-    roomType: '',
-    guests: 1,
-    specialRequests: '',
-    advancedPayment: 0, // New state for advanced payment
-    total: 0,           // New state for total price
-    balance: 0          // New state for balance
+    roomId: 0,
+    createdBy: Number(userId),
+    checkIn: "",
+    checkOut: "",
+    bookingStatus: "",
+    customerName: "",
+    customerNic: "",
+    advancePayment: 0,
+    paymentType: "",
+    transactionId: "",
+    occupancy: 1,
   });
   const [submitted, setSubmitted] = useState(false);
   const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
     if (errors[name]) {
-      setErrors(prev => ({ ...prev, [name]: '' }));
+      setErrors((prev) => ({ ...prev, [name]: "" }));
     }
-  };
-
-  const calculatePrice = () => {
-    const roomPrices = {
-      standard: 100, // Example price for standard room
-      deluxe: 150,   // Example price for deluxe room
-      suite: 200,    // Example price for suite
-      penthouse: 300 // Example price for penthouse
-    };
-
-    const basePrice = roomPrices[formData.roomType] || 0;
-    const totalPrice = basePrice * formData.guests;
-
-    const advancedPayment = formData.advancedPayment;
-    const balance = totalPrice - advancedPayment;
-
-    setFormData(prev => ({
-      ...prev,
-      total: totalPrice,
-      balance: balance
-    }));
   };
 
   const validate = () => {
     const newErrors = {};
-    if (!formData.guestName.trim()) newErrors.guestName = 'Guest name is required';
-    if (!formData.email.trim()) newErrors.email = 'Email is required';
-    if (!formData.checkIn) newErrors.checkIn = 'Check-in date is required';
-    if (!formData.checkOut) newErrors.checkOut = 'Check-out date is required';
-    if (!formData.roomType) newErrors.roomType = 'Room type is required';
+
+    if (!formData.customerName.trim())
+      newErrors.customerName = "Customer name is required";
+
+    if (!formData.customerNic.trim()) newErrors.customerNic = "NIC is required";
+
+    if (!formData.roomId || formData.roomId <= 0)
+      newErrors.roomId = "Room ID is required";
+
+    if (!formData.checkIn) newErrors.checkIn = "Check-in date is required";
+
+    if (!formData.checkOut) newErrors.checkOut = "Check-out date is required";
+
+    if (!formData.bookingStatus)
+      newErrors.bookingStatus = "Booking status is required";
+
+    if (!formData.paymentType)
+      newErrors.paymentType = "Payment type is required";
+
+    if (formData.occupancy <= 0)
+      newErrors.occupancy = "Occupancy must be at least 1";
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validate()) return;
-    
-    console.log('Booking submitted:', formData);
-    // Add your API call here to save booking
-    
+
+    const payload = {
+      ...formData,
+      checkIn: formData.checkIn + ":00",
+      checkOut: formData.checkOut + ":00",
+    };
+
+    try {
+      const res = await addNewBooking(payload);
+      console.log(res);
+      if (res.status === 201 || res.status === 200) {
+        console.log("new booking added!");
+        setShowAddBookingModal(false);
+      }
+    } catch (err) {
+      if (err.response) {
+        console.error("Backend error:", err.response.data);
+        console.error("Status:", err.response.status);
+        console.error("Message:", err.response.data.message);
+        alert(err.response.data.message);
+      } else {
+        console.error("Network/Unexpected error:", err);
+        alert("Unexpected error occurred");
+      }
+    }
+
     setSubmitted(true);
     setTimeout(() => setSubmitted(false), 3000);
-    setFormData({
-      guestName: '',
-      email: '',
-      phone: '',
-      checkIn: '',
-      checkOut: '',
-      roomType: '',
-      guests: 1,
-      specialRequests: '',
-      advancedPayment: 0,
-      total: 0,
-      balance: 0
-    });
   };
 
   return (
     <div className="modal-overlay">
       <div className="booking-container">
         <div className="booking-form-wrapper">
-          <button className="modal-close-btn" onClick={() => setShowAddBookingModal(false)}>
+          <button
+            className="modal-close-btn"
+            onClick={() => setShowAddBookingModal(false)}
+          >
             X
           </button>
-          
+
           <h2 className="booking-title">Add New Booking</h2>
 
           {submitted && (
-            <div className="success-message">
-              Booking added successfully!
-            </div>
+            <div className="success-message">Booking added successfully!</div>
           )}
 
           <form onSubmit={handleSubmit}>
+            {/* Room ID */}
             <div className="form-group">
-              <label className="form-label">Guest Name *</label>
+              <label className="form-label">Room ID *</label>
               <input
-                type="text"
-                name="guestName"
-                value={formData.guestName}
+                type="number"
+                name="roomId"
+                value={formData.roomId}
                 onChange={handleChange}
                 className="form-input"
-                placeholder="Arosh Smith"
+                min="1"
               />
-              {errors.guestName && <p className="form-error">{errors.guestName}</p>}
+              {errors.roomId && <p className="form-error">{errors.roomId}</p>}
             </div>
 
-            <div className="form-row">
-              <div className="form-group">
-                <label className="form-label">Email *</label>
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  className="form-input"
-                  placeholder="smith32gampaha@.com"
-                />
-                {errors.email && <p className="form-error">{errors.email}</p>}
-              </div>
-              <div className="form-group">
-                <label className="form-label">Phone</label>
-                <input
-                  type="tel"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleChange}
-                  className="form-input"
-                  placeholder="+94 712345678"
-                />
-              </div>
+            {/* Customer Name */}
+            <div className="form-group">
+              <label className="form-label">Customer Name *</label>
+              <input
+                type="text"
+                name="customerName"
+                value={formData.customerName}
+                onChange={handleChange}
+                className="form-input"
+              />
+              {errors.customerName && (
+                <p className="form-error">{errors.customerName}</p>
+              )}
             </div>
 
+            {/* Customer NIC */}
+            <div className="form-group">
+              <label className="form-label">Customer NIC *</label>
+              <input
+                type="text"
+                name="customerNic"
+                value={formData.customerNic}
+                onChange={handleChange}
+                className="form-input"
+              />
+              {errors.customerNic && (
+                <p className="form-error">{errors.customerNic}</p>
+              )}
+            </div>
+
+            {/* Dates */}
             <div className="form-row">
               <div className="form-group">
-                <label className="form-label">Check-in Date *</label>
+                <label className="form-label">Check-In Date *</label>
                 <input
-                  type="date"
+                  type="datetime-local"
                   name="checkIn"
                   value={formData.checkIn}
                   onChange={handleChange}
                   className="form-input"
                 />
-                {errors.checkIn && <p className="form-error">{errors.checkIn}</p>}
+                {errors.checkIn && (
+                  <p className="form-error">{errors.checkIn}</p>
+                )}
               </div>
+
               <div className="form-group">
-                <label className="form-label">Check-out Date *</label>
+                <label className="form-label">Check-Out Date *</label>
                 <input
-                  type="date"
+                  type="datetime-local"
                   name="checkOut"
                   value={formData.checkOut}
                   onChange={handleChange}
                   className="form-input"
                 />
-                {errors.checkOut && <p className="form-error">{errors.checkOut}</p>}
+                {errors.checkOut && (
+                  <p className="form-error">{errors.checkOut}</p>
+                )}
               </div>
             </div>
 
-            <div className="form-row">
-              <div className="form-group">
-                <label className="form-label">Room Type *</label>
-                <select
-                  name="roomType"
-                  value={formData.roomType}
-                  onChange={(e) => {
-                    handleChange(e);
-                    calculatePrice(); // Recalculate price when room type changes
-                  }}
-                  className="form-select"
-                >
-                  <option value="">Select Room</option>
-                  <option value="standard">Standard Room</option>
-                  <option value="deluxe">Deluxe Room</option>
-                  <option value="suite">Suite</option>
-                  <option value="penthouse">Penthouse</option>
-                </select>
-                {errors.roomType && <p className="form-error">{errors.roomType}</p>}
-              </div>
-              <div className="form-group">
-                <label className="form-label">Number of Guests *</label>
-                <input
-                  type="number"
-                  name="guests"
-                  value={formData.guests}
-                  onChange={(e) => {
-                    handleChange(e);
-                    calculatePrice(); // Recalculate price when guests number changes
-                  }}
-                  className="form-input"
-                  min="1"
-                  max="10"
-                />
-              </div>
-            </div>
-
+            {/* Booking Status */}
             <div className="form-group">
-              <label className="form-label">Special Requests</label>
-              <textarea
-                name="specialRequests"
-                value={formData.specialRequests}
+              <label className="form-label">Booking Status *</label>
+              <select
+                name="bookingStatus"
+                value={formData.bookingStatus}
                 onChange={handleChange}
-                className="form-textarea"
-                rows="3"
-                placeholder="Any special requirements..."
-              />
+                className="form-select"
+              >
+                <option value="">Select Status</option>
+                <option value="BOOKED">Booked</option>
+                <option value="CONFIRMED">Confirmed</option>
+                <option value="COMPLETED">Completed</option>
+              </select>
+              {errors.bookingStatus && (
+                <p className="form-error">{errors.bookingStatus}</p>
+              )}
             </div>
 
-            {/* Advanced Payment */}
+            {/* Occupancy */}
             <div className="form-group">
-              <label className="form-label">Advanced Payment</label>
+              <label className="form-label">Occupancy *</label>
               <input
                 type="number"
-                name="advancedPayment"
-                value={formData.advancedPayment}
-                onChange={(e) => {
-                  handleChange(e);
-                  calculatePrice(); // Recalculate balance when advanced payment changes
-                }}
+                name="occupancy"
+                value={formData.occupancy}
+                onChange={handleChange}
+                className="form-input"
+                min="1"
+              />
+              {errors.occupancy && (
+                <p className="form-error">{errors.occupancy}</p>
+              )}
+            </div>
+
+            {/* Advance Payment */}
+            <div className="form-group">
+              <label className="form-label">Advance Payment</label>
+              <input
+                type="number"
+                name="advancePayment"
+                value={formData.advancePayment}
+                onChange={handleChange}
                 className="form-input"
                 min="0"
-                max={formData.total} // Ensure advanced payment is not greater than the total
               />
             </div>
 
-            {/* Total and Balance */}
-            <div className="form-row">
-              <div className="form-group">
-                <label className="form-label">Total</label>
-                <input
-                  type="text"
-                  value={`$${formData.total}`}
-                  className="form-input"
-                  readOnly
-                />
-              </div>
-              <div className="form-group">
-                <label className="form-label">Balance</label>
-                <input
-                  type="text"
-                  value={`$${formData.balance}`}
-                  className="form-input"
-                  readOnly
-                />
-              </div>
+            {/* Payment Type */}
+            <div className="form-group">
+              <label className="form-label">Payment Type *</label>
+              <select
+                name="paymentType"
+                value={formData.paymentType}
+                onChange={handleChange}
+                className="form-select"
+              >
+                <option value="">Select Payment Type</option>
+                <option value="CASH">Cash</option>
+                <option value="CARD">Card</option>
+              </select>
+              {errors.paymentType && (
+                <p className="form-error">{errors.paymentType}</p>
+              )}
+            </div>
+
+            {/* Transaction ID */}
+            <div className="form-group">
+              <label className="form-label">Transaction ID *</label>
+              <input
+                type="text"
+                name="transactionId"
+                value={formData.transactionId}
+                onChange={handleChange}
+                className="form-input"
+              />
+              {errors.transactionId && (
+                <p className="form-error">{errors.transactionId}</p>
+              )}
             </div>
 
             <button type="submit" className="submit-btn">

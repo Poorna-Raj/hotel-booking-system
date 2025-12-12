@@ -20,8 +20,6 @@ public class PaymentRequestDto {
     @NotBlank(message = "Payment status cannot be empty")
     private String paymentStatus;
 
-    @NotBlank(message = "Transaction ID cannot be empty")
-    @Size(max = 50, message = "Transaction ID must be at most 50 characters")
     private String transactionId;
 
     @NotBlank(message = "Payment status cannot be empty")
