@@ -1,70 +1,41 @@
-import React, { useState } from 'react';
-import './RoomList.css';
-import AddRoomForm from '../../Component/CRUD-room/Add-Room/AddRoom';
+import React, { startTransition, useEffect, useState } from "react";
+import "./RoomList.css";
+import AddRoomForm from "../../Component/CRUD-room/Add-Room/AddRoom";
+import { createRoom, getRooms } from "./roomApi";
 
 const RoomList = () => {
-  const [searchName, setSearchName] = useState('');
-  const [roomStatus, setRoomStatus] = useState('--ALL--');
-  const [orderBy, setOrderBy] = useState('--DEFAULT--');
+  const [searchName, setSearchName] = useState("");
+  const [roomStatus, setRoomStatus] = useState("--ALL--");
+  const [orderBy, setOrderBy] = useState("--DEFAULT--");
   const [showAddForm, setShowAddForm] = useState(false);
+  const [roomData, setRoomData] = useState([]);
 
-  // Sample room data
-  const rooms = [
-    {
-      id: 1,
-      name: 'Deluxe Suite',
-      type: 'Luxury',
-      bedSize: 'King Size',
-      price: 12500,
-      status: 'Available',
-      image: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=500&h=300&fit=crop'
-    },
-    {
-      id: 2,
-      name: 'Standard Room',
-      type: 'Standard',
-      bedSize: 'Queen Size',
-      price: 8000,
-      status: 'Booked',
-      image: 'https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=500&h=300&fit=crop'
-    },
-    {
-      id: 3,
-      name: 'Standard Room',
-      type: 'Standard',
-      bedSize: 'Queen Size',
-      price: 8000,
-      status: 'Booked',
-      image: 'https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=500&h=300&fit=crop'
-    },
-    {
-      id: 4,
-      name: 'Standard Room',
-      type: 'Standard',
-      bedSize: 'Queen Size',
-      price: 8000,
-      status: 'Booked',
-      image: 'https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=500&h=300&fit=crop'
-    },
-    {
-      id: 5,
-      name: 'Standard Room',
-      type: 'Standard',
-      bedSize: 'Queen Size',
-      price: 8000,
-      status: 'Booked',
-      image: 'https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=500&h=300&fit=crop'
+  const fetchRooms = async () => {
+    try {
+      const res = await getRooms();
+      if (res.status === 200) {
+        startTransition(() => {
+          setRoomData(res.data);
+        });
+      }
+    } catch (err) {
+      console.error(err.message);
+      alert(err.error);
     }
-  ];
+  };
+
+  useEffect(() => {
+    fetchRooms();
+  }, []);
 
   const handleSearch = () => {
     // Search functionality will filter rooms
-    console.log('Searching...', { searchName, roomStatus, orderBy });
+    console.log("Searching...", { searchName, roomStatus, orderBy });
   };
 
   const handleViewDetails = (roomId) => {
     // This will navigate to room details page or open details popup
-    console.log('View details for room:', roomId);
+    console.log("View details for room:", roomId);
     // You can add navigation here: navigate(`/rooms/${roomId}`)
   };
 
@@ -77,27 +48,23 @@ const RoomList = () => {
     setShowAddForm(false);
   };
 
-  const handleFormSubmit = (formData) => {
-    // Handle form submission - add API call here
-    console.log('New room data:', formData);
-    
-    // Example: Add new room to the list
-    // You can replace this with an API call
-    // const newRoom = {
-    //   id: rooms.length + 1,
-    //   name: formData.name,
-    //   type: formData.type,
-    //   bedSize: formData.bedSize,
-    //   price: parseFloat(formData.price),
-    //   status: formData.status,
-    //   image: URL.createObjectURL(formData.mainImage)
-    // };
-    
-    // After successful submission
+  const handleFormSubmit = async (formData) => {
+    const data = new FormData();
+    Object.keys(formData).forEach((key) => {
+      data.append(key, formData[key]);
+    });
+    try {
+      const res = await createRoom(data);
+      if (res.status === 201 || res.status === 200) {
+        console.log("Form submitted successfully");
+      }
+    } catch (err) {
+      console.log(err.message);
+      alert(err.error);
+    }
+    alert("Room added successfully!");
     setShowAddForm(false);
-    
-    // You might want to refresh the room list or show a success message
-    alert('Room added successfully!');
+    fetchRooms();
   };
 
   return (
@@ -156,27 +123,27 @@ const RoomList = () => {
         </div>
 
         {/* Existing Room Cards */}
-        {rooms.map((room) => (
+        {roomData.map((room) => (
           <div key={room.id} className="room-card">
             <div className="room-image">
-              <img src={room.image} alt={room.name} />
-              <span className={`status-badge ${room.status.toLowerCase()}`}>
-                {room.status}
+              <img src={room.imageNo1} alt={room.name} />
+              <span className={`status-badge ${room.roomStatus.toLowerCase()}`}>
+                {room.roomStatus}
               </span>
             </div>
-            
+
             <div className="room-content">
               <h3 className="room-name">{room.name}</h3>
-              
+
               <div className="room-details">
                 <div className="detail-row">
-                  <span className="detail-label">{room.type}</span>
-                  <span className="detail-value">{room.bedSize}</span>
+                  <span className="detail-label">{room.roomType}</span>
+                  <span className="detail-value">{room.bedType}</span>
                 </div>
               </div>
 
               <div className="room-price">
-                Rs. {room.price.toLocaleString()}
+                USD {room.basePrice.toLocaleString()}
               </div>
 
               <button
@@ -192,10 +159,7 @@ const RoomList = () => {
 
       {/* Add Room Form Popup */}
       {showAddForm && (
-        <AddRoomForm 
-          onClose={handleCloseForm}
-          onSubmit={handleFormSubmit}
-        />
+        <AddRoomForm onClose={handleCloseForm} onSubmit={handleFormSubmit} />
       )}
     </div>
   );
