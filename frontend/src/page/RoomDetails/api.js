@@ -7,8 +7,13 @@ export const getRoomById =
       return axios.get(`${API_URL}/${id}`);
     }
 
-export const updateRoomById = (id, data) => {
-  return axios.put(
-      `${API_URL}/${id}?userId=${id}`, data,
-      {headers: {'Content-Type': 'application/json'}});
+export const updateRoomById =
+    (id, data, userId) => {
+      return axios.put(
+          `${API_URL}/${id}?userId=${userId}`, data,
+          {headers: {'Content-Type': 'application/json'}});
+    }
+
+export const deleteRoomById = (id, userId) => {
+  return axios.delete(`${API_URL}/${id}?userId=${userId}`);
 }
