@@ -3,7 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import BookingList from "./Component/Booking-list/BookingList";
 import AddBooking from "./Component/CRUD-booking/Add-booking/AddBooking";
 import UpdateBooking from "./Component/CRUD-booking/Update-booking/UpdateBooking";
-import DeleteBookingModal from "./Component/CRUD-booking/Delete-booking/Delete-booking";
+import DeleteBooking from "./Component/CRUD-booking/Delete-booking/Delete-booking";
 import ViewBooking from "./page/ViewBooking/ViewBooking";
 import RoomList from "./page/RoomList/RoomList";
 import RoomDetails from "./page/RoomDetails/RoomDetails";
@@ -16,7 +16,7 @@ function App() {
   return (
     <>
       <Routes>
-        <Route path="" element={<Login />} />
+        <Route path="" element={<UserManager />} />
         <Route path="/Dashboard" element={<Dashboard />} />
         <Route path="/user-manager" element={<UserManager />} />
         <Route path="/BookingList" element={<BookingList />} />

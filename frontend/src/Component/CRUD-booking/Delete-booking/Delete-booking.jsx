@@ -2,9 +2,39 @@ import React from 'react';
 import './Delete-booking.css';
 
 function DeleteBookingModal({ booking, onClose, onConfirm }) {
-  const handleDelete = () => {
-    onConfirm(booking.id);
-    console.log('Booking deleted:', booking.id);
+ const handleDelete = async () => {
+    if (!booking || !booking.id) return;
+
+    setLoading(true);
+    setError('');
+
+    try {
+      const response = await fetch(
+        `http://localhost:8082/booking-service/bookings/${booking.id}`,
+        {
+          method: 'DELETE',
+        }
+      );
+
+      if (!response.ok) {
+        const data = await response.json().catch(() => ({}));
+        setError(data.message || 'Failed to delete booking');
+        setLoading(false);
+        return;
+      }
+
+      // Success: notify parent component
+      if (typeof onConfirm === 'function') {
+        onConfirm(booking.id);
+      }
+
+      setLoading(false);
+      onClose(); // close modal
+    } catch (err) {
+      console.error(err);
+      setError('Network or server error — please try again.');
+      setLoading(false);
+    }
   };
 
   const handleCancel = () => {

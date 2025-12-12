@@ -58,29 +58,52 @@ function UpdateBooking({ setShowUpdateBookingModal }) {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+ const handleSubmit = async (e) => {
     e.preventDefault();
+    setBackendError('');
+
     if (!validate()) return;
-    
-    console.log('Booking updated:', formData);
-    // Add your API call here to save updated booking
-    
-    setSubmitted(true);
-    setTimeout(() => setSubmitted(false), 3000);
-    setFormData({
-      guestName: '',
-      email: '',
-      phone: '',
-      checkIn: '',
-      checkOut: '',
-      roomType: '',
-      guests: 1,
-      specialRequests: '',
-      advancedPayment: 0,
-      total: 0,
-      balance: 0
-    });
+
+    // Prepare payload
+    const payload = {
+      guestName: formData.guestName.trim(),
+      email: formData.email.trim(),
+      phone: formData.phone.trim(),
+      checkIn: formData.checkIn + "T12:00:00",
+      checkOut: formData.checkOut + "T12:00:00",
+      roomType: formData.roomType,
+      occupancy: Number(formData.guests),
+      specialRequests: formData.specialRequests.trim(),
+      advancePayment: Number(formData.advancedPayment),
+      total: Number(formData.total),
+      balance: Number(formData.balance)
+    };
+
+    try {
+      const response = await fetch(`http://localhost:8082/booking-service/bookings/${bookingId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      if (!response.ok) {
+        const data = await response.json().catch(() => ({}));
+        setBackendError(data.message || 'Failed to update booking');
+        return;
+      }
+
+      setSubmitted(true);
+      setTimeout(() => setSubmitted(false), 2500);
+
+      // Optionally reset form or close modal
+      setShowUpdateBookingModal(false);
+
+    } catch (err) {
+      console.error(err);
+      setBackendError('Network or server error — please try again.');
+    }
   };
+
 
   return (
     <div className="modal-overlay">
