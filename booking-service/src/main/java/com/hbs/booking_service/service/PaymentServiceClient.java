@@ -25,8 +25,11 @@ public class PaymentServiceClient {
         String url = "http://localhost:8083/payment-service/payments";
         try{
             restTemplate.postForObject(url,dto,Void.class);
-        } catch (HttpClientErrorException.NotFound ex){
-            throw new ContentNotFound(ex.getMessage());
+        } catch (HttpClientErrorException ex){
+            throw new ContentNotFound(ex.getResponseBodyAsString());
+        } catch (Exception ex){
+            System.out.println("Payment service failed: " + ex.getMessage());
+            throw ex;
         }
     }
 
