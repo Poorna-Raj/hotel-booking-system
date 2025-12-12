@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import "./AddRoom.css";
+import { useNavigate } from "react-router-dom";
 
 const AddRoomForm = ({ onClose, onSubmit }) => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
     roomType: "",
@@ -16,6 +18,10 @@ const AddRoomForm = ({ onClose, onSubmit }) => {
   });
 
   const [errors, setErrors] = useState({});
+  const userId = localStorage.getItem("userId");
+  if (!userId) {
+    navigate("/");
+  }
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -158,7 +164,7 @@ const AddRoomForm = ({ onClose, onSubmit }) => {
               <input
                 type="number"
                 name="createdBy"
-                value={formData.createdBy}
+                value={userId}
                 onChange={handleChange}
               />
             </div>
